@@ -8,6 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import Image from "next/image";
+import Styles from "./customStyles.module.css";
 import {
   Card,
   CardContent,
@@ -51,15 +52,95 @@ function PreviosProjecs() {
                 />
               </div>
               <div className="max-w-[300px] text-center items-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-                ipsa quis magnam possimus obcaecati tempore laboriosam
-                voluptates. Animi, dolorem maiores?
+                <div>
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
+                  ipsa quis magnam possimus obcaecati tempore laboriosam
+                  voluptates. Animi, dolorem maiores?
+                </div>
+                <div className="flex justify-center items-center gap-5 w-full">
+                  <button
+                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}
+                  >
+                    live
+                  </button>
+                  <button
+                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}
+                  >
+                    gihub repo
+                  </button>
+                </div>
               </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide>Slide 2</SwiperSlide>
-          <SwiperSlide>Slide 3</SwiperSlide>
-          <SwiperSlide>Slide 4</SwiperSlide>
+          <SwiperSlide>
+            <div className="w-full h-full flex justify-center items-center gap-4">
+              <div>
+                <Image
+                  height={300}
+                  width={400}
+                  loading="lazy"
+                  className="rounded-lg aspect-[4/3] object-contain object-center min-w-[300px]"
+                  src={chatAppPng}
+                  alt="project imagg"
+                />
+              </div>
+              <div className="max-w-[300px] text-center items-center">
+                <div>
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
+                  ipsa quis magnam possimus obcaecati tempore laboriosam
+                  voluptates. Animi, dolorem maiores?
+                </div>
+                <div className="flex justify-center items-center gap-5 w-full">
+                  <button
+                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}
+                  >
+                    live
+                  </button>
+                  <button
+                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}
+                  >
+                    gihub repo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="w-full h-full flex justify-center items-center gap-4">
+              <div>
+                <Image
+                  height={300}
+                  width={400}
+                  loading="lazy"
+                  className="rounded-lg aspect-[4/3] object-contain object-center min-w-[300px]"
+                  src={chatAppPng}
+                  alt="project imagg"
+                />
+              </div>
+              <div className="max-w-[300px] text-center items-center">
+                <div>
+                  {" "}
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
+                  ipsa quis magnam possimus obcaecati tempore laboriosam
+                  voluptates. Animi, dolorem maiores?
+                </div>
+                <div className="flex justify-center items-center gap-5 w-full">
+                  <button
+                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}
+                  >
+                    live
+                  </button>
+                  <button
+                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}
+                  >
+                    gihub repo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
         </Swiper>
       </div>
     </div>
