@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body{
-  @apply bg-slate-700
+  @apply bg-slate-700 w-screen overflow-x-hidden
 }

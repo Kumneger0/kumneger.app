@@ -3,7 +3,10 @@ import "./contactme.css";
 
 export default function ContactMe() {
   return (
-    <div className="bg-[rgba(0,0,0,.9)] w-[4/5] min-w-[600px] mx-auto flex justify-center my-20">
+    <div
+      id="contactme"
+      className="bg-gray-800 w-[4/5] min-w-[600px] mx-auto flex justify-center my-20"
+    >
       <div className="addressInfo text-white p-5 mx-2 mt-10 flex justify-center items-center h-full flex-col gap-20">
         <address className="w-full">
           <div>
@@ -55,7 +58,7 @@ export default function ContactMe() {
               </svg>
             </div>
             <div>
-              <div>lorem</div>
+              <div>Location</div>
               <div>JIMMA ETHIOPIA</div>
             </div>
           </div>

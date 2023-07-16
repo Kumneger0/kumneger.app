@@ -24,12 +24,12 @@ function AboutMe() {
     });
   }, []);
   return (
-    <div className="w-screen">
+    <div id="aboutme" className="w-screen">
       <div className="text-center m-3 p-3 font-bold text-2xl text-white">
         Who Am i
       </div>
-      <div className="w-4/5 flex gap-2 justify-around mx-auto">
-        <div className="w-[45%] text-white mt-10">
+      <div className="w-4/5 flex gap-2 items-center justify-around mx-auto max-[800px]:flex-col flex-wrap">
+        <div className="lg:w-[45%] w-11/12  text-white mt-10 min-w-[300px]">
           Hi, I'm Kumneger Wondimu. I'm a web developer based in Ethiopia with a
           passion for crafting high-performance web solutions. With three years
           in the tech industry, I prioritize creating web applications that
@@ -41,7 +41,7 @@ function AboutMe() {
           className="w-[45%] min-w-[300px] min-h-h-[300px] max-h-[400px] max-w-[500px]"
         ></div>
       </div>
-      <div className="w-4/5 mx-auto">
+      <div className="w-4/5 mx-auto bg-gray-600">
         <div className="w-full text-center font-bold text-lg p-3 m-2 text-white">
           Tools And Technologies I use
         </div>

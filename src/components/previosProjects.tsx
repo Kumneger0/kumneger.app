@@ -23,13 +23,13 @@ function PreviosProjecs() {
   const swiper = useSwiper();
 
   return (
-    <div className="w-4/5 my-3">
-      <h1 className="text-2xl font-bold text-center text-white mt-2">
-        Previous Projects
+    <div id="Projects" className="w-4/5 my-20 mx-auto">
+      <h1 className="text-2xl font-bold text-center text-white my-5 font-serif">
+        Recent Projects
       </h1>
-      <div className="w-full  bg-white mt-2">
+      <div className="w-full mt-10">
         <Swiper
-          className="bg-gray-700 min-h-[400px] text-white"
+          className="bg-gray-600 min-h-[400px] min-w-[600px] text-white"
           modules={[Navigation, Pagination, Scrollbar, A11y]}
           spaceBetween={50}
           slidesPerView={1}
@@ -40,7 +40,7 @@ function PreviosProjecs() {
           onSlideChange={() => console.log("slide change")}
         >
           <SwiperSlide>
-            <div className="w-full h-full flex justify-center items-center gap-4">
+            <div className="w-full h-full flex justify-center max-[800px]:flex-col items-center gap-4 flex-wrap p-10">
               <div>
                 <Image
                   height={300}
@@ -52,6 +52,9 @@ function PreviosProjecs() {
                 />
               </div>
               <div className="max-w-[300px] text-center items-center">
+                <div className="w-full text-center my-5 text-xl">
+                  Chat App With React and pocketbase
+                </div>
                 <div>
                   {" "}
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
@@ -74,7 +77,7 @@ function PreviosProjecs() {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="w-full h-full flex justify-center items-center gap-4">
+            <div className="w-full h-full flex justify-center items-center gap-4 max-[800]:flex-col flex-wrap">
               <div>
                 <Image
                   height={300}
@@ -86,6 +89,9 @@ function PreviosProjecs() {
                 />
               </div>
               <div className="max-w-[300px] text-center items-center">
+                <div className="w-full text-center my-10 text-xl">
+                  Chat App With React and pocketbase
+                </div>
                 <div>
                   {" "}
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
@@ -108,7 +114,7 @@ function PreviosProjecs() {
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="w-full h-full flex justify-center items-center gap-4">
+            <div className="w-full h-full flex justify-center items-center gap-4 max-[800px]:flex-col flex-wrap">
               <div>
                 <Image
                   height={300}
@@ -120,8 +126,10 @@ function PreviosProjecs() {
                 />
               </div>
               <div className="max-w-[300px] text-center items-center">
+                <div className="w-full text-center my-10 text-xl">
+                  Chat App With React and pocketbase
+                </div>
                 <div>
-                  {" "}
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
                   ipsa quis magnam possimus obcaecati tempore laboriosam
                   voluptates. Animi, dolorem maiores?
@@ -139,6 +147,11 @@ function PreviosProjecs() {
                   </button>
                 </div>
               </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="w-full h-full flex justify-center items-center gap-4">
+              <button>see more on github</button>
             </div>
           </SwiperSlide>
         </Swiper>
