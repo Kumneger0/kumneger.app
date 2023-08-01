@@ -11,17 +11,29 @@ const Navbar = () => {
   const removeShaddow = () => {
     setDisplay((prv) => (prv.trim() == "hidden" ? "block" : "hidden"));
   };
+
+  const scrollIntoView = (id: string) => {
+    const element = document.querySelector(`#${id}`);
+    element?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="h-16 w-4/5 mx-auto flex justify-between">
       <div className="m-4 text-white font-serif">Kumneger Wondimu</div>
       <div className="hidden space-x-4 justify-end m-4 gap-3 lg:flex">
-        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+        <button
+          onClick={() => scrollIntoView("Projects")}
+          className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
           <Link href="#Projects">Projects</Link>
         </button>
         <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
           <Link href={`#work`}>Work</Link>
         </button>
-        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+        <button
+          onClick={() => scrollIntoView("aboutme")}
+          className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
           <Link href={`#aboutme`}>About Me</Link>
         </button>
         <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
@@ -73,7 +85,7 @@ function NavigationForSM({
   return (
     <div
       data-aos="fade-left"
-      className={`${value} ${headerStyles.navSm} fixed mx-auto top-0 right-0 h-screen w-screen bg-neutral-800 opacity-95`}>
+      className={`${value} ${headerStyles.navSm} fixed mx-auto lg:hidden top-0 right-0 h-screen w-screen bg-neutral-800 opacity-95`}>
       <div className="w-full h-full relative">
         <button
           onClick={removeShaddow}

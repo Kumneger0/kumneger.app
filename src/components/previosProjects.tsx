@@ -18,7 +18,7 @@ function PreviosProjecs() {
   return (
     <div id="Projects" className="md:w-4/5 my-20 w-[90vw]">
       <h1 className="text-2xl font-bold text-center text-white my-5 font-serif">
-        Recent Projects
+        Sample Projects
       </h1>
       <div className="w-full mt-10">
         <Swiper
@@ -31,8 +31,8 @@ function PreviosProjecs() {
           scrollbar={{ draggable: true }}
           onSwiper={(swiper) => console.log(swiper)}
           onSlideChange={() => console.log("slide change")}>
-          <SwiperSlide className="w-full">
-            <div className="w-full h-full flex justify-center max-[800px]:flex-col items-center gap-4 flex-wrap p-10">
+          <SwiperSlide>
+            <div className="w-full h-full flex justify-center max-[800px]:flex-col items-center gap-4 flex-wrap">
               <div>
                 <Image
                   height={300}
@@ -52,9 +52,9 @@ function PreviosProjecs() {
                   Discover a new way of connecting with Real-Time Chat
                   Application. Find friends using their usernames, engage in
                   private conversations, and explore profiles. Built with React
-                  and Pocketbase, this application offers a seamless,
-                  interactive experience. Dive in, explore, and experience
-                  real-time communication like never before!
+                  With TypeScript and Pocketbase, this application offers a
+                  seamless, interactive experience. Dive in, explore, and
+                  experience real-time communication like never before!
                 </div>
                 <div className="flex justify-center items-center gap-5 w-full">
                   <Link
@@ -66,11 +66,15 @@ function PreviosProjecs() {
                       live
                     </button>
                   </Link>
-
-                  <button
-                    className={`p-3 m-2 w-fit bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
-                    gihub repo
-                  </button>
+                  <Link
+                    className="w-full h-full p-1"
+                    href="https://github.com/Kumneger0/chat-app-with-react-and-pocketbase"
+                    target="_blank">
+                    <button
+                      className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
+                      github repo
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -100,14 +104,24 @@ function PreviosProjecs() {
                   and revolutionize your file storage experience!
                 </div>
                 <div className="flex justify-center items-center gap-5 w-full">
-                  <button
-                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
-                    live
-                  </button>
-                  <button
-                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
-                    gihub repo
-                  </button>
+                  <Link
+                    className="w-full h-full p-3"
+                    href="https://kunedrive.web.app/"
+                    target="_blank">
+                    <button
+                      className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
+                      live
+                    </button>
+                  </Link>
+                  <Link
+                    className="w-full h-full p-3"
+                    href="https://github.com/Kumneger0/google-drive-clone-with-react-and-firebase"
+                    target="_blank">
+                    <button
+                      className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
+                      github repo
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -137,21 +151,43 @@ function PreviosProjecs() {
                   your Tasty journey today, and make every meal a celebration!
                 </div>
                 <div className="flex justify-center items-center gap-5 w-full">
-                  <button
-                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
-                    live
-                  </button>
-                  <button
-                    className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
-                    gihub repo
-                  </button>
+                  <Link
+                    className="w-full h-full p-3"
+                    href="https://food-app-lac.vercel.app/"
+                    target="_blank">
+                    <button
+                      className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
+                      live
+                    </button>
+                  </Link>
+                  <Link
+                    className="w-full h-full p-3"
+                    href="https://github.com/Kumneger0/recipe-app-nextjs"
+                    target="_blank">
+                    <button
+                      className={`p-3 m-2 bg-blue-500 rounded-md text-center text-white ${Styles.button}`}>
+                      github repo
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide>
             <div className="w-full h-full flex justify-center items-center gap-4">
-              <button>see more on github</button>
+              <Link
+                href={`https://github.com/Kumneger0?tab=repositories`}
+                target="_blank">
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
+                  <span>see more on github</span>
+                  <svg
+                    className="fill-current w-4 h-4 ml-2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20">
+                    <path d="M10 12h8v2h-8v5l-6-6 6-6v5z" />
+                  </svg>
+                </button>
+              </Link>
             </div>
           </SwiperSlide>
         </Swiper>
