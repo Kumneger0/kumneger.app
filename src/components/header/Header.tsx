@@ -21,25 +21,30 @@ const Navbar = () => {
 
   return (
     <div className="h-16 w-4/5 mx-auto flex justify-between">
-      <div className="m-4 text-white font-serif">Kumneger Wondimu</div>
+      <Link
+        href="/"
+        className="group text-white mt-4 max-[500px]:text-lg text-2xl transition duration-300">
+        Kumneger Wondimu
+        <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
+      </Link>
       <div className="hidden space-x-4 justify-end m-4 gap-3 lg:flex">
         <button
           onClick={() => scrollIntoView("Projects")}
-          className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+          className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
           <Link href="#Projects">Projects</Link>
         </button>
-        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
           <Link href={`#work`}>Work</Link>
         </button>
         <button
           onClick={() => scrollIntoView("aboutme")}
-          className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+          className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
           <Link href={`#aboutme`}>About Me</Link>
         </button>
-        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
           <Link href="/blog">Blog</Link>
         </button>
-        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center">
+        <button className="text-white bg-gray-700 hover:bg-gray-900 px-3 py-1 rounded-md text-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110">
           <Link href={`#contactme`}>Contact Me</Link>
         </button>
       </div>

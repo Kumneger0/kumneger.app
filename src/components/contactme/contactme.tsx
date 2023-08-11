@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function ContactMe() {
   return (
     <>
-      <p className="font-bold text-2xl text-white capitalize mt-10">
+      <p className="font-bold text-2xl text-white capitalize mt-16 max-[400px]:w-[300px] text-center ">
         Let's talk about your next project
       </p>
 
@@ -46,7 +46,7 @@ export default function ContactMe() {
                     </div>
                     <div>
                       <Link href="https://instagram.com/kumnegerwondimu">
-                        <FiInstagram className="text-red-500 w-7 h-7" />
+                        <FiInstagram className="text-red-400 w-7 h-7" />
                       </Link>
                     </div>
                   </div>

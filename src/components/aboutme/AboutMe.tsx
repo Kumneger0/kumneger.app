@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Typed from "typed.js";
 import Lottie from "lottie-web";
-import lottieJson from "../../public/lottie.json";
+import lottieJson from "../../../public/lottie.json";
 
 import aos from "aos";
 
@@ -18,8 +18,8 @@ function AboutMe() {
 
     const typed = new Typed(itroRef.current, {
       strings: ["I am Kumneger Wondimu", "I am Web Developer"],
-      typeSpeed: 50,
-      backSpeed: 50,
+      typeSpeed: 70,
+      backSpeed: 70,
       loop: true,
     });
 

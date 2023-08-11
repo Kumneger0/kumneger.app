@@ -9,9 +9,9 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import Image from "next/image";
 import Styles from "./customStyles.module.css";
-import chatAppPng from "../../public/chatapp.png";
-import reciepe from "../../public/recipe.png";
-import kdrive from "../../public/Kdrive.png";
+import chatAppPng from "../../../public/chatapp.png";
+import reciepe from "../../../public/recipe.png";
+import kdrive from "../../../public/Kdrive.png";
 import Link from "next/link";
 
 function PreviosProjecs() {
