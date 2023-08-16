@@ -1,5 +1,7 @@
 import React from 'react'
-import sampleImage from '../../../public/Kdrive.png'
+import sampleImage from '../../../public/frontEnd.webp'
+import backend from '../../../public/OIP.jpg'
+import image from '../../../public/R.jpg'
 import {
     Card,
     CardContent,
@@ -13,11 +15,11 @@ import Image from 'next/image'
 function Services() {
     return (
         <>
-            <h2 className='text-center my-20 text-white font-bold font-serif text-2xl'>Services I offer</h2>
+            <h2 id='Services' className='text-center my-20 text-white font-bold font-serif text-2xl'>Services I offer</h2>
             <div className='mb-5 flex h-auto w-full max-w-6xl mx-auto gap-2 justify-center items-center flex-wrap'>
                 <div className='min-w-[300px] max-w-[360px] my-5 text-white'>
-                    <Card className='border-none shadow-md rounded-md shadow-black'>
-                        <Image src={sampleImage} className='w-[96%] mx-auto aspect-auto' alt='vercel' />
+                    <Card className='border-none shadow-md rounded-md py-2 shadow-black'>
+                        <Image loading='lazy' src={sampleImage} className='w-[96%] mx-auto object-contain object-center' alt='vercel' />
                         <CardHeader>
                             <CardTitle>Front-end Development</CardTitle>
                             <CardDescription className='py-5'>
@@ -26,9 +28,9 @@ function Services() {
                         </CardHeader>
                     </Card>
                 </div>
-                <div className='min-w-[300px] max-w-[350px]  my-5 text-white'>
-                    <Card className='border-none shadow-md rounded-md shadow-black'>
-                        <Image src={sampleImage} className='w-[96%] mx-auto aspect-auto' alt='vercel' />
+                <div className='min-w-[300px] max-w-[350px]  my-5  text-white'>
+                    <Card className='border-none py-3 shadow-md rounded-md shadow-black'>
+                        <Image loading='lazy' src={backend} className='w-[96%] mx-auto object-contain object-center ' alt='vercel' />
                         <CardHeader>
                             <CardTitle>Back-end Development</CardTitle>
                             <CardDescription className='py-5'>
@@ -39,8 +41,8 @@ function Services() {
                     </Card>
                 </div>
                 <div className='min-w-[300px] max-w-[350px]  my-5 text-white'>
-                    <Card className='border-none shadow-md rounded-md shadow-black'>
-                        <Image src={sampleImage} className='w-[96%] mx-auto aspect-auto' alt='vercel' />
+                    <Card className='border-none py-1 shadow-md rounded-md shadow-black'>
+                        <Image loading='lazy' src={image} className='w-[96%] mx-auto object-contain object-center' alt='vercel' />
                         <CardHeader>
                             <CardTitle className='py-2'>Full Stack Development</CardTitle>
                             <CardDescription>
