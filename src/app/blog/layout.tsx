@@ -14,10 +14,14 @@ export const metadata: Metadata = {
 
 function layout({ children }: { children: React.ReactNode }) {
     return (
-        <main>
-            <BlogHeader />
-            {children}
-        </main>
+        <html>
+
+            <body>
+                <BlogHeader />
+                {children}
+            </body>
+            <Footer />
+        </html>
     )
 }
 
