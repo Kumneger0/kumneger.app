@@ -18,7 +18,7 @@ export default function layout({
 }) {
     return (
         <html lang="en">
-            <body className='text-white'>
+            <body className='text-white bg-white'>
                 <BlogHeader />
                 {children}
             </body>

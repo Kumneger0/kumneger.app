@@ -1,25 +1,31 @@
-'use client'
 import React from 'react'
-import Blog from '@/blogs/blog.mdx'
-import { MDXProvider } from '@mdx-js/react'
+import { SomeBlog } from './wrapper'
 import { Metadata } from 'next'
-import { Heading, Paragraph, Code } from '../components/components';
+import Blog from './wrapper'
+import { getBlogBySlug } from '@/utils/utils'
 
-const componenents = {
-    h1: Heading,
-    p: Paragraph,
-    code: Code
+type TPrams = { params: { slug: string } }
+
+
+export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
+    await new Promise(res => setTimeout(res, 1000))
+    return {
+        title: params.slug.split('.')[0],
+        description: params?.slug
+    }
 }
 
 
-function Home({ params }) {
-    console.log(params)
+function Home({ params }: TPrams) {
+    const TestBlog = getBlogBySlug(`${params.slug}`)
     return (
-        <div className='max-w-5xl mx-auto text-white'>
-            <h1>{params?.slug}</h1>
-            <MDXProvider components={componenents}>
-                <Blog />
-            </MDXProvider>
+        <div className='w-screen bg-slate-300 text-black'>
+            <div className='max-w-5xl mx-auto'>
+                <h1 className='font-bold text-3xl'>{params.slug.split('.')[0]}</h1>
+                <Blog slug={TestBlog}>
+                    <SomeBlog />
+                </Blog>
+            </div>
         </div>
     )
 }
