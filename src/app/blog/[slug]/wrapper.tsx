@@ -3,13 +3,7 @@ import Blog from "./blog";
 import React from "react";
 import SomeBlog from "@/blogs/blog.mdx";
 
-function Wrapper({
-  children,
-  slug,
-}: {
-  children: React.ReactNode;
-  slug: string;
-}) {
+function Wrapper({ children }: { children: React.ReactNode }) {
   return <Blog>{children}</Blog>;
 }
 

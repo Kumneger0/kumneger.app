@@ -3,9 +3,14 @@ import path from "path";
 
 const BlogDir = path.join(__dirname, "../../../../src/blogs");
 
+const getFilePath = (slug: string) => path.join(__dirname, `../../../../../src/blogs/${slug}`)
+
 const getAllBlogs = async () => {
+    console.log(BlogDir)
+    const filterUneccessary = BlogDir.split('/').filter(path => path.trim() !== '.next').join('/')
     try {
-        const blogs = fs.readdirSync(BlogDir, "utf-8");
+        const blogs = fs.readdirSync(filterUneccessary, "utf-8");
+        console.log('files', blogs)
         return blogs;
     } catch (err) {
         console.error(err);
@@ -13,12 +18,14 @@ const getAllBlogs = async () => {
 };
 
 const getBlogBySlug = (slug: string) => {
-    console.log(slug)
+    const fileUrl = `/home/kumneger/projects/portifolio-website/src/blogs/${slug}`
+    console.log('blogdijljlr', fileUrl)
     try {
-        const all = getAllBlogs()
-        console.log(all)
+        const blog = fs.readFileSync(fileUrl, 'utf-8')
+        console.log('testing', blog)
+        return blog
     } catch (err) {
-        console.error(err);
+        console.error(err)
         return Error("failed to get blog");
     }
 };
