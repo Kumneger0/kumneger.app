@@ -8,27 +8,11 @@ export const metadata: Metadata = {
   description: "Blog About Programming",
 };
 
-<<<<<<< HEAD
 
-
-
-function layout({ children }: { children: React.ReactNode }) {
-    return (
-        <html>
-
-            <body>
-                <BlogHeader />
-                {children}
-            </body>
-            <Footer />
-        </html>
-    )
-=======
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="text-white bg-white">{children}</body>
     </html>
   );
->>>>>>> newBranch
 }
