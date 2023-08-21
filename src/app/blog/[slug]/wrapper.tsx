@@ -1,17 +1,10 @@
 "use client";
 import Blog from "./blog";
 import React from "react";
-import SomeBlog from "@/blogs/blog.mdx";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
-function Wrapper({
-  children,
-  blog,
-}: {
-  children: React.ReactNode;
-  blog: string;
-}) {
-  return <Blog blog={blog}>{children}</Blog>;
+function Wrapper({ children }: { children: MDXRemoteSerializeResult }) {
+  return <Blog>{children}</Blog>;
 }
 
 export default Wrapper;
-export { SomeBlog };
