@@ -12,6 +12,7 @@ const components = {
 } as MDXComponents;
 
 function Blog({ blogContent }: { blogContent: MDXRemoteSerializeResult }) {
+  console.log("blogContent", blogContent);
   return (
     <div className="max-w-5xl max-[900px]:w-11/12 mx-auto">
       <MDXRemote {...blogContent} components={components} />
