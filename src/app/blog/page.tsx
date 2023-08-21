@@ -1,12 +1,13 @@
 import React from "react";
-import fs from "fs";
+import { getAllBlogs } from "@/utils/utils";
+import Link from "next/link";
+import Blogs from "./allPosts/Blogs";
 
-function Home() {
+async function Home() {
+  const blogs = await getAllBlogs()
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="w-full text-center items-center text-white">
-        Comming Soon
-      </div>
+      <Blogs blogs={blogs} />
     </div>
   );
 }
