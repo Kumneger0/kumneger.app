@@ -4,7 +4,6 @@ import React from "react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 function Wrapper({ children }: { children: MDXRemoteSerializeResult }) {
-  console.log("children", children);
   return <Blog blogContent={children} />;
 }
 

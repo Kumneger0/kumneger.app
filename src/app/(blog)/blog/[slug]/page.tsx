@@ -22,7 +22,7 @@ async function Home({ params }: TPrams) {
     serialized = await serialize(blog);
   }
   return (
-    <div className="w-screen h-[200vh] bg-slate-100 text-black">
+    <div className="w-screen">
       <div className="max-w-5xl mx-auto">
         <h1 className="font-bold text-3xl">{params.slug.split(".")[0]}</h1>
         <Blog>{serialized! && serialized}</Blog>
