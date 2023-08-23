@@ -14,7 +14,9 @@ export default function layout({ children }: { children: React.ReactNode }) {
     <html>
       <body>
         <BlogHeader />
-        <main className="text-white bg-gray-900">{children}</main>
+        <main className="text-white bg-gray-900">
+          <div className="w-11/12 mx-auto">{children}</div>
+        </main>
         <Footer />
       </body>
     </html>

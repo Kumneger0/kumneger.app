@@ -4,6 +4,7 @@ import Blog from "./wrapper";
 import { getBlogBySlug } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import Image from "next/image";
 
 type TPrams = { params: { slug: string } };
 
@@ -24,7 +25,22 @@ async function Home({ params }: TPrams) {
   return (
     <div className="w-screen">
       <div className="max-w-5xl mx-auto">
-        <h1 className="font-bold text-3xl">{params.slug.split(".")[0]}</h1>
+        <div className="h-10"></div>
+        <div>
+          <Image
+            width={1000}
+            height={6000}
+            src="/api/gen-og-images/sample image using og"
+            alt="header Image"
+          />
+        </div>
+        <div>
+          <h1 className="font-bold text-3xl">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Autem,
+            cupiditate.
+          </h1>
+        </div>
+
         <Blog>{serialized! && serialized}</Blog>
       </div>
     </div>
