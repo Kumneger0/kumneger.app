@@ -31,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-syntax-highlighter": "^15.5.0",
     "swiper": "^10.0.4",
     "tailwind-merge": "^1.13.2",
     "tailwindcss": "3.3.3",
@@ -39,6 +40,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@types/aos": "^3.0.4"
+    "@types/aos": "^3.0.4",
+    "@types/react-syntax-highlighter": "^15.5.7"
   }
 }

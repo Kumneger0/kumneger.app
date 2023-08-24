@@ -4,6 +4,7 @@ import Blog from "./wrapper";
 import { getBlogBySlug } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import RelatedArticles from "../relatedAtriles/RelatedAtricles";
 import Image from "next/image";
 
 type TPrams = { params: { slug: string } };
@@ -42,6 +43,9 @@ async function Home({ params }: TPrams) {
         </div>
 
         <Blog>{serialized! && serialized}</Blog>
+        <div className="h-10"></div>
+        <RelatedArticles />
+        <div className="h-10"></div>
       </div>
     </div>
   );

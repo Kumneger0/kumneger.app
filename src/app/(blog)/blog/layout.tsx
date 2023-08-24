@@ -2,7 +2,7 @@ import "../../globals.css";
 import React from "react";
 import BlogHeader from "./blogHeader";
 import { Metadata } from "next";
-import Footer from "@/components/footer/footer";
+import Footer from "@/components/blogFooter/Footer";
 
 export const metadata: Metadata = {
   title: "Blog | Kumneger Wondimu",
