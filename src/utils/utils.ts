@@ -13,6 +13,7 @@ const getAllBlogs = async () => {
 
 const getBlogBySlug = (slug: string) => {
     const fileUrl = `${process.cwd()}/src/blogs/${slug}`
+    console.log('slug', slug)
     try {
         const blog = fs.readFileSync(fileUrl, 'utf-8')
         return blog

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   dark,
@@ -6,11 +7,14 @@ import {
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export const Heading = ({ children }: { children: React.ReactNode }) => {
-  return <h1 className="font-bold text-2xl mt-5">{children}</h1>;
+  return <h1 className="font-bold capitalize text-2xl mt-5">{children}</h1>;
+};
+export const Heading2 = ({ children }: { children: React.ReactNode }) => {
+  return <h2 className="font-bold capitalize text-xl mt-5">{children}</h2>;
 };
 
 export const Paragraph = ({ children }: { children: React.ReactNode }) => {
-  return <p>{children}</p>;
+  return <p className="py-5 capitalize">{children}</p>;
 };
 
 export const Code = ({ children }: { children: React.ReactNode }) => {
@@ -26,15 +30,25 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <code className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-20">
+    <div className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-5">
       <SyntaxHighlighter language="javascript" style={darcula}>
-        {children}
+        {children as string}
       </SyntaxHighlighter>
       <button
         onClick={() => copyCodeToClipboard(children)}
-        className="absolute -bottom-80 top-2">
+        className="absolute right-5 top-5">
         cp
       </button>
-    </code>
+    </div>
   );
 };
+
+export function LinkComponent<
+  T extends { href: string; children: React.ReactNode }
+>({ href, children }: T) {
+  return (
+    <Link className="underline text-blue-600" href={href}>
+      {children}
+    </Link>
+  );
+}

@@ -18,14 +18,16 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 }
 
 async function Home({ params }: TPrams) {
-  const blog = getBlogBySlug(`${params.slug}`);
+  const slug = params.slug.replaceAll("%20", " ");
+
+  const blog = getBlogBySlug(slug);
   let serialized: MDXRemoteSerializeResult | null = null;
   if (typeof blog == "string") {
     serialized = await serialize(blog);
   }
   return (
     <div className="w-screen">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl w-11/12 mx-auto">
         <div className="h-10"></div>
         <div>
           <Image
@@ -36,10 +38,7 @@ async function Home({ params }: TPrams) {
           />
         </div>
         <div>
-          <h1 className="font-bold text-3xl">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Autem,
-            cupiditate.
-          </h1>
+          <h1 className="font-bold text-3xl mt-5">{slug.split(".")[0]}</h1>
         </div>
 
         <Blog>{serialized! && serialized}</Blog>
