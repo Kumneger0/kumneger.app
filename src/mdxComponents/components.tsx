@@ -4,6 +4,8 @@ import {
   dark,
   github,
   darcula,
+  a11yDark,
+  atomOneDark,
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export const Heading = ({ children }: { children: React.ReactNode }) => {
@@ -31,7 +33,7 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-5">
-      <SyntaxHighlighter language="javascript" style={darcula}>
+      <SyntaxHighlighter language="javascript" style={atomOneDark}>
         {children as string}
       </SyntaxHighlighter>
       <button

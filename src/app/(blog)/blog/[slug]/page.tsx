@@ -4,7 +4,7 @@ import Blog from "./wrapper";
 import { getBlogBySlug } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import RelatedArticles from "../relatedAtriles/RelatedAtricles";
+import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Image from "next/image";
 
 type TPrams = { params: { slug: string } };
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 }
 
 async function Home({ params }: TPrams) {
-  const slug = params.slug.replaceAll("%20", " ");
+  const slug = params.slug.replaceAll("%20", " ").concat(".mdx");
 
   const blog = getBlogBySlug(slug);
   let serialized: MDXRemoteSerializeResult | null = null;
@@ -43,7 +43,7 @@ async function Home({ params }: TPrams) {
 
         <Blog>{serialized! && serialized}</Blog>
         <div className="h-10"></div>
-        <RelatedArticles />
+        <RelatedArticles currentArticle={slug} />
         <div className="h-10"></div>
       </div>
     </div>

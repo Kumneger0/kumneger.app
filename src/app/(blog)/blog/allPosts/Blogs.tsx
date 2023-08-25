@@ -17,7 +17,7 @@ function Blogs({ blogs }: { blogs?: Array<string> }) {
       <div className="w-full text-center items-center  text-white grid grid-cols-3 gap-3 place-items-center">
         {blogs?.map((blog, i) => {
           return (
-            <Link key={i} href={`/blog/${blog}`}>
+            <Link key={i} href={`/blog/${blog.split(".")[0]}`}>
               <div
                 className="w-80 min-h-[300px] p-3 rounded-md border border-black  m-2"
                 key={i}>

@@ -6,7 +6,7 @@ import {
   Code,
   LinkComponent,
   Heading2,
-} from "../components/components";
+} from "@/mdxComponents/components";
 
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 

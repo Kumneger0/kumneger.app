@@ -23,4 +23,20 @@ const getBlogBySlug = (slug: string) => {
     }
 };
 
-export { getAllBlogs, getBlogBySlug };
+
+const getSampleRelatedArticles = async (articleToExclude: string) => {
+    const articles: Array<{ title: string, content: string }> = []
+    const allBlogs = await getAllBlogs()
+    if (!allBlogs?.length) return
+    allBlogs.forEach(blog => {
+        if (articles.length >= 3 || blog == articleToExclude) return
+        const fileUrl = `${process.cwd()}/src/blogs/${blog}`
+        const article = fs.readFileSync(fileUrl, 'utf-8')
+        if (article) {
+            articles.push({ title: blog.split('.')[0], content: article })
+        }
+    })
+    return articles
+}
+
+export { getAllBlogs, getBlogBySlug, getSampleRelatedArticles };

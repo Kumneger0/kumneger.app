@@ -15,7 +15,7 @@ function PortifolioLayout({ children }: { children: React.ReactNode }) {
     <html>
       <body>
         <Header />
-        {children}
+        <main className="max-w-7xl mx-auto">{children}</main>
         <Footer />
       </body>
     </html>
