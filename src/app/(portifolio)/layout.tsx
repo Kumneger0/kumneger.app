@@ -3,6 +3,7 @@ import "./portifolio.css";
 import React from "react";
 import Header from "@/components/header/Header";
 import Footer from "@/components/footer/footer";
+import BlogFooter from "@/components/blogFooter/Footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ function PortifolioLayout({ children }: { children: React.ReactNode }) {
       <body>
         <Header />
         <main className="max-w-7xl mx-auto">{children}</main>
-        <Footer />
+        <BlogFooter />
       </body>
     </html>
   );

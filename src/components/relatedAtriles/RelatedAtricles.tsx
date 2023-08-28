@@ -15,7 +15,9 @@ const RelatedArticles = async ({
       <h2 className="text-2xl font-bold">Related Articles</h2>
       {sampleArticles?.map((article, index) => (
         <div key={index} className="p-4 border rounded-md">
-          <h3 className="text-xl font-semibold">{article.title}</h3>
+          <h3 className="text-xl font-semibold">
+            {article.title.replaceAll("-", " ")}
+          </h3>
           <p className="text-white line-clamp-2 my-2">{article.content}</p>
           <Link
             href={`/blog/${article.title}`}

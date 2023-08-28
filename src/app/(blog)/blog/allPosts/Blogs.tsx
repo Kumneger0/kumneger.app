@@ -14,7 +14,7 @@ function Blogs({ blogs }: { blogs?: Array<string> }) {
         molestias repudiandae harum iste, quisquam et pariatur ipsa, velit
         dolorem officia.
       </div>
-      <div className="w-full text-center items-center  text-white grid grid-cols-3 gap-3 place-items-center">
+      <div className="w-11/12 flex justify-center flex-wrap gap-6">
         {blogs?.map((blog, i) => {
           return (
             <Link key={i} href={`/blog/${blog.split(".")[0]}`}>

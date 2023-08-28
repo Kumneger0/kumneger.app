@@ -38,7 +38,9 @@ async function Home({ params }: TPrams) {
           />
         </div>
         <div>
-          <h1 className="font-bold text-3xl mt-5">{slug.split(".")[0]}</h1>
+          <h1 className="font-bold text-3xl mt-5">
+            {slug.split(".")[0].replaceAll("-", " ")}
+          </h1>
         </div>
 
         <Blog>{serialized! && serialized}</Blog>

@@ -1,12 +1,6 @@
 import Link from "next/link";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import {
-  dark,
-  github,
-  darcula,
-  a11yDark,
-  atomOneDark,
-} from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export const Heading = ({ children }: { children: React.ReactNode }) => {
   return <h1 className="font-bold capitalize text-2xl mt-5">{children}</h1>;
@@ -49,7 +43,7 @@ export function LinkComponent<
   T extends { href: string; children: React.ReactNode }
 >({ href, children }: T) {
   return (
-    <Link className="underline text-blue-600" href={href}>
+    <Link target="_blank" className="underline text-blue-600" href={href}>
       {children}
     </Link>
   );
