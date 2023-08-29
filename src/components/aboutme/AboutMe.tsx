@@ -32,7 +32,7 @@ function AboutMe() {
   };
 
   return (
-    <div id="aboutme" className="min-w-[300px] w-11/12 z-10">
+    <div id="aboutme" className="min-w-[300px] w-11/12 z-10 mt-10">
       <div className="flex justify-around gap-5 items-center flex-wrap min-w-[300px] w-full max-[900px]:-ml-20">
         <div className="lg:w-[45%] w-11/12">
           <div className="w-full mb-5 p-3 rounded-lg">
