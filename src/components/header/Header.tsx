@@ -2,24 +2,30 @@
 import Link from "next/link";
 import { FaBars } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
+import logo from "../../../public/logo.png";
+import Image from "next/image";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Navbar1() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen(!isOpen);
 
-
   return (
     <header className="bg-gray-800 flex p-6 fixed w-full z-50 overflow-x-hidden top-0 left-0">
-      <nav className="flex items-center border border-red-500 justify-between flex-wrap w-4/5 max-w-7xl mx-auto lg:gap-10">
+      <nav className="flex items-center flex-wrap  justify-between max-[500px]:w-11/12 w-4/5 max-w-7xl mx-auto lg:gap-10 min-w-[300px]">
         <div className="flex items-center flex-shrink-0 text-white">
           <Link
             href="/"
-            className="group text-white max-[500px]:text-lg text-2xl transition duration-300">
-            Kumneger Wondimu
-            <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
+            className="group text-white max-[500px]:text-lg flex  items-center gap-2 text-2xl transition duration-300">
+            <Image
+              src={logo}
+              className="h-16 w-16 rounded-full object-cover object-center"
+              alt="logo"
+            />
+            Kumneger
+            <span className="block z-50 max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
           </Link>
         </div>
         <div className="block lg:hidden bg-white z-50">

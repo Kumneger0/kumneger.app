@@ -10,13 +10,13 @@ import Link from "next/link";
 export default function ContactMe() {
   return (
     <>
-      <p className="font-bold text-2xl text-white capitalize mt-16 max-[400px]:w-[300px] text-center ">
+      <p className="font-bold text-2xl text-white capitalize mt-16 max-[400px]:w-[300px] text-center min-w-[300px]">
         Let's talk about your next project
       </p>
 
       <div
         id="contactme"
-        className="bg-gray-800 md:w-4/5 w-full max-[500px]:w-[300px]  max-w-[800px] flex justify-center my-10 flex-wrap-reverse">
+        className="bg-gray-800 md:w-4/5 w-full max-[500px]:w-[300px] min-w-[300px]  max-w-[800px] flex justify-center my-10 flex-wrap-reverse">
         <div className="addressInfo text-white p-5 mx-2 flex justify-center items-center h-full flex-col gap-10">
           <address className="w-full">
             <div>

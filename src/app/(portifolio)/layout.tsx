@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 function PortifolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
-      <body>
+      <body className="overflow-x-hidden">
         <Header />
-        {children}
-        {/* <BlogFooter /> */}
+        <main className="max-w-7xl mx-auto font-serif">{children}</main>
+        <BlogFooter />
       </body>
     </html>
   );

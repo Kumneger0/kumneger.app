@@ -13,7 +13,7 @@ const Work = () => {
   return (
     <div
       id="work"
-      className="flex flex-col items-center w-full  max-[400px]:w-[300px]">
+      className="flex flex-col items-center w-full  max-[400px]:w-[300px] min-w-[300px]">
       <h2 className="text-2xl font-bold mb-5 my-10 text-white">
         Work Experience
       </h2>

@@ -15,7 +15,7 @@ import { BiLogoMongodb, BiLogoGoLang } from "react-icons/bi";
 
 function Stacks() {
   return (
-    <div className=" my-10 max-[500px]:w-[300px]">
+    <div className="min-w-[300px]">
       <h2 className="w-full text-center font-bold text-lg p-3 m-2 text-white">
         Tools And Technologies I use
       </h2>

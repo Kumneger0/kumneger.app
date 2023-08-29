@@ -4,6 +4,8 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { BiLogoGithub } from "react-icons/bi";
 import { FaTwitter } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
+import logo from "../../../public/logo.png";
+import Image from "next/image";
 
 function Footer() {
   return (
@@ -12,9 +14,13 @@ function Footer() {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link href="/" className="flex items-center">
-              <img src="" className="h-8 mr-3" alt="Logo" />
+              <Image
+                src={logo}
+                className="h-16 w-16 object-cover object-center mr-3 aspect-auto rounded-full"
+                alt="Logo"
+              />
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-                Kune
+                Kumneger
               </span>
             </Link>
           </div>
@@ -22,11 +28,7 @@ function Footer() {
         <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-white sm:text-center dark:text-gray-400">
-            © 2023{" "}
-            <a href="/" className="hover:underline">
-              Kune™
-            </a>
-            . All Rights Reserved.
+            © 2023 All Rights Reserved.
           </span>
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0 text-white">
             <Link target="_blank" href="https://twitter.com/kumneger_01">

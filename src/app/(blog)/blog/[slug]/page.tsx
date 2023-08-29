@@ -6,6 +6,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Image from "next/image";
+import Link from "next/link";
 
 type TPrams = { params: { slug: string } };
 
@@ -33,7 +34,9 @@ async function Home({ params }: TPrams) {
   return (
     <div className="flex justify-center">
       <div className="max-w-5xl w-full">
-        <div className="h-10"></div>
+        <div className="h-10 my-10">
+          <Link href="/blog">back to list</Link>
+        </div>
         <div>
           <Image
             width={1000}
