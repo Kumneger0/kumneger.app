@@ -14,6 +14,11 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
   return {
     title: params.slug.split(".")[0],
     description: params?.slug,
+    openGraph: {
+      images: [
+        { url: `/api/gen-og-images/${params.slug.replaceAll("-", " ")}` },
+      ],
+    },
   };
 }
 
@@ -33,7 +38,7 @@ async function Home({ params }: TPrams) {
           <Image
             width={1000}
             height={6000}
-            src="/api/gen-og-images/sample image using og"
+            src={`/api/gen-og-images/${params.slug.replaceAll("-", " ")}`}
             alt="header Image"
           />
         </div>

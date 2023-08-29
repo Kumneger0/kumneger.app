@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { useState } from "react";
+import { BiCopy } from "react-icons/bi";
+import { BsBookmarkCheck } from "react-icons/bs";
+
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
@@ -14,14 +18,15 @@ export const Paragraph = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const Code = ({ children }: { children: React.ReactNode }) => {
+  const [isCopied, setIsCopied] = useState(false);
   function copyCodeToClipboard(text: React.ReactNode) {
     navigator.clipboard
       .writeText(text as string)
       .then(() => {
-        alert("copied");
+        setIsCopied(true);
       })
       .catch((err) => {
-        alert("failed for some reason");
+        alert("failed to copy");
       });
   }
 
@@ -33,7 +38,7 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
       <button
         onClick={() => copyCodeToClipboard(children)}
         className="absolute right-5 top-5">
-        cp
+        {!isCopied ? <BiCopy /> : <BsBookmarkCheck />}
       </button>
     </div>
   );

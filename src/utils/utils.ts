@@ -24,12 +24,12 @@ const getBlogBySlug = (slug: string) => {
 };
 
 
-const getSampleRelatedArticles = async (articleToExclude: string) => {
+const getSampleRelatedArticles = async (articleToExclude?: string, limit?: number) => {
     const articles: Array<{ title: string, content: string }> = []
     const allBlogs = await getAllBlogs()
     if (!allBlogs?.length) return
     allBlogs.forEach(blog => {
-        if (articles.length >= 3 || blog == articleToExclude) return
+        if ((limit && articles.length >= limit) || (articleToExclude && blog == articleToExclude)) return
         const fileUrl = `${process.cwd()}/src/blogs/${blog}`
         const article = fs.readFileSync(fileUrl, 'utf-8')
         if (article) {

@@ -4,40 +4,33 @@ import Link from "next/link";
 import image from "../../../../../public/R.jpg";
 import Image from "next/image";
 
-function Blogs({ blogs }: { blogs?: Array<string> }) {
+function Blogs({
+  blogs,
+}: {
+  blogs?: Array<{ title: string; content: string }>;
+}) {
   return (
     <div>
-      <div className="w-4/5 mx-auto my-5">
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, culpa
-        nulla? Repellat soluta quaerat quos, ut laudantium eum magnam sunt.
-        Impedit ex doloremque veritatis voluptatum quo sunt sequi, molestiae
-        molestias repudiandae harum iste, quisquam et pariatur ipsa, velit
-        dolorem officia.
+      <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
+        Welcome to My Blog: Discover insightful articles and valuable resources
+        to enhance your knowledge. Stay up-to-date with the latest trends, tips,
+        and industry news. Explore a wide range of topics and find inspiration
+        for your own writing
       </div>
-      <div className="w-11/12 flex justify-center flex-wrap gap-6">
-        {blogs?.map((blog, i) => {
-          return (
-            <Link key={i} href={`/blog/${blog.split(".")[0]}`}>
-              <div
-                className="w-80 min-h-[300px] p-3 rounded-md border border-black  m-2"
-                key={i}>
-                <div>
-                  <Image src={image} alt={blog.split(".")[0]} />
-                  <div className="font-bold text-xl">
-                    <div>
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Exercitationem, dolorum!
-                    </div>
-                    <div className="text-[0.8em] font-thin flex gap-10 justify-center">
-                      <span> {Math.floor(Math.random() * 10)} min read</span>
-                      <span>category : frontend</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div className="w-11/12 max-w-6xl flex justify-center flex-wrap gap-6 mx-auto">
+        {blogs?.map((article, index) => (
+          <div key={index} className="p-4 border rounded-md">
+            <h3 className="text-xl font-semibold">
+              {article.title.replaceAll("-", " ")}
+            </h3>
+            <p className="text-white line-clamp-2 my-2">{article.content}</p>
+            <Link
+              href={`/blog/${article.title}`}
+              className="text-blue-500 hover:underline">
+              Read more
             </Link>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );

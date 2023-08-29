@@ -7,7 +7,7 @@ const RelatedArticles = async ({
 }: {
   currentArticle: string;
 }) => {
-  const sampleArticles = await getSampleRelatedArticles(currentArticle);
+  const sampleArticles = await getSampleRelatedArticles(currentArticle, 3);
   console.log(sampleArticles);
 
   return (
