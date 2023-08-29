@@ -33,7 +33,7 @@ function AboutMe() {
 
   return (
     <div id="aboutme" className="w-full z-10">
-      <div className="lg:w-[85%] max-[900px]:-ml-20 lg:-ml-10 w-[90vw]  flex gap-2 items-center justify-between max-[800px]:flex-col flex-wrap ">
+      <div className="lg:w-[85%] max-[900px]:-ml-20 lg:ml-10 w-[90vw]  flex gap-2 items-center justify-between max-[800px]:flex-col flex-wrap ">
         <div className="lg:w-[45%] w-11/12">
           <div className="w-full mb-5 p-3 rounded-lg">
             <h1 className="font-semibold font-serif  text-4xl text-slate-200">
