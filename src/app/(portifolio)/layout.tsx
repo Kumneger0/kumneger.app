@@ -16,8 +16,8 @@ function PortifolioLayout({ children }: { children: React.ReactNode }) {
     <html>
       <body>
         <Header />
-        <main className="max-w-7xl mx-auto">{children}</main>
-        <BlogFooter />
+        {children}
+        {/* <BlogFooter /> */}
       </body>
     </html>
   );
