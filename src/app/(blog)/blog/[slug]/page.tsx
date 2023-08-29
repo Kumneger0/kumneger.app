@@ -31,8 +31,8 @@ async function Home({ params }: TPrams) {
     serialized = await serialize(blog);
   }
   return (
-    <div className="w-screen">
-      <div className="max-w-5xl w-11/12 mx-auto">
+    <div className="flex justify-center">
+      <div className="max-w-5xl w-full">
         <div className="h-10"></div>
         <div>
           <Image

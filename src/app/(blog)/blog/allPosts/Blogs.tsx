@@ -10,7 +10,7 @@ function Blogs({
   blogs?: Array<{ title: string; content: string }>;
 }) {
   return (
-    <div>
+    <div className="max-w-11/12 max-[400px]:w-[300px]">
       <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
         Welcome to My Blog: Discover insightful articles and valuable resources
         to enhance your knowledge. Stay up-to-date with the latest trends, tips,
@@ -19,11 +19,15 @@ function Blogs({
       </div>
       <div className="w-11/12 max-w-6xl flex justify-center flex-wrap gap-6 mx-auto">
         {blogs?.map((article, index) => (
-          <div key={index} className="p-4 border rounded-md">
+          <div
+            key={index}
+            className="p-4 border rounded-md min-w-[90%] max-w-full mx-auto max-[400]:-ml-10">
             <h3 className="text-xl font-semibold">
               {article.title.replaceAll("-", " ")}
             </h3>
-            <p className="text-white line-clamp-2 my-2">{article.content}</p>
+            <p className="text-white w-[95%] line-clamp-2 my-2">
+              {article.content.slice(0, 200)}
+            </p>
             <Link
               href={`/blog/${article.title}`}
               className="text-blue-500 hover:underline">
