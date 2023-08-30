@@ -34,7 +34,7 @@ async function Home({ params }: TPrams) {
   return (
     <div className="flex justify-center">
       <div className="max-w-5xl w-full">
-        <div className="h-10 my-10">
+        <div className="h-10 mt-5">
           <Link href="/blog">back to list</Link>
         </div>
         <div>

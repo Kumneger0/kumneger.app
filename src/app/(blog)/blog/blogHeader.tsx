@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function blogHeader() {
   return (
-    <header className="bg-gray-800 p-6  w-full z-50 overflow-x-hidden">
+    <header className="bg-gray-800 p-2  w-full z-50 overflow-x-hidden">
       <nav className="flex items-center justify-between flex-wrap w-4/5 max-w-7xl mx-auto lg:gap-20">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <Link
