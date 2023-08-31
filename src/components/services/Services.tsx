@@ -70,8 +70,8 @@ function Services() {
                 alt="vercel"
               />
               <CardHeader>
-                <CardTitle className="py-2">Full Stack Development</CardTitle>
-                <CardDescription>
+                <CardTitle>Full Stack Development</CardTitle>
+                <CardDescription className="py-[18px]">
                   As a Full Stack Developer, I am equipped to handle all aspects
                   of project development, from designing the user interface, to
                   managing servers and databases, and ensuring smooth, seamless
