@@ -2,8 +2,7 @@ import "../globals.css";
 import "./portifolio.css";
 import React from "react";
 import Header from "@/components/header/Header";
-import Footer from "@/components/footer/footer";
-import BlogFooter from "@/components/blogFooter/Footer";
+import Footer from "@/components/blogFooter/Footer";
 import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -19,7 +18,7 @@ function PortifolioLayout({ children }: { children: React.ReactNode }) {
         <Header />
         <main className="max-w-7xl mx-auto font-serif">{children}</main>
         <Analytics />
-        <BlogFooter />
+        <Footer />
       </body>
     </html>
   );

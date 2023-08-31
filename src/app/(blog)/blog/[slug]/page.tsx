@@ -7,6 +7,7 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Image from "next/image";
 import Link from "next/link";
+import { FaBackward } from "react-icons/fa";
 
 type TPrams = { params: { slug: string } };
 
@@ -35,7 +36,11 @@ async function Home({ params }: TPrams) {
     <div className="flex justify-center">
       <div className="max-w-5xl w-full">
         <div className="h-10 mt-5">
-          <Link href="/blog">back to list</Link>
+          <Link href="/blog">
+            {" "}
+            <FaBackward className="h-7, w-7" />{" "}
+            <span className="text-blue-600 hover:underline">back to list</span>
+          </Link>
         </div>
         <div>
           <Image
