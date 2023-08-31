@@ -9,14 +9,13 @@ export function GET(
     (
       <div
         style={{
-          display: "flex",
-          background: "white",
-          justifyContent: "center",
-          alignItems: "center",
           width: "100%",
           height: "100%",
-          fontWeight: "bold",
-          fontSize: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 128,
+          background: "lavender",
         }}>
         {params.slug.split(".")[0]}
       </div>
