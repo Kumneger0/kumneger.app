@@ -3,6 +3,7 @@ import React from "react";
 import BlogHeader from "./blogHeader";
 import { Metadata } from "next";
 import Footer from "@/components/blogFooter/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Blog | Kumneger Wondimu",
@@ -16,6 +17,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <BlogHeader />
         <main className="text-white bg-gray-900 overflow-x-hidden w-screen justify-center flex">
           <div className="w-11/12 mx-auto border-green-400">{children}</div>
+          <Analytics />
         </main>
         <Footer />
       </body>

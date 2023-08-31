@@ -5,6 +5,7 @@ import Header from "@/components/header/Header";
 import Footer from "@/components/footer/footer";
 import BlogFooter from "@/components/blogFooter/Footer";
 import { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Portifolio | Kumneger Wondimu",
@@ -17,6 +18,7 @@ function PortifolioLayout({ children }: { children: React.ReactNode }) {
       <body className="overflow-x-hidden">
         <Header />
         <main className="max-w-7xl mx-auto font-serif">{children}</main>
+        <Analytics />
         <BlogFooter />
       </body>
     </html>
