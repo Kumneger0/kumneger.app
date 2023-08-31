@@ -14,7 +14,9 @@ export function GET(
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 128,
+          fontSize: 70,
+          padding: "20px",
+          textAlign: "center",
           background: "lavender",
         }}>
         {params.slug.split(".")[0]}
