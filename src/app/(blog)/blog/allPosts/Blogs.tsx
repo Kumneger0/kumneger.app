@@ -3,12 +3,16 @@ import React from "react";
 import Link from "next/link";
 import image from "../../../../../public/R.jpg";
 import Image from "next/image";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { components } from "../[slug]/blog";
+import { serialize } from "next-mdx-remote/serialize";
 
-function Blogs({
-  blogs,
-}: {
-  blogs?: Array<{ title: string; content: string }>;
-}) {
+type BlogsType = {
+  title: string;
+  content: MDXRemoteSerializeResult;
+};
+
+function Blogs({ blogs }: { blogs?: Array<BlogsType> }) {
   return (
     <div className="max-w-11/12 max-[400px]:w-[300px]">
       <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
@@ -23,7 +27,7 @@ function Blogs({
               {article.title.replaceAll("-", " ")}
             </h3>
             <p className="text-white w-[95%] line-clamp-2 my-2">
-              {article.content.slice(0, 200)}
+              <ShowSampleBlog blogSampleContent={article.content} />
             </p>
             <Link
               href={`/blog/${article.title}`}
@@ -38,3 +42,11 @@ function Blogs({
 }
 
 export default Blogs;
+
+const ShowSampleBlog = ({
+  blogSampleContent,
+}: {
+  blogSampleContent: MDXRemoteSerializeResult;
+}) => {
+  return <MDXRemote {...blogSampleContent} components={components} />;
+};

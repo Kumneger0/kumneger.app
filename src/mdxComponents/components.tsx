@@ -43,7 +43,6 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
-
 export function LinkComponent<
   T extends { href: string; children: React.ReactNode }
 >({ href, children }: T) {
@@ -53,3 +52,7 @@ export function LinkComponent<
     </Link>
   );
 }
+
+export const Strong = ({ children }: { children: React.ReactNode }) => {
+  return <strong className="bg-slate-300 text-black px-1">{children}</strong>;
+};
