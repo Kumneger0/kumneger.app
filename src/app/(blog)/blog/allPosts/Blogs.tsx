@@ -12,10 +12,7 @@ function Blogs({
   return (
     <div className="max-w-11/12 max-[400px]:w-[300px]">
       <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
-        Welcome to My Blog: Discover insightful articles and valuable resources
-        to enhance your knowledge. Stay up-to-date with the latest trends, tips,
-        and industry news. Explore a wide range of topics and find inspiration
-        for your own writing
+        Latest Articles
       </div>
       <div className="w-11/12 max-w-6xl flex justify-center flex-wrap gap-6 mx-auto">
         {blogs?.map((article, index) => (
