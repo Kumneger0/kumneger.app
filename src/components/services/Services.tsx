@@ -23,12 +23,6 @@ function Services() {
         <div className="mb-5 flex h-auto w-full max-w-6xl mx-auto gap-2 justify-center items-stretch flex-wrap">
           <div className="min-w-[300px] max-w-[360px] my-5 text-white">
             <Card className="border-none shadow-md rounded-md py-2 shadow-black items-stretch">
-              <Image
-                loading="lazy"
-                src={sampleImage}
-                className="w-[96%] aspect-square mx-auto object-cover object-center"
-                alt="vercel"
-              />
               <CardHeader>
                 <CardTitle>Front-end Development</CardTitle>
                 <CardDescription className="py-5">
@@ -43,15 +37,9 @@ function Services() {
           </div>
           <div className="min-w-[300px] max-w-[350px]  my-5  text-white">
             <Card className="border-none py-3 shadow-md rounded-md shadow-black">
-              <Image
-                loading="lazy"
-                src={backend}
-                className="w-[96%] mx-auto object-cover aspect-square object-center "
-                alt="vercel"
-              />
               <CardHeader>
                 <CardTitle>Back-end Development</CardTitle>
-                <CardDescription className="py-5">
+                <CardDescription className="py-4">
                   I am proficient in server-side programming with languages like
                   Node.js, or go, and have experience working with both SQL and
                   NoSQL databases. I can design and implement secure, scalable
@@ -63,15 +51,9 @@ function Services() {
           </div>
           <div className="min-w-[300px] max-w-[350px]  my-5 text-white">
             <Card className="border-none py-1 shadow-md rounded-md shadow-black">
-              <Image
-                loading="lazy"
-                src={image}
-                className="w-[96%] mx-auto object-cover aspect-square object-center"
-                alt="vercel"
-              />
               <CardHeader>
                 <CardTitle>Full Stack Development</CardTitle>
-                <CardDescription className="py-[18px]">
+                <CardDescription className="py-[14px]">
                   As a Full Stack Developer, I am equipped to handle all aspects
                   of project development, from designing the user interface, to
                   managing servers and databases, and ensuring smooth, seamless
