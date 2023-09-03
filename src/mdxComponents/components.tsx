@@ -54,5 +54,9 @@ export function LinkComponent<
 }
 
 export const Strong = ({ children }: { children: React.ReactNode }) => {
-  return <strong className="bg-slate-300 text-black px-1">{children}</strong>;
+  return (
+    <strong className="bg-slate-200 text-black px-1 rounded-md">
+      {children}
+    </strong>
+  );
 };
