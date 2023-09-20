@@ -14,7 +14,7 @@ export const Heading2 = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const Paragraph = ({ children }: { children: React.ReactNode }) => {
-  return <p className="py-5 capitalize">{children}</p>;
+  return <p className="py-5 ">{children}</p>;
 };
 
 export const Code = ({ children }: { children: React.ReactNode }) => {

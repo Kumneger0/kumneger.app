@@ -13,17 +13,12 @@ function Navbar1() {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
-    <header className="bg-gray-800 flex p-2 fixed w-full z-50 overflow-x-hidden top-0 left-0">
+    <header className="bg-gray-800 flex p-5 fixed w-full z-50 overflow-x-hidden top-0 left-0">
       <nav className="flex items-center flex-wrap  justify-between max-[500px]:w-11/12 w-4/5 max-w-7xl mx-auto lg:gap-10 min-w-[300px]">
         <div className="flex items-center flex-shrink-0 text-white">
           <Link
             href="/"
-            className="group text-white max-[500px]:text-lg flex  items-center gap-2 text-2xl transition duration-300">
-            <Image
-              src={logo}
-              className="h-16 w-16 rounded-full object-cover object-center"
-              alt="logo"
-            />
+            className="group text-white max-[500px]:text-lg flex  items-center gap-2 text-2xl transition duration-300 font-serif">
             Kumneger
             <span className="block z-50 max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
           </Link>

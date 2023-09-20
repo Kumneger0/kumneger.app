@@ -14,12 +14,7 @@ function Footer() {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <Link href="/" className="flex items-center">
-              <Image
-                src={logo}
-                className="h-16 w-16 object-cover object-center mr-3 aspect-auto rounded-full"
-                alt="Logo"
-              />
-              <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+              <span className="self-center font-serif text-2xl font-semibold whitespace-nowrap dark:text-white">
                 Kumneger
               </span>
             </Link>

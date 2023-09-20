@@ -1,4 +1,7 @@
+import Blogs from "@/app/(blog)/blog/allPosts/Blogs";
 import { getSampleRelatedArticles } from "@/utils/utils";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
 import React from "react";
 
@@ -8,24 +11,23 @@ const RelatedArticles = async ({
   currentArticle: string;
 }) => {
   const sampleArticles = await getSampleRelatedArticles(currentArticle, 3);
-  console.log(sampleArticles);
+
+  type BlogsType = {
+    title: string;
+    content: MDXRemoteSerializeResult;
+  };
+
+  const serializedBlog = await Promise.all<BlogsType[]>(
+    sampleArticles?.map(async ({ title, content }) => ({
+      title,
+      content: await serialize(content.slice(0, 200)),
+    })) as unknown as BlogsType[]
+  );
 
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold">Related Articles</h2>
-      {sampleArticles?.map((article, index) => (
-        <div key={index} className="p-4 border rounded-md">
-          <h3 className="text-xl font-semibold">
-            {article.title.replaceAll("-", " ")}
-          </h3>
-          <p className="text-white line-clamp-2 my-2">{article.content}</p>
-          <Link
-            href={`/blog/${article.title}`}
-            className="text-blue-500 hover:underline">
-            Read more
-          </Link>
-        </div>
-      ))}
+      <Blogs blogs={serializedBlog} />
     </div>
   );
 };

@@ -9,6 +9,9 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   title: "Portifolio | Kumneger Wondimu",
   description: "a passionate full stack developer based in ethiopia",
+  other: {
+    "google-site-verification": "oDVfNqx1QrRnGvkWz-i646WtX-rsZn1h2J7jdBwyHvU",
+  },
 };
 
 function PortifolioLayout({ children }: { children: React.ReactNode }) {

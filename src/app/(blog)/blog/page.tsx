@@ -22,6 +22,9 @@ async function Home() {
 
   return (
     <div className="w-11/12 mx-auto flex min-h-screen flex-col items-center justify-between p-5">
+      <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
+        Latest Articles
+      </div>
       <Blogs blogs={serializedBlog} />
     </div>
   );

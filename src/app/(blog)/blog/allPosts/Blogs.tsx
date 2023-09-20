@@ -15,9 +15,6 @@ type BlogsType = {
 function Blogs({ blogs }: { blogs?: Array<BlogsType> }) {
   return (
     <div className="max-w-11/12 max-[400px]:w-[300px]">
-      <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
-        Latest Articles
-      </div>
       <div className="w-11/12 max-w-6xl flex justify-center flex-wrap gap-6 mx-auto">
         {blogs?.map((article, index) => (
           <div

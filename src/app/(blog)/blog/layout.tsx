@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Blog | Kumneger Wondimu",
   description:
     "Discover insightful articles and valuable resources to enhance your knowledge. Stay up-to-date with the latest trends, tips, and industry news. Explore a wide range of topics and find inspiration for your own writing",
+
 };
 
 export default function layout({ children }: { children: React.ReactNode }) {
