@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ImageResponse } from "@vercel/og";
 
+
+export const runtime = "edge";
+
 export function GET(
   req: NextRequest,
   { params }: { params: { slug: string } }

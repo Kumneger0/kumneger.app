@@ -43,7 +43,7 @@ async function Home({ params }: TPrams) {
           </Link>
         </div>
         <div>
-          <Image
+          <img
             width={1000}
             height={6000}
             src={`/api/gen-og-images/${params.slug.replaceAll("-", " ")}`}
