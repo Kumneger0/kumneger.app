@@ -38,7 +38,7 @@ function Services() {
           <div className="min-w-[300px] max-w-[350px]  my-5  text-white">
             <Card className="border-none py-3 shadow-md rounded-md shadow-black">
               <CardHeader>
-                <CardTitle>Back-end Development</CardTitle>
+                <CardTitle>Api Development</CardTitle>
                 <CardDescription className="py-4">
                   I am proficient in server-side programming with languages like
                   Node.js, or go, and have experience working with both SQL and
