@@ -4,12 +4,10 @@ import Typed from "typed.js";
 import Lottie from "lottie-web";
 import lottieJson from "../../../public/lottie.json";
 import aos from "aos";
-import screenResize from "./screen";
 
 function AboutMe() {
   const itroRef = useRef<HTMLHeadingElement>(null);
   const lottieRef = useRef<HTMLDivElement>(null);
-  const screenSize = screenResize();
   useEffect(() => {
     aos.init({ duration: 1000 });
     aos.refresh();
@@ -58,37 +56,6 @@ function AboutMe() {
           </div>
         </div>
         <div ref={lottieRef} id="lottie" className=""></div>
-      </div>
-      <div className="w-full text-center my-2 font-bold text-2xl text-white">
-        Who Am I
-      </div>
-      <div
-        className={`flex  flex-wrap justify-center items-center mx-auto gap-2 ${
-          screenSize < 1000 ? "w-[95%]" : null
-        }`}>
-        <div
-          className={`text-white border p-3 mx-5 min-w-[400px] w-[60%]  ${
-            screenSize <= 1140 ? "w-full" : ""
-          }`}>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum quis
-          praesentium, doloribus autem labore neque corrupti sed ea et iure
-          quibusdam sunt hic quaerat commodi. Quis mollitia beatae ratione amet
-          doloribus deserunt quas ad nemo dignissimos nisi impedit natus
-          provident cumque ducimus quaerat neque cum deleniti, recusandae ipsa
-          distinctio, inventore eos consectetur. Fugiat earum aperiam error
-          laudantium, hic sint officiis quas itaque, in sit maiores inventore.
-          Magnam maxime numquam iusto optio quidem odit, vitae velit doloribus
-          nam excepturi beatae harum laborum voluptate, aliquid quas quibusdam
-          facere ipsam dolores laboriosam quo alias delectus. Debitis eum animi
-          saepe odit laborum consequuntur optio doloribus nostrum voluptatem
-          quod, quasi possimus iure, libero fuga recusandae dolores officia
-          sapiente eveniet quidem temporibus corrupti ad repudiandae. Placeat
-          praesentium eos pariatur iste at vel consequuntur dolore iure dolor
-          sit. Consequatur distinctio saepe pariatur numquam iste sint vel sed
-          laboriosam praesentium recusandae quia porro facilis, voluptates sit
-          laudantium assumenda?
-        </div>
-        <div className="min-w-[300px] min-h-[300px] border border-black"></div>
       </div>
     </div>
   );
