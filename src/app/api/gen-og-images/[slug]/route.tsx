@@ -1,10 +1,10 @@
-import type { NextRequest } from "next/server";
-import { ImageResponse } from "next/server";
+import type { NextApiRequest } from "next";
+import { ImageResponse } from 'next/server'
 
 export const runtime = "edge";
 
 export function GET(
-  req: NextRequest,
+  req: NextApiRequest,
   { params }: { params: { slug: string } }
 ) {
   return new ImageResponse(

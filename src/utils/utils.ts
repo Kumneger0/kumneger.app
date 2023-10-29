@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "node:fs";
 
 const getAllBlogs = async () => {
     const dir = `${process.cwd()}/src/blogs`
