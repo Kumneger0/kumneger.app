@@ -13,6 +13,7 @@
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^3.0.0",
     "@next/mdx": "^13.4.19",
+    "@radix-ui/react-slot": "^1.0.2",
     "@types/mdx": "^2.0.9",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
