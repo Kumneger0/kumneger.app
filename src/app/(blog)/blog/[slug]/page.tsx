@@ -58,7 +58,7 @@ async function Home({ params }: TPrams) {
         </div>
         <div>
           <h1 className="font-bold text-3xl mt-5">
-            {slug.split(".")[0].replaceAll("-", " ")}
+            {data?.title}
           </h1>
         </div>
 

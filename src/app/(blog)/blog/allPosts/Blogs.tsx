@@ -31,15 +31,13 @@ export interface TBlogs {
 
 function Blogs({ blogs, className }: { blogs?: TBlogs[], className: string }) {
   return (
-    <div className="max-w-11/12 max-[400px]:w-[300px]">
+    <div className="max-w-11/12  border max-[400px]:w-[300px]">
       <div className={twMerge(className, "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto")}>
         {blogs?.map(({ title, content, data }, index) => {
           const blogCOntent = content as unknown as MDXRemoteSerializeResult
-          console.log(data)
           return <Card className="w-[350px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl">
             <CardHeader className="p-2">
-              <CardTitle className="capitalize">{title.replaceAll('-', ' ')}</CardTitle>
-
+              <CardTitle className="capitalize">{data?.title}</CardTitle>
               <CardDescription>
                 <div>{data.author as string || ''}</div>
                 <div>{data.date as string || ''}</div>

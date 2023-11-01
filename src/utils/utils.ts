@@ -20,7 +20,7 @@ const getBlogBySlug = (slug: string) => {
         const { data, content } = matter(fs.readFileSync(fileUrl, 'utf-8'))
         const [year, month, day] = data?.date?.split('/').map(Number)
         const date = new Date(year, month, day).toDateString()
-        return { content, data: { ...data, date, author: 'Kumneger Wondimu' } }
+        return { content, data: { ...data, date, author: 'Kumneger Wondimu', title: data.title } }
     } catch (err) {
         console.error(err)
         return { data: null, content: null }
