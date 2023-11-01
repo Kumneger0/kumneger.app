@@ -8,15 +8,18 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 async function Home() {
   const blogs = await getSampleRelatedArticles();
 
+  type TBlogs = typeof blogs
+
   type BlogsType = {
     title: string;
     content: MDXRemoteSerializeResult;
-  };
+  } & TBlogs;
 
   const serializedBlog = await Promise.all<BlogsType[]>(
-    blogs?.map(async ({ title, content }) => ({
+    blogs?.map(async ({ title, content, data }) => ({
       title,
       content: await serialize(content.slice(0, 200)),
+      data
     })) as unknown as BlogsType[]
   );
 

@@ -1,3 +1,9 @@
+---
+title:Accessing User's Clipboard In JavaScript
+author:Kumneger Wondimu
+date:2023/07/05
+---
+
 Accessing the user's clipboard is a common feature on many websites and applications, often implemented as a "Copy to Clipboard" function. It provides a subtle and easy way to assist users instead of having them manually copy large pieces of text themselves
 
 The JavaScript Navigator interface represents the state and identity of the user on the page. It provides a programmer's link to the user's clipboard. The user's clipboard can be accessed via the Navigator Clipboard API, which can be used to implement cut, copy, and paste features in JavaScript
@@ -36,7 +42,6 @@ document.addEventListener('copy', function(e){
 ```
 
 In this example, we're listening to the 'copy' event. When the event fires, we prevent the default copy functionality, get the user's selection, transform the selection to uppercase, and then place the transformed text in the clipboard
-
 
 # Security Considerations
 

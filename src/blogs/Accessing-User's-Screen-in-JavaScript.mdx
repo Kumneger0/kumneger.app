@@ -1,16 +1,21 @@
+---
+title:Accessing User's Clipboard In JavaScript
+author:Kumneger Wondimu
+date:2023/07/05
+---
 
-The ***navigator.mediaDevices.getDisplayMedia*** is a method provided by the Web API which allows you to capture the contents of the user's screen. It returns a promise that resolves to a MediaStream object containing the screen's live video and audio streams
+The **_navigator.mediaDevices.getDisplayMedia_** is a method provided by the Web API which allows you to capture the contents of the user's screen. It returns a promise that resolves to a MediaStream object containing the screen's live video and audio streams
 
 # Usage
 
 The getDisplayMedia method can be used without any parameters or with an optional MediaStreamConstraints object. The MediaStreamConstraints object specifies the types of media to request, along with any requirements for each type
-
 
 ```
 
 navigator.mediaDevices.getDisplayMedia(constraints)
 
 ```
+
 # Example
 
 Let's create a simple example where we capture the user's screen and display it in a video element. We'll also add a button to start the screen capture.
@@ -28,8 +33,6 @@ First, add a video element and a button to your HTML:
 <video id="video" autoplay></video>
 
 ```
-
-
 
 The video element will be used to display the captured screen, and the button will be used to start the screen capture.
 
@@ -54,6 +57,6 @@ In this function, we call navigator.mediaDevices.getDisplayMedia() to start the 
 
 # Security
 
-It's important to note that the getDisplayMedia method could be used in nefarious ways and therefore can be a source of significant privacy and security concerns. For that reason, the specification details measures browsers are required to take in order to fully support getDisplayMedia. The go-ahead permission to use getDisplayMedia() cannot be persisted for reuse. The user must be prompted for permission every time. Transient user activation is required. The user has to interact with the page or a UI element in order for this feature to work 
+It's important to note that the getDisplayMedia method could be used in nefarious ways and therefore can be a source of significant privacy and security concerns. For that reason, the specification details measures browsers are required to take in order to fully support getDisplayMedia. The go-ahead permission to use getDisplayMedia() cannot be persisted for reuse. The user must be prompted for permission every time. Transient user activation is required. The user has to interact with the page or a UI element in order for this feature to work
 
 This is just a basic example of how to use navigator.mediaDevices.getDisplayMedia(). You can use it in combination with other Web APIs to create more complex applications, such as screen recording apps or remote desktop apps.
