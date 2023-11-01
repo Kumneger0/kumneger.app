@@ -32,7 +32,7 @@ function Blogs({ blogs }: { blogs?: Array<BlogsType> }) {
       <div className="w-full max-w-6xl flex justify-center flex-wrap gap-2 mx-auto">
         {blogs?.map(({ title, content }, index) => (
 
-          <Card className="w-[350px] p-2 shadow-sm shadow-gray-600 rounded-xl">
+          <Card className="w-[350px] p-2 shadow-sm border-[0.3px] shadow-gray-600 rounded-xl">
             <CardHeader className="p-2">
               <CardTitle className="capitalize">{title}</CardTitle>
 

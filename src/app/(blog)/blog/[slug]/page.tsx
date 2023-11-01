@@ -46,7 +46,7 @@ async function Home({ params }: TPrams) {
           <img
             width={1000}
             height={6000}
-            src={`/api/gen-og-images/${params.slug.replaceAll("-", " ")}`}
+            src={`https://images.unsplash.com/photo-1682695797221-8164ff1fafc9?auto=format&fit=crop&q=80&w=1770&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
             alt="header Image"
           />
         </div>
