@@ -1,26 +1,16 @@
-import React from "react";
-import { getAllBlogs, getSampleRelatedArticles } from "@/utils/utils";
-import Link from "next/link";
-import Blogs from "./allPosts/Blogs";
+import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
+import Blogs, { TBlogs } from "./allPosts/Blogs";
+
 
 async function Home() {
   const blogs = await getSampleRelatedArticles();
-
-  type TBlogs = typeof blogs
-
-  type BlogsType = {
-    title: string;
-    content: MDXRemoteSerializeResult;
-  } & TBlogs;
-
-  const serializedBlog = await Promise.all<BlogsType[]>(
+  const serializedBlog = await Promise.all<TBlogs[]>(
     blogs?.map(async ({ title, content, data }) => ({
       title,
       content: await serialize(content.slice(0, 200)),
       data
-    })) as unknown as BlogsType[]
+    })) as unknown as TBlogs[]
   );
 
   return (
@@ -29,7 +19,7 @@ async function Home() {
         <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
           Latest Articles
         </div>
-        <Blogs blogs={serializedBlog} />
+        <Blogs className="justify-center" blogs={serializedBlog} />
       </div>
     </>
   );

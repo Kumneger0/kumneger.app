@@ -16,10 +16,14 @@ const getBlogBySlug = (slug: string) => {
     const fileUrl = `${process.cwd()}/src/blogs/${slug}`
     console.log('slug', slug)
     try {
-        return matter(fs.readFileSync(fileUrl, 'utf-8'))
+
+        const { data, content } = matter(fs.readFileSync(fileUrl, 'utf-8'))
+        const [year, month, day] = data?.date?.split('/').map(Number)
+        const date = new Date(year, month, day).toDateString()
+        return { content, data: { ...data, date, author: 'Kumneger Wondimu' } }
     } catch (err) {
         console.error(err)
-        return Error("failed to get blog");
+        return { data: null, content: null }
     }
 };
 
@@ -27,7 +31,12 @@ const getBlogBySlug = (slug: string) => {
 const getSampleRelatedArticles = async (articleToExclude?: string, limit?: number) => {
     const articles: Array<{
         title: string, content: string, data: {
-            [key: string]: unknown;
+            title: string,
+            author: string,
+            date: string
+            year: number,
+            month: number,
+            day: number
         }
     }> = []
     const allBlogs = await getAllBlogs()
@@ -35,12 +44,17 @@ const getSampleRelatedArticles = async (articleToExclude?: string, limit?: numbe
     allBlogs.forEach(blog => {
         if ((limit && articles.length >= limit) || (articleToExclude && blog == articleToExclude)) return
         const fileUrl = `${process.cwd()}/src/blogs/${blog}`
-        const { data, content } = matter(fs.readFileSync(fileUrl, 'utf-8'))
+        const { data: config, content } = matter(fs.readFileSync(fileUrl, 'utf-8'))
+        const data = config as typeof articles[number]['data']
+        const [year, month, day] = data?.date?.split('/').map(Number)
+        const date = new Date(year, month, day).toDateString()
         if (content) {
-            articles.push({ title: blog.split('.')[0], content, data })
+            articles.push({ title: blog.split('.')[0], content, data: { ...data, date, year, month, day } })
         }
     })
-    return articles
+    return articles.sort((a, b) => a.data.year == b.data.year ?
+        a.data.month == b.data.month ? b.data.day - a.data.day :
+            b.data.month - a.data.month : b.data.year - a.data.year)
 }
 
 export { getAllBlogs, getBlogBySlug, getSampleRelatedArticles };

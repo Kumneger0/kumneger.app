@@ -1,13 +1,11 @@
-import React from "react";
-import { Metadata } from "next";
-import Blog from "./wrapper";
 import { getBlogBySlug } from "@/utils/utils";
-import { serialize } from "next-mdx-remote/serialize";
+import { Metadata } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
-import Image from "next/image";
+import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
 import { FaBackward } from "react-icons/fa";
+import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
+import Blog from "./wrapper";
 
 type TPrams = { params: { slug: string } };
 
@@ -27,10 +25,10 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 async function Home({ params }: TPrams) {
   const slug = params.slug.replaceAll("%20", " ").concat(".mdx");
 
-  const blog = getBlogBySlug(slug);
+  const { data, content } = getBlogBySlug(slug);
   let serialized: MDXRemoteSerializeResult | null = null;
-  if (typeof blog == "string") {
-    serialized = await serialize(blog);
+  if (typeof content == "string") {
+    serialized = await serialize(content);
   }
   return (
     <div className="flex justify-center">
@@ -41,6 +39,14 @@ async function Home({ params }: TPrams) {
             <FaBackward className="h-7, w-7" />{" "}
             <span className="hover:underline">back to list</span>
           </Link>
+        </div>
+        <div className='my-2'>
+          <div className="font-bold text-lg">
+            {data?.author}
+          </div>
+          <div>
+            {data?.date}
+          </div>
         </div>
         <div>
           <img

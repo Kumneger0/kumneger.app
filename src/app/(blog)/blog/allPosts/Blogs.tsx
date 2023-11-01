@@ -1,13 +1,9 @@
 "use client";
-import React from "react";
-import Link from "next/link";
-import image from "../../../../../public/R.jpg";
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 import { components } from "../[slug]/blog";
-import { serialize } from "next-mdx-remote/serialize";
-import { getSampleRelatedArticles } from "@/utils/utils";
-import { Button } from "@/components/ui/button"
 
 
 import {
@@ -17,41 +13,40 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 
-
-
-
-
-
-
-type TBlogs = Awaited<ReturnType<typeof getSampleRelatedArticles>>['data']
-
-type BlogsType = {
+export interface TBlogs {
   title: string;
-  content: MDXRemoteSerializeResult;
-} & TBlogs;
+  content: string;
+  data: {
+    title: string;
+    author: string;
+    date: string;
+    year: number;
+    month: number;
+  }
+}
 
 
-
-function Blogs({ blogs }: { blogs?: Array<BlogsType> }) {
+function Blogs({ blogs, className }: { blogs?: TBlogs[], className: string }) {
   return (
     <div className="max-w-11/12 max-[400px]:w-[300px]">
-      <div className="w-full max-w-6xl flex justify-center flex-wrap gap-2 mx-auto">
-        {blogs?.map(({ title, content, data }, index) => (
-
-          <Card className="w-[350px] p-2 shadow-sm border-[0.3px] shadow-gray-600 rounded-xl">
+      <div className={twMerge(className, "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto")}>
+        {blogs?.map(({ title, content, data }, index) => {
+          const blogCOntent = content as unknown as MDXRemoteSerializeResult
+          console.log(data)
+          return <Card className="w-[350px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl">
             <CardHeader className="p-2">
               <CardTitle className="capitalize">{title.replaceAll('-', ' ')}</CardTitle>
 
               <CardDescription>
-                <div>kumneger wondimu</div>
-                <div>{new Date().toDateString()}</div>
+                <div>{data.author as string || ''}</div>
+                <div>{data.date as string || ''}</div>
               </CardDescription>
             </CardHeader>
             <CardContent className='p-2 line-clamp-3'>
-              <MDXRemote {...content} components={components} />
+              <MDXRemote {...blogCOntent} components={components} />
             </CardContent>
             <CardFooter className="p-1 w-full flex justify-center">
               <Button className='bg-gray-800 hover:bg-gray-600 rounded-lg'>
@@ -59,7 +54,7 @@ function Blogs({ blogs }: { blogs?: Array<BlogsType> }) {
               </Button>
             </CardFooter>
           </Card>
-        ))}
+        })}
       </div>
     </div>
   );
