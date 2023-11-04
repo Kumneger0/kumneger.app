@@ -31,7 +31,7 @@ export interface TBlogs {
 
 function Blogs({ blogs, className }: { blogs?: TBlogs[], className: string }) {
   return (
-    <div className="max-w-11/12  border max-[400px]:w-[300px]">
+    <div className="max-w-11/12  max-[400px]:w-[300px]">
       <div className={twMerge(className, "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto")}>
         {blogs?.map(({ title, content, data }, index) => {
           const blogCOntent = content as unknown as MDXRemoteSerializeResult
