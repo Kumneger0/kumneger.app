@@ -11,7 +11,7 @@ const RelatedArticles = async ({
 
   const serializedBlog = await Promise.all<TBlogs[]>(
     blogs?.map(async ({ title, content, data }) => ({
-      title,
+      title: data.title,
       content: await serialize(content.slice(0, 200)),
       data
     })) as unknown as TBlogs[]
@@ -20,6 +20,7 @@ const RelatedArticles = async ({
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold">Related Articles</h2>
+      {/* @ts-ignore */}
       <Blogs className="justify-around" blogs={serializedBlog} />
     </div>
   );

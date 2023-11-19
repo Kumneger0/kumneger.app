@@ -3,14 +3,18 @@ import { serialize } from "next-mdx-remote/serialize";
 import Blogs, { TBlogs } from "./allPosts/Blogs";
 
 
+
+console.log(process.env.CLOUD_NAME)
+
 async function Home() {
   const blogs = await getSampleRelatedArticles();
   const serializedBlog = await Promise.all<TBlogs[]>(
+    //@ts-expect-error i will figure out later
     blogs?.map(async ({ title, content, data }) => ({
-      title,
+      title: data.title,
       content: await serialize(content.slice(0, 200)),
       data
-    })) as unknown as TBlogs[]
+    })) as unknown as TBlogs
   );
 
   return (
@@ -19,6 +23,7 @@ async function Home() {
         <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
           Latest Articles
         </div>
+        {/* @ts-ignore */}
         <Blogs className="justify-center" blogs={serializedBlog} />
       </div>
     </>
