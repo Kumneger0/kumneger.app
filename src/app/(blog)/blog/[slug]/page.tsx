@@ -23,13 +23,29 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 }
 
 async function Home({ params }: TPrams) {
-  const slug = params.slug.replaceAll("%20", " ").concat(".mdx");
+  const asset_id = params.slug
 
-  const { data, content } = getBlogBySlug(slug);
+
+
+
+
+  const { data, content } = await getBlogBySlug(asset_id) as {
+    content: string;
+    data: {
+      asset_id: string;
+      date: string;
+      author: string;
+    };
+  }
+
+
   let serialized: MDXRemoteSerializeResult | null = null;
   if (typeof content == "string") {
     serialized = await serialize(content);
   }
+
+  const blogTitle = 'title' in data && typeof data.title == 'string' ? data.title : ""
+
   return (
     <div className="flex justify-center">
       <div className="max-w-5xl w-full">
@@ -58,13 +74,13 @@ async function Home({ params }: TPrams) {
         </div>
         <div>
           <h1 className="font-bold text-3xl mt-5">
-            {slug.split(".")[0].replaceAll("-", " ")}
+            {blogTitle}
           </h1>
         </div>
 
         <Blog>{serialized! && serialized}</Blog>
         <div className="h-10"></div>
-        <RelatedArticles currentArticle={slug} />
+        <RelatedArticles currentArticle={params.slug} />
         <div className="h-10"></div>
       </div>
     </div>

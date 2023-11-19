@@ -5,7 +5,6 @@ import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { components } from "../[slug]/blog";
 
-
 import {
   Card,
   CardContent,
@@ -14,19 +13,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-export interface TBlogs {
+
+
+export type TBlogs = {
   title: string;
-  content: string;
+  content: MDXRemoteSerializeResult;
   data: {
     title: string;
     author: string;
     date: string;
     year: number;
     month: number;
-  }
-}
+    day: number;
+    asset_id: string;
+  };
+}[]
 
-function Blogs({ blogs, className }: { blogs?: TBlogs[], className: string }) {
+
+
+function Blogs({ blogs, className }: { blogs?: TBlogs, className: string }) {
+
+  console.log(blogs)
+
+
   return (
     <div className="max-w-11/12 max-[400px]:w-[300px]">
       <div className={twMerge(className, "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto")}>
@@ -47,7 +56,7 @@ function Blogs({ blogs, className }: { blogs?: TBlogs[], className: string }) {
             </CardContent>
             <CardFooter className="p-1 w-full flex justify-center">
               <Button className='bg-gray-800 hover:bg-gray-600 rounded-lg'>
-                <Link href={`/blog/${title}`}>Read More</Link>
+                <Link href={`/blog/${data.asset_id}`}>Read More</Link>
               </Button>
             </CardFooter>
           </Card>
