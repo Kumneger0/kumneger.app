@@ -23,6 +23,7 @@ async function Home() {
         <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
           Latest Articles
         </div>
+        {/* @ts-ignore */}
         <Blogs className="justify-center" blogs={serializedBlog} />
       </div>
     </>

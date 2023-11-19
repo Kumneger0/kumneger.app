@@ -10,13 +10,13 @@ import Blog from "./wrapper";
 type TPrams = { params: { slug: string } };
 
 export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
-  await new Promise((res) => setTimeout(res, 1000));
+  const { data } = await getBlogBySlug(params.slug) as unknown as { data: { title: string, author: string } }
   return {
-    title: params.slug.split(".")[0],
-    description: params?.slug,
+    title: data.title,
+    authors: { name: data.author },
     openGraph: {
       images: [
-        { url: `/api/gen-og-images/${params.slug.replaceAll("-", " ")}` },
+        { url: `/api/gen-og-images/${data.title}` },
       ],
     },
   };
@@ -68,7 +68,7 @@ async function Home({ params }: TPrams) {
           <img
             width={1000}
             height={6000}
-            src={`https://images.unsplash.com/photo-1682695797221-8164ff1fafc9?auto=format&fit=crop&q=80&w=1770&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
+            src={`/api/gen-og-images/${blogTitle}`}
             alt="header Image"
           />
         </div>

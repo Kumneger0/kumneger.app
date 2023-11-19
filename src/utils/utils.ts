@@ -3,15 +3,16 @@ import matter from 'gray-matter'
 import cloudinary, { ResourceApiResponse, v2 } from 'cloudinary';
 
 
+console.log(process.env.api_secret)
+
+
 
 v2.config({
-    cloud_name: 'dhnjr4595',
-    api_key: '435983312935893',
-    api_secret: 'bOeycEv_dt5MEF0CVQgcgJ600EE',
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
     secure: true
 })
-
-
 
 
 interface resources extends ResourceApiResponse {

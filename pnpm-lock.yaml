@@ -71,6 +71,9 @@ dependencies:
   next-mdx-remote:
     specifier: ^4.4.1
     version: 4.4.1(react-dom@18.2.0)(react@18.2.0)
+  next-progress:
+    specifier: ^2.3.1
+    version: 2.3.1(next@14.0.0)(react@18.2.0)
   postcss:
     specifier: 8.4.26
     version: 8.4.26
@@ -3069,6 +3072,17 @@ packages:
       - supports-color
     dev: false
 
+  /next-progress@2.3.1(next@14.0.0)(react@18.2.0):
+    resolution: {integrity: sha512-agjfECh6VQaD2VXg/u8k3fsVStrxE1atdXeWhOCh+HBty7bxh92w5Wy3SxI86dZO+xK5+78sNLXQm1cikFCDPw==}
+    peerDependencies:
+      next: '>=6.0.0'
+      react: '>=16.0.0'
+    dependencies:
+      next: 14.0.0(react-dom@18.2.0)(react@18.2.0)
+      nprogress: 0.2.0
+      react: 18.2.0
+    dev: false
+
   /next@14.0.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-J0jHKBJpB9zd4+c153sair0sz44mbaCHxggs8ryVXSFBuBqJ8XdE9/ozoV85xGh2VnSjahwntBZZgsihL9QznA==}
     engines: {node: '>=18.17.0'}
@@ -3120,6 +3134,10 @@ packages:
   /normalize-range@0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
     dev: false
 
   /object-assign@4.1.1:
