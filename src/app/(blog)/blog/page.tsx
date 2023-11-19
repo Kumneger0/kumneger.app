@@ -3,6 +3,9 @@ import { serialize } from "next-mdx-remote/serialize";
 import Blogs, { TBlogs } from "./allPosts/Blogs";
 
 
+
+console.log(process.env.CLOUD_NAME)
+
 async function Home() {
   const blogs = await getSampleRelatedArticles();
   const serializedBlog = await Promise.all<TBlogs[]>(

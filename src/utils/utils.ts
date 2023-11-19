@@ -1,8 +1,63 @@
 import fs from "node:fs";
 import matter from 'gray-matter'
+import cloudinary, { ResourceApiResponse, v2 } from 'cloudinary';
+
+
+
+v2.config({
+    cloud_name: 'dpthxgzfe',
+    api_key: '476972241877952',
+    api_secret: 'ZT9xZEq74CRLHRvEGKEExpISEOY',
+    secure: true
+})
+
+
+interface resources extends ResourceApiResponse {
+    public_id: string,
+    secure_url: string
+}
+
+const getBlogContentInParallel = async (urls: string[]) => {
+    const fetchContent = async (url: string) => {
+        const rawMdx = await fetch(url).then(res => res.text())
+        console.log(rawMdx)
+        return rawMdx
+    }
+    const allText = await Promise.allSettled(urls.map(fetchContent))
+    console.log(allText)
+    const blogs = allText.map((result) => result.status == 'fulfilled' ? result.value : null)
+    return blogs
+}
+
+
+
+async function getAllBlogsFromCloundnary() {
+    try {
+        const folder: { resources: resources[], } = await cloudinary.v2.api.search('folder:blogs/*')
+        const blogs = folder.resources.filter(res => res.public_id.split('.')[1]?.toLowerCase().trim() == 'mdx')
+        const blogSecureUrl = blogs.map((blog) => blog?.secure_url)
+        return blogSecureUrl
+    } catch {
+        throw new Error('there was an error occured')
+    }
+}
+
+
+async function getBlogFromCloundnary(publicId?: string) {
+    let rawMdx: string | null = null
+    const blog = await cloudinary.v2.api.resources_by_asset_ids(`43486229d0943419e1aff17e5bd6842f`)
+    if (blog.resources.length) {
+        rawMdx = await fetch(blog.resources[0].secure_url).then(res => res.text())
+    }
+    return rawMdx
+}
+
 
 const getAllBlogs = async () => {
     const dir = `${process.cwd()}/src/blogs`
+    const urls = await getAllBlogsFromCloundnary()
+    const blogs = await getBlogContentInParallel(urls)
+    console.log(blogs.length)
     try {
         const blogs = fs.readdirSync(dir, "utf-8");
         console.log('files', blogs)

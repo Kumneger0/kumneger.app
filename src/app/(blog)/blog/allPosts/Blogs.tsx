@@ -14,8 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-
 export interface TBlogs {
   title: string;
   content: string;
@@ -27,7 +25,6 @@ export interface TBlogs {
     month: number;
   }
 }
-
 
 function Blogs({ blogs, className }: { blogs?: TBlogs[], className: string }) {
   return (

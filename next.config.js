@@ -1,17 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
+const withMDX = require("@next/mdx")({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+});
 
-
-
-     const withMDX = require('@next/mdx')({
-       extension: /\.mdx?$/,
-       options: {
-         remarkPlugins: [],
-         rehypePlugins: [],
-       },
-     })
-
-    
-
-
-module.exports = withMDX(nextConfig)
+module.exports = withMDX(nextConfig);
