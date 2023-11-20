@@ -1,4 +1,4 @@
-import Blogs, { TBlogs } from "@/app/(blog)/blog/allPosts/Blogs";
+import Blogs, { TBlogs } from "@/components/blogs/Blogs";
 import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 

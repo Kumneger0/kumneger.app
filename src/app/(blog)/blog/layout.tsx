@@ -1,6 +1,6 @@
 import "../../globals.css";
 import React from "react";
-import BlogHeader from "./blogHeader";
+import BlogHeader from "../../../components/blogHeader/blogHeader";
 import { Metadata } from "next";
 import Footer from "@/components/blogFooter/Footer";
 import { Analytics } from "@vercel/analytics/react";

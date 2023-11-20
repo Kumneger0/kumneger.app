@@ -1,10 +1,10 @@
-import type { NextApiRequest } from "next";
+import { NextRequest } from "next/server";
 import { ImageResponse } from 'next/og'
 
 export const runtime = "edge";
 
 export function GET(
-  req: NextApiRequest,
+  req: NextRequest,
   { params }: { params: { slug: string } }
 ) {
   return new ImageResponse(
@@ -16,9 +16,10 @@ export function GET(
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 70,
+          fontSize: 80,
           padding: "20px",
           textAlign: "center",
+          fontFamily: 'sans-serif',
           background: "lavender",
         }}>
         {params.slug.split(".")[0]}

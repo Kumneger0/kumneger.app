@@ -1,6 +1,6 @@
 import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
-import Blogs, { TBlogs } from "./allPosts/Blogs";
+import Blogs, { TBlogs } from "../../../components/blogs/Blogs";
 
 
 

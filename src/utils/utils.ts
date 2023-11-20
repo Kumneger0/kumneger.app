@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import matter from 'gray-matter'
 import cloudinary, { ResourceApiResponse, v2 } from 'cloudinary';
 
@@ -105,14 +104,12 @@ const getSampleRelatedArticles = async (articleToExclude?: string, limit?: numbe
     if (allBlogs.length) {
         allBlogs.forEach((blog) => {
             if (limit && articles.length >= limit || articleToExclude == blog.asset_id) return
-            if (blog && typeof blog !== 'string' && 'rawMdx' in blog) {
-                const { data: config, content } = matter(blog?.rawMdx)
-                const data = config as typeof articles[number]['data']
-                const [year, month, day] = data?.date?.split('/').map(Number)
-                const date = new Date(year, month, day).toDateString()
-                if (content) {
-                    articles.push({ title: blog.rawMdx.split('.')[0], content, data: { ...data, date, year, month, day, asset_id: blog.asset_id } })
-                }
+            const { data: config, content } = matter(blog?.rawMdx)
+            const data = config as typeof articles[number]['data']
+            const [year, month, day] = data?.date?.split('/').map(Number)
+            const date = new Date(year, month, day).toDateString()
+            if (content) {
+                articles.push({ title: blog.rawMdx.split('.')[0], content, data: { ...data, date, year, month, day, asset_id: blog.asset_id } })
             }
         })
     }
