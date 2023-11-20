@@ -18,7 +18,7 @@ const RelatedArticles = async ({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ml-6">
       <h2 className="text-2xl font-bold">Related Articles</h2>
       {/* @ts-ignore */}
       <Blogs className="justify-around" blogs={serializedBlog} />

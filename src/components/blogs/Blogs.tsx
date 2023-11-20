@@ -41,7 +41,7 @@ function Blogs({ blogs, className }: { blogs?: TBlogs, className: string }) {
       <div className={twMerge(className, "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto")}>
         {blogs?.map(({ title, content, data }, index) => {
           const blogCOntent = content as unknown as MDXRemoteSerializeResult
-          return <Card className="w-[350px] max-w-[350px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl">
+          return <Card className="w-[350px] min-w-[350px] max-[330px]:max-w-[310px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl">
             <CardHeader className="p-2">
               <CardTitle className="capitalize">{data?.title}</CardTitle>
               <CardDescription>
