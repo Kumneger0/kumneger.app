@@ -33,9 +33,6 @@ export type TBlogs = {
 
 function Blogs({ blogs, className }: { blogs?: TBlogs, className: string }) {
 
-  console.log(blogs)
-
-
   return (
     <div className="max-w-11/12  max-[400px]:w-[300px]">
       <div className={twMerge(className, "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto")}>
