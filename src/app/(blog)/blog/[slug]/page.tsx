@@ -9,6 +9,7 @@ import Blog from "./wrapper";
 
 type TPrams = { params: { slug: string } };
 
+
 export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
   const { data } = await getBlogBySlug(params.slug) as unknown as { data: { title: string, author: string } }
   return {
@@ -24,10 +25,6 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 
 async function Home({ params }: TPrams) {
   const asset_id = params.slug
-
-
-
-
 
   const { data, content } = await getBlogBySlug(asset_id) as {
     content: string;

@@ -37,7 +37,6 @@ const getBlogContentInParallel = async (urls: {
 }
 
 
-
 async function getAllBlogsFromCloundnary() {
     try {
         const folder: { resources: resources[], } = await cloudinary.v2.api.search('folder:blogs/*')

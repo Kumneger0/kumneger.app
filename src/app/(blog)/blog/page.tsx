@@ -4,13 +4,11 @@ import Blogs, { TBlogs } from "../../../components/blogs/Blogs";
 
 
 
-console.log(process.env.CLOUD_NAME)
-
 async function Home() {
   const blogs = await getSampleRelatedArticles();
   const serializedBlog = await Promise.all<TBlogs[]>(
     //@ts-expect-error i will figure out later
-    blogs?.map(async ({ title, content, data }) => ({
+    blogs?.map(async ({ content, data }) => ({
       title: data.title,
       content: await serialize(content.slice(0, 200)),
       data
