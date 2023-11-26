@@ -15,6 +15,9 @@ async function Home() {
     })) as unknown as TBlogs
   );
 
+
+  console.log(serializedBlog)
+
   return (
     <>
       <div className="w-11/12 mx-auto flex min-h-screen flex-col items-center p-5">

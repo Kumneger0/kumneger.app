@@ -1,5 +1,6 @@
 import matter from 'gray-matter'
 import cloudinary, { ResourceApiResponse, v2 } from 'cloudinary';
+import { db } from './db';
 
 v2.config({
     cloud_name: process.env.cloud_name,
@@ -26,6 +27,7 @@ const getBlogContentInParallel = async (urls: {
         url: string;
         asset_id: string;
     }) => {
+        console.log(url)
         const rawMdx = await fetch(url).then(res => res.text())
         console.log(rawMdx)
         return { rawMdx, asset_id }
@@ -102,7 +104,7 @@ const getSampleRelatedArticles = async (articleToExclude?: string, limit?: numbe
     const allBlogs = await getAllBlogs()
     if (allBlogs.length) {
         allBlogs.forEach((blog) => {
-            if (limit && articles.length >= limit || articleToExclude == blog.asset_id) return
+            if (limit && articles.length >= limit || articleToExclude == blog?.asset_id) return
             const { data: config, content } = matter(blog?.rawMdx)
             const data = config as typeof articles[number]['data']
             const [year, month, day] = data?.date?.split('/').map(Number)
@@ -112,9 +114,52 @@ const getSampleRelatedArticles = async (articleToExclude?: string, limit?: numbe
             }
         })
     }
+    addBlogsTodb(articles.map(({ data: { asset_id, title } }) => ({ asset_id, title })))
     return articles.sort((a, b) => a.data.year == b.data.year ?
         a.data.month == b.data.month ? b.data.day - a.data.day :
             b.data.month - a.data.month : b.data.year - a.data.year)
 }
 
+
+async function addBlogsTodb(blogs: { title: string, asset_id: string }[]) {
+    try {
+        await db.$connect()
+        const beforeCreting = await db.post.findMany()
+
+        console.log(beforeCreting)
+
+        const newBlogs = beforeCreting.length ? beforeCreting.filter(({ asset_id }) => blogs.some(blog => blog.asset_id !== asset_id)) : blogs
+
+        console.log('new blogs', newBlogs)
+
+
+        await Promise.allSettled(blogs.map(async ({ asset_id, title }) => {
+            const blog = await db.post.create({ data: { asset_id, title } })
+            return blog
+        }))
+
+
+        const afterCreating = await db.post.findMany()
+        console.log(afterCreating)
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export { getAllBlogs, getBlogBySlug, getSampleRelatedArticles };
+
+

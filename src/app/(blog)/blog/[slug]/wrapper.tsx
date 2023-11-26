@@ -6,11 +6,11 @@ import { SessionProvider } from "next-auth/react";
 import Comments from "@/components/comments";
 
 
-function Wrapper({ children }: { children: MDXRemoteSerializeResult }) {
+function Wrapper({ children, asset_id }: { children: MDXRemoteSerializeResult, asset_id: string }) {
   return <>
     <SessionProvider>
-      <Blog blogContent={children} />;
-      <Comments />
+      <Blog blogContent={children} />
+      <Comments asset_id={asset_id} />
     </SessionProvider>
 
   </>

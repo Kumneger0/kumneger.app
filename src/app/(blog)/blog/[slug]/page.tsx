@@ -75,7 +75,7 @@ async function Home({ params }: TPrams) {
           </h1>
         </div>
 
-        <Blog>{serialized! && serialized}</Blog>
+        <Blog asset_id={data.asset_id}>{serialized! && serialized}</Blog>
         <div className="h-10"></div>
         <RelatedArticles currentArticle={params.slug} />
         <div className="h-10"></div>
