@@ -1,48 +1,44 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import { signIn, signOut, useSession } from 'next-auth/react'
 import { changeVote, createComment, getAllComments } from '@/app/actions/action'
+import { signIn, useSession } from 'next-auth/react'
+import { useEffect, useRef, useState } from 'react'
 
 
+
+
+type TComments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>['comments']
 
 function Comments({ asset_id }: { asset_id: string }) {
     const session = useSession()
     const commetRef = useRef<HTMLInputElement>(null)
-    const [comments, setComments] = useState<Awaited<ReturnType<typeof getAllComments>>>()
+    const [comments, setComments] = useState<TComments>()
 
 
     useEffect(() => {
         const fetchComments = async () => {
             const comments = await getAllComments(asset_id)
-            setComments(comments)
+            if (!!comments) {
+
+                setComments(comments.comments)
+            }
 
         }
 
         fetchComments()
     }, [])
+    const user = session.data?.user
 
-    console.log(comments)
-    console.log(session)
 
-    const organizedComments = comments?.comments.map(({ User, content, id, parentCommentId, }) => {
-        return {
-            content,
-            user: User,
-            id,
-            parentCommentId
-        }
-
-    })
 
 
 
     return (
         <div>
-            {session.data?.user ? <div>
+            {user ? <div>
                 <div className='w-full flex flex-col justify-center gap-20'>
                     <div>
                         <div className='font-bold text-2xl mx-2'>Comments</div>
-                        {organizedComments?.length ? organizedComments.map(({ content, user, id }, index) => {
+                        {comments?.length ? comments.map(({ content, User: user, id }, index) => {
                             return <div className='w-full flex flex-col border shadow-sm rounded-lg my-5 shadow-black' key={index}>
                                 <div className='user flex'>
                                     <div>
@@ -58,11 +54,11 @@ function Comments({ asset_id }: { asset_id: string }) {
                                     </div>
                                     <div className='flex gap-4'>
                                         <button onClick={async () => {
-                                            const vote = await changeVote(id, true, session.data.user?.email ?? null)
+                                            const vote = await changeVote(id, true, user?.email ?? null)
                                             console.log(vote)
                                         }} >like</button>
                                         <button onClick={async () => {
-                                            const vote = await changeVote(id, false, session.data.user?.email ?? null)
+                                            const vote = await changeVote(id, false, user?.email ?? null)
                                             console.log(vote)
                                         }} >dislike</button>
                                         <button  >reply</button>
@@ -74,12 +70,12 @@ function Comments({ asset_id }: { asset_id: string }) {
                         </>}
                     </div>
                     <div>
-                        <input ref={commetRef} type="text" className='p-3 rounded-md text-black' placeholder={`write you comment as ${session.data.user.name}`} />
+                        <input ref={commetRef} type="text" className='p-3 rounded-md text-black' placeholder={`write you comment as ${user.name}`} />
                         <button onClick={async () => {
                             const value = commetRef.current?.value
                             if (value) {
 
-                                const result = await createComment(asset_id, value, session.data.user?.email ?? 0)
+                                const result = await createComment(asset_id, value, user?.email ?? 0)
                                 console.log(result)
                             }
                         }}>post</button>

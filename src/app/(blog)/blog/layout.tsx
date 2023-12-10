@@ -1,10 +1,10 @@
-import "../../globals.css";
+import Footer from "@/components/blogFooter/Footer";
+import NextAuthWrapper from "@/components/nextAuthWrapper";
+import { Analytics } from "@vercel/analytics/react";
+import { Metadata } from "next";
 import React from "react";
 import BlogHeader from "../../../components/blogHeader/blogHeader";
-import { Metadata } from "next";
-import Footer from "@/components/blogFooter/Footer";
-import { Analytics } from "@vercel/analytics/react";
-
+import "../../globals.css";
 
 export const metadata: Metadata = {
   title: "Blog | Kumneger Wondimu",
@@ -17,12 +17,14 @@ export default function layout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body>
-        <BlogHeader />
-        <main className="text-white bg-gray-900 overflow-x-hidden w-screen justify-center flex">
-          <div className="w-11/12 mx-auto border-green-400">{children}</div>
-          <Analytics mode="production" />
-        </main>
-        <Footer />
+        <NextAuthWrapper>
+          <BlogHeader />
+          <main className="text-white bg-gray-900 overflow-x-hidden w-screen justify-center flex">
+            <div className="w-11/12 mx-auto border-green-400">{children}</div>
+            <Analytics mode="production" />
+          </main>
+          <Footer />
+        </NextAuthWrapper>
       </body>
     </html>
   );
