@@ -25,7 +25,7 @@ export async function createComment(
     throw new Error("user email must be string type");
   try {
     const post = await db.post.findUnique({ where: { asset_id } });
-    const user = await db.user.findUnique({ where: { email: userEmail } });
+    const user = await getUserID(userEmail);
     if (post) {
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
@@ -51,7 +51,7 @@ export async function changeVote(
 ) {
   if (!userEmail) return;
   try {
-    const user = await db.user.findUnique({ where: { email: userEmail } });
+    const user = await getUserID(userEmail);
 
     if (!user) return;
     const comment = await db.vote.delete({
@@ -75,4 +75,9 @@ export async function changeVote(
   } catch (err) {
     console.log(err);
   }
+}
+
+export async function getUserID(userEmail: string) {
+  const user = await db.user.findUnique({ where: { email: userEmail } });
+  return user;
 }
