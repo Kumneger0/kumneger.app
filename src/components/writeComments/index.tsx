@@ -1,12 +1,24 @@
 "use client";
 import { createComment } from "@/app/actions/action";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "../ui/button";
 
-type Details = Record<string, string>;
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data } = useSession();
+
+  if (!data?.user?.email)
+    return (
+      <div>
+        <div>
+          you need to
+          <Button variant={"link"} onClick={async () => await signIn()}>
+            sign in
+          </Button>
+          to post comment
+        </div>
+      </div>
+    );
 
   const details = {
     userEmail: data?.user?.email ?? null,
@@ -18,11 +30,7 @@ function PostComments({ asset_id }: { asset_id: string }) {
   return (
     <form action={createCommentsWithDetails}>
       <input type="text" name="content" placeholder="write a comment" />
-      <Button
-        variant={"link"}
-        className={`${!!data?.user == false ? "opacity-50" : ""}`}
-        disabled={!!data?.user == false}
-        type="submit">
+      <Button variant={"link"} type="submit">
         Submit
       </Button>
     </form>

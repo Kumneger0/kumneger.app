@@ -1,4 +1,4 @@
-import { getAllComments } from "@/app/actions/action";
+import { getAllComments, getUserById } from "@/app/actions/action";
 import { ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
 
@@ -12,7 +12,9 @@ async function Comments({ asset_id }: { asset_id: string }) {
           <div className="font-bold text-2xl mx-2">Comments</div>
           {comments?.length ? (
             comments.map((com, index) => {
-              return <Comment key={index} {...com} asset_id={asset_id} />;
+              return (
+                <Comment depth={0} key={index} {...com} asset_id={asset_id} />
+              );
             })
           ) : (
             <>
@@ -32,7 +34,7 @@ export default Comments;
 
 type CommentProps = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
->["comments"][number] & { asset_id: string };
+>["comments"][number] & { asset_id: string; depth: number };
 
 function Comment({
   content,
@@ -41,9 +43,14 @@ function Comment({
   votes,
   asset_id,
   replies,
+  depth = 0,
 }: CommentProps) {
   return (
-    <div className="w-full flex flex-col shadow-md border-l-2 border-slate-300 shadow-gray-700 rounded-lg my-5">
+    <div
+      style={{
+        marginLeft: `${depth * 20}px`,
+      }}
+      className="w-full flex flex-col shadow-md border-l-2 border-slate-300 shadow-gray-700 rounded-lg my-5">
       <div className="user flex">
         <div>
           <img
@@ -69,9 +76,23 @@ function Comment({
           <ReplyComments asset_id={asset_id} />
         </div>
       </div>
-      {new Array(2).fill({ ...arguments }).map((argument) => (
-        <Comment {...argument} />
-      ))}
+      {replies.map(async (repli) => {
+        const user = await getUserById(repli.userId);
+
+        const votes = (
+          "votes" in repli ? repli.votes : []
+        ) as CommentProps["votes"];
+
+        const repliProps = {
+          ...repli,
+          votes: votes,
+          User: user,
+          asset_id,
+          depth: depth + 1,
+        };
+
+        return <Comment {...(repliProps as unknown as CommentProps)} />;
+      })}
     </div>
   );
 }

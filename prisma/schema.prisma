@@ -42,6 +42,7 @@ model User {
   accounts      Account[]
   Comment       Comment[]
   sessions      Session[]
+  date          DateTime  @default(now()) @updatedAt
 }
 
 model VerificationToken {
@@ -57,6 +58,7 @@ model Post {
   asset_id String    @unique
   title    String
   comments Comment[]
+  date     DateTime  @default(now()) @updatedAt
 }
 
 model Comment {
@@ -70,14 +72,16 @@ model Comment {
   replies         Comment[] @relation("CommentReplies")
   post            Post      @relation(fields: [postId], references: [id])
   votes           Vote[]
+  date            DateTime  @default(now()) @updatedAt
 }
 
 model Vote {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   commentId Int
   userId    String
-  comment   Comment @relation(fields: [commentId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id])
   isUpvote  Boolean
+  date      DateTime @default(now()) @updatedAt
 
   @@unique([userId, commentId, isUpvote])
 }

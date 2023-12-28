@@ -8,7 +8,21 @@ export async function getAllComments(asset_id: string) {
     const comments = await db.post.findUnique({
       where: { asset_id },
       include: {
-        comments: { include: { User: true, votes: true, replies: true } },
+        comments: {
+          include: {
+            User: true,
+            votes: true,
+            replies: {
+              include: {
+                replies: {
+                  include: {
+                    votes: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
     return comments;
@@ -31,7 +45,7 @@ export async function createComment(
     throw new Error("user email must be string type");
   try {
     const post = await db.post.findUnique({ where: { asset_id } });
-    const user = await getUserID(userEmail);
+    const user = await getUser(userEmail);
     if (post) {
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
@@ -57,26 +71,22 @@ export async function changeVote(
 ) {
   if (!userEmail) return;
   try {
-    const user = await getUserID(userEmail);
+    const user = await getUser(userEmail);
 
     if (!user) return;
-    const userPreviosVote = await db.vote.deleteMany({
+    db.vote.deleteMany({
       where: {
         userId: user?.id,
         commentId: commentId,
         isUpvote: !isUpvote,
       },
     });
-    console.log(userPreviosVote);
-    const vote = db.comment.update({
-      where: { id: commentId },
+
+    const vote = db.vote.create({
       data: {
-        votes: {
-          create: {
-            isUpvote,
-            userId: user?.id,
-          },
-        },
+        isUpvote,
+        userId: user.id,
+        commentId,
       },
     });
 
@@ -87,7 +97,17 @@ export async function changeVote(
   }
 }
 
-export async function getUserID(userEmail: string) {
+export async function getUser(userEmail: string) {
   const user = await db.user.findUnique({ where: { email: userEmail } });
+  return user;
+}
+
+export async function getUserById(id: string | null) {
+  if (!id) return null;
+  const user = await db.user.findUnique({
+    where: {
+      id,
+    },
+  });
   return user;
 }
