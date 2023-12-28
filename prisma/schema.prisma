@@ -78,4 +78,6 @@ model Vote {
   userId    String
   comment   Comment @relation(fields: [commentId], references: [id])
   isUpvote  Boolean
+
+  @@unique([userId, commentId, isUpvote])
 }

@@ -7,7 +7,9 @@ export async function getAllComments(asset_id: string) {
   try {
     const comments = await db.post.findUnique({
       where: { asset_id },
-      include: { comments: { include: { User: true, votes: true } } },
+      include: {
+        comments: { include: { User: true, votes: true, replies: true } },
+      },
     });
     return comments;
   } catch (err) {
@@ -17,10 +19,14 @@ export async function getAllComments(asset_id: string) {
 }
 
 export async function createComment(
-  asset_id: string,
-  content: string,
-  userEmail: string | number
+  details: Record<"userEmail" | "asset_id", string | null>,
+  formData: FormData
 ) {
+  const { userEmail, asset_id } = details;
+
+  if (!userEmail || !asset_id) return;
+  const content = formData.get("content") as string;
+
   if (typeof userEmail == "number")
     throw new Error("user email must be string type");
   try {
@@ -54,10 +60,14 @@ export async function changeVote(
     const user = await getUserID(userEmail);
 
     if (!user) return;
-    const comment = await db.vote.delete({
-      where: { userId: user.id, id: commentId },
+    const userPreviosVote = await db.vote.deleteMany({
+      where: {
+        userId: user?.id,
+        commentId: commentId,
+        isUpvote: !isUpvote,
+      },
     });
-    console.log(comment);
+    console.log(userPreviosVote);
     const vote = db.comment.update({
       where: { id: commentId },
       data: {

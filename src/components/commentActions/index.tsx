@@ -56,9 +56,18 @@ export function Vote({
             {children}
           </span>
         </Button>
-        ;
       </div>
       <div>{currentVotes.length}</div>
     </div>
   );
 }
+
+function ReplyComments({ asset_id }: { asset_id: string }) {
+  return (
+    <div>
+      <Button variant={"destructive"}>Reply</Button>
+    </div>
+  );
+}
+
+export { ReplyComments };
