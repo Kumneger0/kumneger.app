@@ -34,7 +34,6 @@ export async function getAllComments(asset_id: string) {
 
     return comments;
   } catch (err) {
-    console.log(err);
     throw new Error("Failed to get comments");
   }
 }
@@ -51,21 +50,24 @@ export async function createComment(
   if (typeof userEmail == "number")
     throw new Error("user email must be string type");
   try {
+    console.time("find post");
     const post = await db.post.findUnique({ where: { asset_id } });
+    console.timeEnd("find post");
+    console.time("find user");
     const user = await getUser(userEmail);
+    console.timeEnd("find user");
     if (post) {
+      console.time("create comment");
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
         include: { User: true },
       });
+      console.timeEnd("create comment");
       revalidatePath(`/blog/${asset_id}`);
-
-      console.log(comment);
 
       return comment;
     }
   } catch (err) {
-    console.log(err);
     throw new Error("Failed to create comment");
   }
 }
@@ -103,9 +105,7 @@ export async function changeVote(
 
     revalidatePath(`/blog/${asset_id}`);
     return vote;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 }
 
 export async function getUser(userEmail: string) {
@@ -156,12 +156,9 @@ export async function writeReply(details: Details, formData: FormData) {
 
       revalidatePath(`/blog/${asset_id}`);
 
-      console.log(comment);
-
       return comment;
     }
   } catch (err) {
-    console.log(err);
     throw new Error("Failed to create comment");
   }
 }
@@ -176,4 +173,17 @@ export async function getCommentById(id: number) {
     },
   });
   return comment;
+}
+
+export async function deleteComment({
+  asset_id,
+  commentId: id,
+  userEmail,
+}: Details) {
+  await db.comment.delete({
+    where: {
+      id,
+    },
+  });
+  revalidatePath(`/blog/${asset_id}`);
 }

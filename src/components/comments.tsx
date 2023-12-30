@@ -3,13 +3,11 @@ import {
   getCommentById,
   getUserById,
 } from "@/app/actions/action";
-import { ReplyComments, Vote } from "./commentActions";
+import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
 
 async function Comments({ asset_id }: { asset_id: string }) {
   const comments = await getAllComments(asset_id);
-
-  console.log(comments);
 
   return (
     <div>
@@ -56,7 +54,6 @@ async function Comment({
 }: CommentProps) {
   if (!user) {
     user = (await getCommentById(id))?.User;
-    console.log(user);
   }
 
   return (
@@ -89,6 +86,11 @@ async function Comment({
               downvote
             </Vote>
             <ReplyComments commentId={id} asset_id={asset_id} />
+            <Delete
+              userEmail={user?.email ?? null}
+              asset_id={asset_id}
+              commentId={id}
+            />
           </div>
         </div>
         {replies?.map(async (repli) => {

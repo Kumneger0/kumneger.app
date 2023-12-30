@@ -3,11 +3,11 @@ import { createComment } from "@/app/actions/action";
 import { signIn, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "../ui/button";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
+//@ts-ignore
+import { useFormStatus } from "react-dom";
 
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data } = useSession();
-  const { pending } = useFormStatus();
 
   if (!data?.user?.email)
     return (
@@ -41,15 +41,22 @@ function PostComments({ asset_id }: { asset_id: string }) {
         name="content"
         placeholder="write a comment"
       />
-      <Button
-        disabled={pending}
-        className={`${pending ? "cursor-not-allowed" : ""}`}
-        variant={"secondary"}
-        type="submit">
-        {pending ? "posting..." : "post"}
-      </Button>
+      <SubmitForm />
     </form>
   );
 }
 
 export default PostComments;
+
+function SubmitForm() {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      disabled={pending}
+      className={`${pending ? "opacity-50 cursor-not-allowed" : ""}`}
+      variant={"secondary"}
+      type="submit">
+      {pending ? "Loading..." : "post"}
+    </Button>
+  );
+}

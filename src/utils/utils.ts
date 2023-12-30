@@ -21,8 +21,6 @@ const getBlogContentInParallel = async (
     asset_id: string;
   }[]
 ) => {
-  console.log(urls);
-
   const fetchContent = async ({
     url,
     asset_id,
@@ -30,13 +28,12 @@ const getBlogContentInParallel = async (
     url: string;
     asset_id: string;
   }) => {
-    console.log(url);
     const rawMdx = await fetch(url).then((res) => res.text());
-    console.log(rawMdx);
+
     return { rawMdx, asset_id };
   };
   const allText = await Promise.allSettled(urls.map(fetchContent));
-  console.log(allText);
+
   const blogs = allText.map((result) =>
     result.status == "fulfilled" ? result.value : null
   );
@@ -65,7 +62,6 @@ async function getBlogFromCloundnary(asset_id: string) {
   let rawMdx: string | null = null;
   const blog = await cloudinary.v2.api.resources_by_asset_ids(asset_id);
   if (blog.resources.length) {
-    console.log(blog.resources[0]);
     rawMdx = await fetch(blog.resources[0].secure_url).then((res) =>
       res.text()
     );
@@ -156,15 +152,11 @@ async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
     await db.$connect();
     const beforeCreting = await db.post.findMany();
 
-    console.log(beforeCreting);
-
     const newBlogs = beforeCreting.length
       ? beforeCreting.filter(({ asset_id }) =>
           blogs.some((blog) => blog.asset_id !== asset_id)
         )
       : blogs;
-
-    console.log("new blogs", newBlogs);
 
     await Promise.allSettled(
       blogs.map(async ({ asset_id, title }) => {
@@ -174,10 +166,7 @@ async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
     );
 
     const afterCreating = await db.post.findMany();
-    console.log(afterCreating);
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 }
 
 export { getAllBlogs, getBlogBySlug, getSampleRelatedArticles };

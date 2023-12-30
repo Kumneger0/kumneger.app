@@ -33,7 +33,7 @@
     "gray-matter": "^4.0.3",
     "lottie-web": "^5.12.2",
     "lucide-react": "^0.260.0",
-    "next": "14.0.0",
+    "next": "14.0.4",
     "next-auth": "^4.24.5",
     "next-mdx-remote": "^4.4.1",
     "next-progress": "^2.3.1",

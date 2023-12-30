@@ -2,8 +2,6 @@ import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import Blogs, { TBlogs } from "../../../components/blogs/Blogs";
 
-
-
 async function Home() {
   const blogs = await getSampleRelatedArticles();
   const serializedBlog = await Promise.all<TBlogs[]>(
@@ -11,12 +9,9 @@ async function Home() {
     blogs?.map(async ({ content, data }) => ({
       title: data.title,
       content: await serialize(content.slice(0, 200)),
-      data
+      data,
     })) as unknown as TBlogs
   );
-
-
-  console.log(serializedBlog)
 
   return (
     <>

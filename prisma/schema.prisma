@@ -68,9 +68,9 @@ model Comment {
   parentCommentId Int?
   userId          String?
   User            User?     @relation(fields: [userId], references: [id])
-  parentComment   Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  parentComment   Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
   replies         Comment[] @relation("CommentReplies")
-  post            Post      @relation(fields: [postId], references: [id])
+  post            Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   votes           Vote[]
   date            DateTime  @default(now()) @updatedAt
 }
@@ -79,7 +79,7 @@ model Vote {
   id        Int      @id @default(autoincrement())
   commentId Int
   userId    String
-  comment   Comment  @relation(fields: [commentId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   isUpvote  Boolean
   date      DateTime @default(now()) @updatedAt
 

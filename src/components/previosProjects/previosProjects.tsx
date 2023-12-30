@@ -29,8 +29,8 @@ function PreviosProjecs() {
           navigation
           pagination={{ clickable: true }}
           scrollbar={{ draggable: true }}
-          onSwiper={(swiper) => console.log(swiper)}
-          onSlideChange={() => console.log("slide change")}>
+          onSwiper={(swiper) => 
+          onSlideChange={() => 
           <SwiperSlide>
             <div className="w-full h-full flex justify-center max-[800px]:flex-col items-center gap-4 flex-wrap">
               <div>

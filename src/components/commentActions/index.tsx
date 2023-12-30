@@ -3,6 +3,7 @@
 import {
   changeVote,
   createComment,
+  deleteComment,
   getAllComments,
   getUser,
   writeReply,
@@ -127,3 +128,23 @@ function ReplyComments({
 }
 
 export { ReplyComments };
+
+export function Delete({ userEmail, asset_id, commentId }: Details) {
+  const { data } = useSession();
+
+  function handleDeleteCommentAction() {
+    if (!data?.user) return;
+    if (data.user.email !== userEmail) return;
+    deleteComment({
+      asset_id,
+      commentId,
+      userEmail,
+    });
+  }
+
+  return (
+    <Button onClick={handleDeleteCommentAction} variant={"destructive"}>
+      Delete
+    </Button>
+  );
+}
