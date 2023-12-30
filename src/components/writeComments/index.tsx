@@ -3,9 +3,11 @@ import { createComment } from "@/app/actions/action";
 import { signIn, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "../ui/button";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data } = useSession();
+  const { pending } = useFormStatus();
 
   if (!data?.user?.email)
     return (
@@ -29,9 +31,22 @@ function PostComments({ asset_id }: { asset_id: string }) {
 
   return (
     <form action={createCommentsWithDetails}>
-      <input type="text" name="content" placeholder="write a comment" />
-      <Button variant={"link"} type="submit">
-        Submit
+      <input
+        className="border-2 text-black border-gray-300 rounded-md p-2"
+        required
+        autoCapitalize="on"
+        spellCheck
+        autoFocus
+        type="text"
+        name="content"
+        placeholder="write a comment"
+      />
+      <Button
+        disabled={pending}
+        className={`${pending ? "cursor-not-allowed" : ""}`}
+        variant={"secondary"}
+        type="submit">
+        {pending ? "posting..." : "post"}
       </Button>
     </form>
   );

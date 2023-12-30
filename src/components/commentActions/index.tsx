@@ -1,13 +1,19 @@
 "use client";
 
-import { changeVote, getAllComments, getUserID } from "@/app/actions/action";
+import {
+  changeVote,
+  createComment,
+  getAllComments,
+  getUser,
+  writeReply,
+} from "@/app/actions/action";
 import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
->["comments"][number]["votes"];
+>[number]["votes"];
 
 export function Vote({
   children,
@@ -26,7 +32,7 @@ export function Vote({
   const [userId, setUserId] = useState<string>();
   useEffect(() => {
     if (!data?.user?.email) return;
-    getUserID(data.user.email).then((user) => {
+    getUser(data.user.email).then((user) => {
       setUserId(user?.id);
     });
   }, []);
@@ -36,8 +42,8 @@ export function Vote({
     await changeVote(id, isUpvote, data.user.email || "", asset_id);
   }
 
-  const currentVotes = votes.filter(({ isUpvote: vote }) => isUpvote == vote);
-  const isCurrentUserUserVoted = currentVotes.some(
+  const currentVotes = votes?.filter(({ isUpvote: vote }) => isUpvote == vote);
+  const isCurrentUserUserVoted = currentVotes?.some(
     ({ userId: id }) => id == userId
   );
 
@@ -57,15 +63,65 @@ export function Vote({
           </span>
         </Button>
       </div>
-      <div>{currentVotes.length}</div>
+      <div>{currentVotes?.length}</div>
     </div>
   );
 }
 
-function ReplyComments({ asset_id }: { asset_id: string }) {
+export interface Details {
+  userEmail: string | null;
+  asset_id: string;
+  commentId: number;
+}
+
+function ReplyComments({
+  asset_id,
+  commentId,
+}: {
+  asset_id: string;
+  commentId: number;
+}) {
+  const { data } = useSession();
+  const [showReply, setShowReply] = useState(false);
+
+  const details = {
+    userEmail: data?.user?.email ?? null,
+    asset_id,
+    commentId,
+  } satisfies Details;
+
+  const createCommentsWithDetails = writeReply.bind(null, details);
+
   return (
     <div>
-      <Button variant={"destructive"}>Reply</Button>
+      <Button onClick={() => setShowReply(!showReply)} variant={"destructive"}>
+        Reply
+      </Button>
+      <div className="mt-10 -ml-[200px]">
+        {showReply ? (
+          <>
+            <form
+              onSubmit={() => {
+                setShowReply(false);
+              }}
+              action={createCommentsWithDetails}>
+              <input
+                className="border-2 text-black border-gray-300 rounded-md p-2"
+                required
+                autoCapitalize="on"
+                spellCheck
+                autoFocus
+                type="text"
+                name="content"
+                placeholder="write a reply"
+              />
+              <Button variant={"secondary"} type="submit">
+                Submit
+              </Button>
+            </form>
+          </>
+        ) : null}
+      </div>
     </div>
   );
 }

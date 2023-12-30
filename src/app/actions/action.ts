@@ -1,30 +1,37 @@
 "use server";
 
+import { Details } from "@/components/commentActions";
 import { db } from "@/utils/db";
 import { revalidatePath } from "next/cache";
 
 export async function getAllComments(asset_id: string) {
   try {
-    const comments = await db.post.findUnique({
-      where: { asset_id },
+    const post = await db.post.findUnique({ where: { asset_id } });
+
+    const comments = await db.comment.findMany({
+      where: {
+        postId: post?.id,
+        parentCommentId: null,
+      },
       include: {
-        comments: {
+        User: true,
+
+        replies: {
           include: {
-            User: true,
-            votes: true,
             replies: {
               include: {
-                replies: {
-                  include: {
-                    votes: true,
-                  },
-                },
+                User: true,
+                votes: true,
               },
             },
+            User: true,
+            votes: true,
           },
         },
+        votes: true,
       },
     });
+
     return comments;
   } catch (err) {
     console.log(err);
@@ -33,7 +40,7 @@ export async function getAllComments(asset_id: string) {
 }
 
 export async function createComment(
-  details: Record<"userEmail" | "asset_id", string | null>,
+  details: { userEmail: string; asset_id: string },
   formData: FormData
 ) {
   const { userEmail, asset_id } = details;
@@ -74,7 +81,7 @@ export async function changeVote(
     const user = await getUser(userEmail);
 
     if (!user) return;
-    db.vote.deleteMany({
+    await db.vote.deleteMany({
       where: {
         userId: user?.id,
         commentId: commentId,
@@ -82,11 +89,15 @@ export async function changeVote(
       },
     });
 
-    const vote = db.vote.create({
+    const vote = await db.comment.update({
+      where: { id: commentId },
       data: {
-        isUpvote,
-        userId: user.id,
-        commentId,
+        votes: {
+          create: {
+            isUpvote,
+            userId: user?.id,
+          },
+        },
       },
     });
 
@@ -110,4 +121,59 @@ export async function getUserById(id: string | null) {
     },
   });
   return user;
+}
+
+export async function writeReply(details: Details, formData: FormData) {
+  const { userEmail, asset_id, commentId } = details;
+
+  if (!userEmail || !asset_id || !commentId) return;
+
+  const content = formData.get("content") as string;
+
+  if (typeof userEmail == "number")
+    throw new Error("user email must be string type");
+
+  try {
+    const post = await db.post.findUnique({
+      where: { asset_id: asset_id as string },
+    });
+
+    const user = await getUser(userEmail);
+
+    if (post) {
+      const comment = await db.comment.update({
+        where: { id: commentId },
+        data: {
+          replies: {
+            create: {
+              content,
+              userId: user?.id,
+              postId: post.id,
+            },
+          },
+        },
+      });
+
+      revalidatePath(`/blog/${asset_id}`);
+
+      console.log(comment);
+
+      return comment;
+    }
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to create comment");
+  }
+}
+
+export async function getCommentById(id: number) {
+  const comment = await db.comment.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      User: true,
+    },
+  });
+  return comment;
 }
