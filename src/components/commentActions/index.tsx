@@ -2,15 +2,20 @@
 
 import {
   changeVote,
-  createComment,
   deleteComment,
   getAllComments,
   getUser,
-  writeReply,
+  writeReply
 } from "@/app/actions/action";
-import { Button } from "../ui/button";
+import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import { SubmitForm } from "../writeComments";
+import { createPortal } from "react-dom";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+const commentIdAtom = atom<number | null>(null);
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
@@ -21,7 +26,7 @@ export function Vote({
   id,
   isUpvote,
   asset_id,
-  votes,
+  votes
 }: {
   children: React.ReactNode;
   id: number;
@@ -57,9 +62,10 @@ export function Vote({
               isCurrentUserUserVoted && isUpvote
                 ? "text-green-600 font-bold"
                 : isCurrentUserUserVoted && !isUpvote
-                ? "text-red-600 font-bold"
-                : ""
-            }`}>
+                  ? "text-red-600 font-bold"
+                  : ""
+            }`}
+          >
             {children}
           </span>
         </Button>
@@ -78,34 +84,43 @@ export interface Details {
 function ReplyComments({
   asset_id,
   commentId,
+  replayFormPrentId
 }: {
   asset_id: string;
   commentId: number;
+  replayFormPrentId: string;
 }) {
   const { data } = useSession();
-  const [showReply, setShowReply] = useState(false);
+
+  const [id, setId] = useAtom(commentIdAtom);
 
   const details = {
     userEmail: data?.user?.email ?? null,
     asset_id,
-    commentId,
-  } satisfies Details;
+    commentId
+  };
 
   const createCommentsWithDetails = writeReply.bind(null, details);
 
+  async function handleSubmit(formData: FormData) {
+    const responce = await createCommentsWithDetails(formData);
+    setId(null);
+  }
+
   return (
     <div>
-      <Button onClick={() => setShowReply(!showReply)} variant={"destructive"}>
+      <Button
+        onClick={() => {
+          setId && setId((prv) => (prv == commentId ? null : commentId));
+        }}
+        variant={"destructive"}
+      >
         Reply
       </Button>
-      <div className="mt-10 -ml-[200px]">
-        {showReply ? (
-          <>
-            <form
-              onSubmit={() => {
-                setShowReply(false);
-              }}
-              action={createCommentsWithDetails}>
+      {id === commentId ? (
+        <>
+          {createPortal(
+            <form action={handleSubmit}>
               <input
                 className="border-2 text-black border-gray-300 rounded-md p-2"
                 required
@@ -114,15 +129,14 @@ function ReplyComments({
                 autoFocus
                 type="text"
                 name="content"
-                placeholder="write a reply"
+                placeholder={`write a reply ${id}`}
               />
-              <Button variant={"secondary"} type="submit">
-                Submit
-              </Button>
-            </form>
-          </>
-        ) : null}
-      </div>
+              <SubmitForm />
+            </form>,
+            document.getElementById(replayFormPrentId)!
+          )}
+        </>
+      ) : null}
     </div>
   );
 }
@@ -132,19 +146,52 @@ export { ReplyComments };
 export function Delete({ userEmail, asset_id, commentId }: Details) {
   const { data } = useSession();
 
+  if (data?.user?.email !== userEmail || !data.user) return;
+
   function handleDeleteCommentAction() {
     if (!data?.user) return;
-    if (data.user.email !== userEmail) return;
     deleteComment({
       asset_id,
       commentId,
-      userEmail,
+      userEmail
     });
   }
 
   return (
     <Button onClick={handleDeleteCommentAction} variant={"destructive"}>
       Delete
+    </Button>
+  );
+}
+
+export function LoadMore() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  console.log(searchParams);
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
+  return (
+    <Button
+      onClick={() => {
+        router.push(pathname + "?" + createQueryString("skip", "5"), {
+          scroll: false
+        });
+      }}
+      className="mx-auto"
+      variant={"outline"}
+    >
+      load more
     </Button>
   );
 }

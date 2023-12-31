@@ -4,14 +4,14 @@ import { Details } from "@/components/commentActions";
 import { db } from "@/utils/db";
 import { revalidatePath } from "next/cache";
 
-export async function getAllComments(asset_id: string) {
+export async function getAllComments(asset_id: string, skip = 0, take = 5) {
   try {
     const post = await db.post.findUnique({ where: { asset_id } });
 
     const comments = await db.comment.findMany({
       where: {
         postId: post?.id,
-        parentCommentId: null,
+        parentCommentId: null
       },
       include: {
         User: true,
@@ -21,15 +21,30 @@ export async function getAllComments(asset_id: string) {
             replies: {
               include: {
                 User: true,
-                votes: true,
+                votes: true
               },
+              orderBy: {
+                date: "desc"
+              },
+              take: 3,
+              skip
             },
             User: true,
-            votes: true,
+            votes: true
           },
+          orderBy: {
+            date: "desc"
+          },
+          take: 3,
+          skip
         },
-        votes: true,
+        votes: true
       },
+      orderBy: {
+        date: "desc"
+      },
+      take: 5,
+      skip
     });
 
     return comments;
@@ -60,7 +75,7 @@ export async function createComment(
       console.time("create comment");
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
-        include: { User: true },
+        include: { User: true }
       });
       console.timeEnd("create comment");
       revalidatePath(`/blog/${asset_id}`);
@@ -87,8 +102,8 @@ export async function changeVote(
       where: {
         userId: user?.id,
         commentId: commentId,
-        isUpvote: !isUpvote,
-      },
+        isUpvote: !isUpvote
+      }
     });
 
     const vote = await db.comment.update({
@@ -97,10 +112,10 @@ export async function changeVote(
         votes: {
           create: {
             isUpvote,
-            userId: user?.id,
-          },
-        },
-      },
+            userId: user?.id
+          }
+        }
+      }
     });
 
     revalidatePath(`/blog/${asset_id}`);
@@ -117,8 +132,8 @@ export async function getUserById(id: string | null) {
   if (!id) return null;
   const user = await db.user.findUnique({
     where: {
-      id,
-    },
+      id
+    }
   });
   return user;
 }
@@ -135,7 +150,7 @@ export async function writeReply(details: Details, formData: FormData) {
 
   try {
     const post = await db.post.findUnique({
-      where: { asset_id: asset_id as string },
+      where: { asset_id: asset_id as string }
     });
 
     const user = await getUser(userEmail);
@@ -148,10 +163,10 @@ export async function writeReply(details: Details, formData: FormData) {
             create: {
               content,
               userId: user?.id,
-              postId: post.id,
-            },
-          },
-        },
+              postId: post.id
+            }
+          }
+        }
       });
 
       revalidatePath(`/blog/${asset_id}`);
@@ -166,11 +181,11 @@ export async function writeReply(details: Details, formData: FormData) {
 export async function getCommentById(id: number) {
   const comment = await db.comment.findUnique({
     where: {
-      id,
+      id
     },
     include: {
-      User: true,
-    },
+      User: true
+    }
   });
   return comment;
 }
@@ -178,12 +193,12 @@ export async function getCommentById(id: number) {
 export async function deleteComment({
   asset_id,
   commentId: id,
-  userEmail,
+  userEmail
 }: Details) {
   await db.comment.delete({
     where: {
-      id,
-    },
+      id
+    }
   });
   revalidatePath(`/blog/${asset_id}`);
 }

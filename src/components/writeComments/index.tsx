@@ -48,7 +48,7 @@ function PostComments({ asset_id }: { asset_id: string }) {
 
 export default PostComments;
 
-function SubmitForm() {
+export function SubmitForm() {
   const { pending } = useFormStatus();
   return (
     <Button
