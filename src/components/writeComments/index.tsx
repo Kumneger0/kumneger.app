@@ -1,4 +1,3 @@
-"use client";
 import { createComment } from "@/app/actions/action";
 import { signIn, useSession } from "next-auth/react";
 import React from "react";

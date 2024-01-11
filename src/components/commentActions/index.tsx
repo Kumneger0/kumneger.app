@@ -1,5 +1,3 @@
-"use client";
-
 import {
   changeVote,
   deleteComment,
@@ -9,71 +7,76 @@ import {
 } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
-import { createPortal } from "react-dom";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
 const commentIdAtom = atom<number | null>(null);
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
->[number]["votes"];
+>["comments"][number]["votes"];
 
-export function Vote({
-  children,
-  id,
-  isUpvote,
-  asset_id,
-  votes
-}: {
-  children: React.ReactNode;
-  id: number;
-  isUpvote: boolean;
-  asset_id: string;
-  votes: TVotes;
-}) {
-  const { data } = useSession();
-  const [userId, setUserId] = useState<string>();
-  useEffect(() => {
-    if (!data?.user?.email) return;
-    getUser(data.user.email).then((user) => {
-      setUserId(user?.id);
-    });
-  }, []);
+const Vote = memo(
+  ({
+    children,
+    id,
+    isUpvote,
+    asset_id,
+    votes
+  }: {
+    children: React.ReactNode;
+    id: number;
+    isUpvote: boolean;
+    asset_id: string;
+    votes: TVotes;
+  }) => {
+    const { data } = useSession();
+    const [userId, setUserId] = useState<string>();
+    useEffect(() => {
+      if (!data?.user?.email) return;
+      getUser(data.user.email).then((user) => {
+        setUserId(user?.id);
+      });
+    }, [data?.user?.email]);
 
-  async function handleUserVote() {
-    if (!data?.user) return;
-    await changeVote(id, isUpvote, data.user.email || "", asset_id);
-  }
+    async function handleUserVote() {
+      if (!data?.user?.email) {
+        alert("please login to vote");
+        return;
+      }
+      await changeVote(id, isUpvote, data.user.email, asset_id);
+    }
 
-  const currentVotes = votes?.filter(({ isUpvote: vote }) => isUpvote == vote);
-  const isCurrentUserUserVoted = currentVotes?.some(
-    ({ userId: id }) => id == userId
-  );
+    const currentVotes = votes?.filter(
+      ({ isUpvote: vote }) => isUpvote === vote
+    );
+    const isCurrentUserUserVoted = currentVotes?.some(
+      ({ userId: id }) => id === userId
+    );
 
-  return (
-    <div className="flex flex-col">
-      <div>
-        <Button onClick={handleUserVote}>
-          <span
-            className={`${
-              isCurrentUserUserVoted && isUpvote
-                ? "text-green-600 font-bold"
-                : isCurrentUserUserVoted && !isUpvote
-                  ? "text-red-600 font-bold"
-                  : ""
-            }`}
-          >
-            {children}
-          </span>
-        </Button>
+    return (
+      <div className="flex flex-col justify-center items-center">
+        <div>
+          <Button onClick={handleUserVote}>
+            <span
+              className={`${
+                isCurrentUserUserVoted && isUpvote
+                  ? "text-green-600 font-bold"
+                  : isCurrentUserUserVoted && !isUpvote
+                    ? "text-red-600 font-bold"
+                    : ""
+              }`}
+            >
+              {children}
+            </span>
+          </Button>
+        </div>
+        <div>{currentVotes?.length}</div>
       </div>
-      <div>{currentVotes?.length}</div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 export interface Details {
   userEmail: string | null;
@@ -81,69 +84,77 @@ export interface Details {
   commentId: number;
 }
 
-function ReplyComments({
-  asset_id,
-  commentId,
-  replayFormPrentId
-}: {
-  asset_id: string;
-  commentId: number;
-  replayFormPrentId: string;
-}) {
-  const { data } = useSession();
-
-  const [id, setId] = useAtom(commentIdAtom);
-
-  const details = {
-    userEmail: data?.user?.email ?? null,
+const ReplyComments = memo(
+  ({
     asset_id,
-    commentId
-  };
+    commentId,
+    replayFormPrentId
+  }: {
+    asset_id: string;
+    commentId: number;
+    replayFormPrentId: string;
+  }) => {
+    const { data, status } = useSession();
 
-  const createCommentsWithDetails = writeReply.bind(null, details);
+    const [id, setId] = useAtom(commentIdAtom);
 
-  async function handleSubmit(formData: FormData) {
-    const responce = await createCommentsWithDetails(formData);
-    setId(null);
+    const details = {
+      userEmail: data?.user?.email ?? null,
+      asset_id,
+      commentId
+    };
+
+    const createCommentsWithDetails = writeReply.bind(null, details);
+
+    async function handleSubmit(formData: FormData) {
+      const responce = await createCommentsWithDetails(formData);
+      setId(null);
+    }
+
+    return (
+      <div>
+        <Button
+          onClick={() => {
+            if (status === "unauthenticated") {
+              alert("please login to write your reply");
+              return;
+            }
+
+            setId
+              ? setId((prv) => (prv === commentId ? null : commentId))
+              : null;
+          }}
+          variant={"destructive"}
+        >
+          Reply
+        </Button>
+        {id === commentId ? (
+          <>
+            {createPortal(
+              <form action={handleSubmit}>
+                <input
+                  className="border-2 text-black border-gray-300 rounded-md p-2"
+                  required
+                  autoCapitalize="on"
+                  spellCheck
+                  // biome-ignore lint/a11y/noAutofocus: <explanation>
+                  autoFocus
+                  type="text"
+                  name="content"
+                  placeholder={`write a reply ${commentId}`}
+                />
+                <SubmitForm />
+              </form>,
+              document.getElementById(replayFormPrentId) as HTMLDivElement
+            )}
+          </>
+        ) : null}
+      </div>
+    );
   }
+);
 
-  return (
-    <div>
-      <Button
-        onClick={() => {
-          setId && setId((prv) => (prv == commentId ? null : commentId));
-        }}
-        variant={"destructive"}
-      >
-        Reply
-      </Button>
-      {id === commentId ? (
-        <>
-          {createPortal(
-            <form action={handleSubmit}>
-              <input
-                className="border-2 text-black border-gray-300 rounded-md p-2"
-                required
-                autoCapitalize="on"
-                spellCheck
-                autoFocus
-                type="text"
-                name="content"
-                placeholder={`write a reply ${id}`}
-              />
-              <SubmitForm />
-            </form>,
-            document.getElementById(replayFormPrentId)!
-          )}
-        </>
-      ) : null}
-    </div>
-  );
-}
-
-export { ReplyComments };
-
-export function Delete({ userEmail, asset_id, commentId }: Details) {
+const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
   const { data } = useSession();
 
   if (data?.user?.email !== userEmail || !data.user) return;
@@ -162,36 +173,6 @@ export function Delete({ userEmail, asset_id, commentId }: Details) {
       Delete
     </Button>
   );
-}
+});
 
-export function LoadMore() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  console.log(searchParams);
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams]
-  );
-
-  return (
-    <Button
-      onClick={() => {
-        router.push(pathname + "?" + createQueryString("skip", "5"), {
-          scroll: false
-        });
-      }}
-      className="mx-auto"
-      variant={"outline"}
-    >
-      load more
-    </Button>
-  );
-}
+export { Delete, ReplyComments, Vote };

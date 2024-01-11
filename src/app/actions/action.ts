@@ -3,8 +3,11 @@
 import { Details } from "@/components/commentActions";
 import { db } from "@/utils/db";
 import { revalidatePath } from "next/cache";
+import { date } from "zod";
 
-export async function getAllComments(asset_id: string, skip = 0, take = 5) {
+// export const dynamic = "force-dynamic";
+
+export async function getAllComments(asset_id: string, skip = 0) {
   try {
     const post = await db.post.findUnique({ where: { asset_id } });
 
@@ -15,42 +18,95 @@ export async function getAllComments(asset_id: string, skip = 0, take = 5) {
       },
       include: {
         User: true,
-
+        votes: true,
         replies: {
           include: {
+            parentComment: true,
+            post: true,
             replies: {
               include: {
                 User: true,
-                votes: true
-              },
-              orderBy: {
-                date: "desc"
-              },
-              take: 3,
-              skip
+                parentComment: true,
+                _count: true,
+                post: true,
+                votes: true,
+                replies: true
+              }
             },
             User: true,
             votes: true
-          },
-          orderBy: {
-            date: "desc"
-          },
-          take: 3,
-          skip
-        },
-        votes: true
+          }
+        }
       },
       orderBy: {
-        date: "desc"
+        id: "desc"
       },
-      take: 5,
+      take: 2,
       skip
     });
 
-    return comments;
+    const total = await db.comment.count({
+      where: { parentCommentId: null, postId: post?.id }
+    });
+
+    return { comments, total };
   } catch (err) {
+    console.log(err);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    }
     throw new Error("Failed to get comments");
   }
+}
+
+export async function getMoreTopLevelComments(
+  asset_id: string,
+
+  id: number,
+  date: Date,
+  skip = 0
+) {
+  try {
+    const post = await db.post.findUnique({ where: { asset_id } });
+
+    const comments = await db.comment.findMany({
+      where: {
+        postId: post?.id,
+        parentCommentId: null
+      },
+      include: {
+        User: true,
+        votes: true,
+        replies: {
+          include: {
+            parentComment: true,
+            post: true,
+            replies: {
+              include: {
+                User: true,
+                parentComment: true,
+                _count: true,
+                post: true,
+                votes: true,
+                replies: true
+              }
+            },
+            User: true,
+            votes: true
+          }
+        }
+      },
+      orderBy: {
+        id: "desc"
+      },
+      take: 5,
+      skip,
+      cursor: {
+        id
+      }
+    });
+    return comments;
+  } catch (err) {}
 }
 
 export async function createComment(
@@ -58,26 +114,28 @@ export async function createComment(
   formData: FormData
 ) {
   const { userEmail, asset_id } = details;
-
+  // we return early if either user email or post id is not available
   if (!userEmail || !asset_id) return;
+
   const content = formData.get("content") as string;
 
-  if (typeof userEmail == "number")
+  if (typeof userEmail === "number")
     throw new Error("user email must be string type");
   try {
-    console.time("find post");
+    // get post id
     const post = await db.post.findUnique({ where: { asset_id } });
-    console.timeEnd("find post");
-    console.time("find user");
+
+    // get user
     const user = await getUser(userEmail);
-    console.timeEnd("find user");
-    if (post) {
-      console.time("create comment");
+    if (post && user) {
+      // at time we know that both user and post id is not null so we can create comment
+
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
         include: { User: true }
       });
-      console.timeEnd("create comment");
+
+      // after creating commnet successfully we can revalidate path so we can refetch and display in ui
       revalidatePath(`/blog/${asset_id}`);
 
       return comment;
@@ -93,7 +151,7 @@ export async function changeVote(
   userEmail: string | null,
   asset_id: string
 ) {
-  if (!userEmail) return;
+  if (!userEmail) throw new Error("opps we need user emai to update the vote");
   try {
     const user = await getUser(userEmail);
 
@@ -120,7 +178,12 @@ export async function changeVote(
 
     revalidatePath(`/blog/${asset_id}`);
     return vote;
-  } catch (err) {}
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    }
+    throw new Error("there was an error occured");
+  }
 }
 
 export async function getUser(userEmail: string) {
@@ -141,11 +204,12 @@ export async function getUserById(id: string | null) {
 export async function writeReply(details: Details, formData: FormData) {
   const { userEmail, asset_id, commentId } = details;
 
-  if (!userEmail || !asset_id || !commentId) return;
+  if (!userEmail || !asset_id || !commentId)
+    throw new Error("incomplete arguments");
 
   const content = formData.get("content") as string;
 
-  if (typeof userEmail == "number")
+  if (typeof userEmail === "number")
     throw new Error("user email must be string type");
 
   try {
@@ -201,4 +265,57 @@ export async function deleteComment({
     }
   });
   revalidatePath(`/blog/${asset_id}`);
+}
+
+export async function revalidatePathToloadMore(path: string) {
+  revalidatePath(path);
+}
+
+export async function getMoreCommentsFromDB(
+  asset_id: string,
+  commentId: number
+) {
+  try {
+    const post = await db.post.findUnique({ where: { asset_id } });
+    const comments = await db.comment.findFirst({
+      where: {
+        postId: post?.id,
+        id: commentId
+      },
+      include: {
+        parentComment: true,
+        User: true,
+        post: true,
+        votes: true,
+
+        replies: {
+          include: {
+            parentComment: true,
+            replies: {
+              include: {
+                User: true,
+                post: true,
+                parentComment: true,
+                votes: true,
+                _count: true,
+                replies: true
+              }
+            },
+            post: true,
+            User: true,
+            votes: true
+          }
+        }
+      },
+      orderBy: {
+        date: "desc"
+      }
+    });
+    return comments;
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    }
+    throw new Error("Failed to get comments");
+  }
 }

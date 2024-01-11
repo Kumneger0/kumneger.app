@@ -1,12 +1,14 @@
 import matter from "gray-matter";
 import cloudinary, { ResourceApiResponse, v2 } from "cloudinary";
 import { db } from "./db";
+import { unstable_noStore } from "next/cache";
+import { env } from "@/server/env";
 
 v2.config({
-  cloud_name: process.env.cloud_name,
-  api_key: process.env.api_key,
-  api_secret: process.env.api_secret,
-  secure: true,
+  cloud_name: env.cloud_name,
+  api_key: env.api_key,
+  api_secret: env.api_secret,
+  secure: true
 });
 
 interface resources extends ResourceApiResponse {
@@ -23,12 +25,16 @@ const getBlogContentInParallel = async (
 ) => {
   const fetchContent = async ({
     url,
-    asset_id,
+    asset_id
   }: {
     url: string;
     asset_id: string;
   }) => {
-    const rawMdx = await fetch(url).then((res) => res.text());
+    const rawMdx = await fetch(url, {
+      next: {
+        revalidate: 3600
+      }
+    }).then((res) => res.text());
 
     return { rawMdx, asset_id };
   };
@@ -41,19 +47,20 @@ const getBlogContentInParallel = async (
 };
 
 async function getAllBlogsFromCloundnary() {
+  unstable_noStore();
   try {
-    const folder: { resources: resources[] } = await cloudinary.v2.api.search(
-      "folder:blogs/*"
-    );
+    const folder: { resources: resources[] } =
+      await cloudinary.v2.api.search("folder:blogs/*");
     const blogs = folder.resources.filter(
       (res) => res.public_id.split(".")[1]?.toLowerCase().trim() == "mdx"
     );
     const blogSecureUrl = blogs.map((blog) => ({
       url: blog?.secure_url,
-      asset_id: blog.asset_id,
+      asset_id: blog.asset_id
     }));
     return blogSecureUrl;
-  } catch {
+  } catch (err) {
+    console.log(err);
     throw new Error("there was an error occured");
   }
 }
@@ -88,7 +95,7 @@ const getBlogBySlug = async (slug: string) => {
       const date = new Date(year, month, day).toDateString();
       return {
         content,
-        data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" },
+        data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" }
       };
     }
   } catch (err) {
@@ -130,7 +137,7 @@ const getSampleRelatedArticles = async (
         articles.push({
           title: blog.rawMdx.split(".")[0],
           content,
-          data: { ...data, date, year, month, day, asset_id: blog.asset_id },
+          data: { ...data, date, year, month, day, asset_id: blog.asset_id }
         });
       }
     });
@@ -169,4 +176,9 @@ async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
   } catch (err) {}
 }
 
-export { getAllBlogs, getBlogBySlug, getSampleRelatedArticles };
+export {
+  getAllBlogs,
+  getBlogBySlug,
+  getSampleRelatedArticles,
+  getAllBlogsFromCloundnary
+};

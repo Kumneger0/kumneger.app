@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
-function Loading() {
-    return (
-        <div className='min-h-[80svh] w-full flex justify-center items-center'>
-            <div>Loading...</div>
-        </div>
-    )
+function LOADING() {
+  return <div>LOADING</div>;
 }
 
-export default Loading
+export default LOADING;
