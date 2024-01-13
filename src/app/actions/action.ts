@@ -155,7 +155,7 @@ export async function changeVote(
   try {
     const user = await getUser(userEmail);
 
-    if (!user) return;
+    if (!user) return null;
     await db.vote.deleteMany({
       where: {
         userId: user?.id,
@@ -177,12 +177,10 @@ export async function changeVote(
     });
 
     revalidatePath(`/blog/${asset_id}`);
+    console.log(asset_id);
     return vote;
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    }
-    throw new Error("there was an error occured");
+    return null;
   }
 }
 

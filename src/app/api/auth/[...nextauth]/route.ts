@@ -8,7 +8,6 @@ import { db } from "@/utils/db";
 import { env } from "@/server/env";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 const providers = [
   Github({

@@ -7,11 +7,35 @@ import {
 } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { GoReply } from "react-icons/go";
+import { IconType } from "react-icons/lib";
+import { MdOutlineDelete } from "react-icons/md";
+import { LoginModal } from "../blogHeader/blogHeader";
 import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
 const commentIdAtom = atom<number | null>(null);
+import {
+  BiDownvote,
+  BiSolidDownvote,
+  BiSolidUpvote,
+  BiUpvote
+} from "react-icons/bi";
+declare module "react" {
+  const useOptimistic: typeof experimental_useOptimistic;
+}
+
+const voteAtom = atom<{ id: null | number; isUpvote: boolean }>({
+  id: null,
+  isUpvote: false
+});
+
+import React, {
+  //@ts-ignore
+  useOptimistic
+} from "react";
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
@@ -19,60 +43,94 @@ type TVotes = NonNullable<
 
 const Vote = memo(
   ({
-    children,
     id,
-    isUpvote,
     asset_id,
     votes
   }: {
-    children: React.ReactNode;
     id: number;
-    isUpvote: boolean;
     asset_id: string;
     votes: TVotes;
   }) => {
-    const { data } = useSession();
-    const [userId, setUserId] = useState<string>();
+    const { data, status } = useSession();
+    const [userId, setUserId] = useState<string | null>(null);
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+    const [optimisticVotes, setOptimisticVotes] = useOptimistic(
+      votes,
+      (prv, newVotes: typeof votes) => {
+        return newVotes;
+      }
+    );
+
     useEffect(() => {
-      if (!data?.user?.email) return;
-      getUser(data.user.email).then((user) => {
-        setUserId(user?.id);
-      });
+      (async () => {
+        if (!data?.user?.email) return;
+        getUser(data.user?.email).then((user) => setUserId(user?.id ?? null));
+      })();
     }, [data?.user?.email]);
 
-    async function handleUserVote() {
-      if (!data?.user?.email) {
-        alert("please login to vote");
-        return;
+    const upvotesCount = optimisticVotes.filter(
+      ({ isUpvote }) => isUpvote
+    ).length;
+    const downvotesCount = optimisticVotes.length - upvotesCount;
+
+    const userVote = votes.find((vote) => vote.userId === userId);
+
+    async function createVote(isUpvote: boolean) {
+      if (status === "unauthenticated" || !data?.user?.email) return;
+      const newVote = optimisticVotes.findIndex(
+        (vote) => vote.userId === userId
+      );
+      if (newVote !== -1) {
+        const changedVote = [...optimisticVotes];
+        changedVote[newVote].isUpvote = isUpvote;
+
+        setOptimisticVotes(changedVote satisfies typeof optimisticVotes);
+      } else {
+        setOptimisticVotes([
+          ...optimisticVotes,
+          {
+            commentId: id,
+            date: new Date(),
+            id: optimisticVotes.length + 1,
+            isUpvote,
+            userId: ""
+          }
+        ]);
       }
-      await changeVote(id, isUpvote, data.user.email, asset_id);
+      await changeVote(id, isUpvote, data?.user?.email, asset_id);
     }
 
-    const currentVotes = votes?.filter(
-      ({ isUpvote: vote }) => isUpvote === vote
-    );
-    const isCurrentUserUserVoted = currentVotes?.some(
-      ({ userId: id }) => id === userId
-    );
-
     return (
-      <div className="flex flex-col justify-center items-center">
-        <div>
-          <Button onClick={handleUserVote}>
-            <span
-              className={`${
-                isCurrentUserUserVoted && isUpvote
-                  ? "text-green-600 font-bold"
-                  : isCurrentUserUserVoted && !isUpvote
-                    ? "text-red-600 font-bold"
-                    : ""
-              }`}
-            >
-              {children}
-            </span>
-          </Button>
+      <div className="flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
+          <div>
+            {userVote?.isUpvote ? (
+              <Button disabled>
+                <BiSolidUpvote className="w-7 h-7 text-green-500" />
+              </Button>
+            ) : (
+              <Button disabled={isLoading} onClick={() => createVote(true)}>
+                <BiUpvote className="w-7 h-7" />
+              </Button>
+            )}
+          </div>
+          <div>{upvotesCount}</div>
         </div>
-        <div>{currentVotes?.length}</div>
+        <div className="flex flex-col justify-center items-center">
+          <div>
+            {userVote?.isUpvote === false ? (
+              <Button disabled>
+                <BiSolidDownvote className="w-7 h-7 text-red-500" />
+              </Button>
+            ) : (
+              <Button onClick={() => createVote(false)}>
+                <BiDownvote className="w-7 h-7 " />
+              </Button>
+            )}
+          </div>
+          <div>{downvotesCount}</div>
+        </div>
       </div>
     );
   }
@@ -107,26 +165,32 @@ const ReplyComments = memo(
     const createCommentsWithDetails = writeReply.bind(null, details);
 
     async function handleSubmit(formData: FormData) {
-      const responce = await createCommentsWithDetails(formData);
+      await createCommentsWithDetails(formData);
       setId(null);
     }
 
-    return (
-      <div>
-        <Button
-          onClick={() => {
-            if (status === "unauthenticated") {
-              alert("please login to write your reply");
-              return;
-            }
+    if (status === "unauthenticated")
+      return (
+        <LoginModal>
+          {" "}
+          <GoReply className="w-7 h-7 text-white" />
+        </LoginModal>
+      );
 
-            setId
-              ? setId((prv) => (prv === commentId ? null : commentId))
-              : null;
+    return (
+      <div className="">
+        <Button
+          disabled={status === "loading"}
+          className={`${
+            status === "loading" ? "cursor-not-allowed opacity-50" : ""
+          }`}
+          onClick={() => {
+            if (!setId) return;
+            setId((prv) => (prv === commentId ? null : commentId));
           }}
           variant={"destructive"}
         >
-          Reply
+          <GoReply className="w-7 h-7 text-white" />
         </Button>
         {id === commentId ? (
           <>
@@ -170,7 +234,7 @@ const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
 
   return (
     <Button onClick={handleDeleteCommentAction} variant={"destructive"}>
-      Delete
+      <MdOutlineDelete className="w-7 h-7 text-red-600" />
     </Button>
   );
 });

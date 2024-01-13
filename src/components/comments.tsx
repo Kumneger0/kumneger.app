@@ -1,28 +1,21 @@
 "use client";
-
 import {
   getAllComments,
   getMoreCommentsFromDB,
   getMoreTopLevelComments
 } from "@/app/actions/action";
+import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
 import React, {
-  Dispatch,
   Suspense,
   useEffect,
   useId,
+  //@ts-ignore
+  useOptimistic,
   useState,
   useTransition
 } from "react";
 import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
-import { SetStateAction } from "jotai";
-
-import {
-  BiUpvote,
-  BiSolidUpvote,
-  BiDownvote,
-  BiSolidDownvote
-} from "react-icons/bi";
 
 type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
 
@@ -124,7 +117,14 @@ async function Comment({ asset_id, depth, ...data }: CommentProps) {
   const [isPending, startTransion] = useTransition();
 
   const [{ User: user, content, date, id, replies, votes }, setState] =
-    useState<Exclude<typeof data, { asset_id: string; depth: number }>>(data);
+    useState(data);
+
+  const [optimisticValue, setOptimisticValue] = useOptimistic(
+    data,
+    (prv, newState: typeof data) => {
+      return newState;
+    }
+  );
 
   async function getReplies() {
     const comments = await getMoreCommentsFromDB(asset_id, id);
@@ -133,6 +133,11 @@ async function Comment({ asset_id, depth, ...data }: CommentProps) {
 
   const maxMarginLeft = 100;
   const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
+
+  const diffInDays = differenceInCalendarDays(new Date(), date);
+  const diffInMin = differenceInMinutes(new Date(), date);
+
+  const diffrence = diffInDays < 1 ? `${diffInMin}m ` : `${diffInDays}d`;
 
   return (
     <div
@@ -144,7 +149,7 @@ async function Comment({ asset_id, depth, ...data }: CommentProps) {
       }}
       className="w-full  flex flex-col border-l-2 px-2 p-2  maxWidthborder-slate-300  rounded-lg my-5"
     >
-      <div className="user flex ">
+      <div className="flex gap-5">
         <div>
           <img
             width={50}
@@ -156,19 +161,15 @@ async function Comment({ asset_id, depth, ...data }: CommentProps) {
         </div>
         <div>
           <div className="">
-            {user?.name} {date.toLocaleTimeString()}
+            {user?.name} {diffrence}
           </div>
         </div>
       </div>
       <div className="ml-16">
-        <div>{content}</div>
-        <div className="flex gap-2">
-          <Vote votes={votes} asset_id={asset_id} id={id} isUpvote={true}>
-            <BiUpvote className="w-7 h-7 text-white" />
-          </Vote>
-          <Vote votes={votes} asset_id={asset_id} id={id} isUpvote={false}>
-            <BiDownvote className="w-7 h-7 text-white" />
-          </Vote>
+        <div className=" p-3">{content}</div>
+        <div className="flex items-center">
+          <Vote votes={votes} asset_id={asset_id} id={id} />
+
           <ReplyComments
             replayFormPrentId={parentId}
             commentId={id}
@@ -229,6 +230,7 @@ function Replies({
       {showReplies ? (
         <div className="">
           {replies?.map((reply, index) => {
+            //@ts-ignore
             return <Comment depth={depth + 1} {...reply} asset_id={asset_id} />;
           })}
         </div>
