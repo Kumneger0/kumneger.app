@@ -223,7 +223,7 @@ const ReplyComments = memo(
                   autoFocus
                   type="text"
                   name="content"
-                  placeholder={`write a reply ${commentId}`}
+                  placeholder={`write a reply `}
                 />
                 <SubmitForm />
               </form>,
