@@ -51,7 +51,6 @@ function PostComments({
           return prv;
         })
       );
-      alert("set in ");
     }
     inputRef.current?.value === "";
     router.refresh();

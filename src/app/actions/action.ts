@@ -234,6 +234,13 @@ export async function writeReply(details: Details, formData: FormData) {
               postId: post.id
             }
           }
+        },
+        select: {
+          content: true,
+          parentCommentId: true,
+          replies: true,
+          userId: true,
+          votes: true
         }
       });
 
@@ -242,7 +249,7 @@ export async function writeReply(details: Details, formData: FormData) {
       return comment;
     }
   } catch (err) {
-    throw new Error("Failed to create comment");
+    return null;
   }
 }
 
