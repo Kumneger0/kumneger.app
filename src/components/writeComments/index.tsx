@@ -46,6 +46,7 @@ function PostComments({
     if (data) {
       startTransition(() =>
         setComments((prv) => {
+          //@ts-ignore
           prv.comments.unshift(data satisfies typeof prv.comments);
           prv.total += 1;
           return prv;
