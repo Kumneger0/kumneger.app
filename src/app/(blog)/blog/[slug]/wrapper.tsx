@@ -1,9 +1,11 @@
 "use client";
-import Blog from "./blog";
-import React from "react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
+
+import Blog from "./blog";
+
+
 import { SessionProvider } from "next-auth/react";
-// import Comments from "@/components/comments";
+
 
 
 function Wrapper({ children }: { children: MDXRemoteSerializeResult }) {
@@ -14,7 +16,5 @@ function Wrapper({ children }: { children: MDXRemoteSerializeResult }) {
     </SessionProvider>
 
   </>
-
 }
-
 export default Wrapper;
