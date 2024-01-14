@@ -78,6 +78,8 @@ const Vote = memo(
 
     async function createVote(isUpvote: boolean) {
       if (status === "unauthenticated" || !data?.user?.email) return;
+      if (isLoading) return;
+      setIsLoading(true);
       const newVote = optimisticVotes.findIndex(
         (vote) => vote.userId === userId
       );
@@ -98,21 +100,29 @@ const Vote = memo(
           }
         ]);
       }
+
       await changeVote(id, isUpvote, data?.user?.email, asset_id);
+      setIsLoading(false);
     }
 
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center gap-2 items-center">
         <div className="flex flex-col justify-center items-center">
           <div>
             {userVote?.isUpvote ? (
-              <Button disabled>
-                <BiSolidUpvote className="w-7 h-7 text-green-500" />
-              </Button>
+              <button className="hover:cursor-not-allowed" disabled={true}>
+                <BiSolidUpvote className="w-6 h-6 text-green-500" />
+              </button>
             ) : (
-              <Button disabled={isLoading} onClick={() => createVote(true)}>
-                <BiUpvote className="w-7 h-7" />
-              </Button>
+              <button
+                className={`${
+                  isLoading ? "hover:cursor-not-allowed opacity-50" : ""
+                }`}
+                disabled={isLoading}
+                onClick={() => createVote(true)}
+              >
+                <BiUpvote className="w-6 h-6" />
+              </button>
             )}
           </div>
           <div>{upvotesCount}</div>
@@ -120,13 +130,19 @@ const Vote = memo(
         <div className="flex flex-col justify-center items-center">
           <div>
             {userVote?.isUpvote === false ? (
-              <Button disabled>
-                <BiSolidDownvote className="w-7 h-7 text-red-500" />
-              </Button>
+              <button className="hover:cursor-not-allowed" disabled={true}>
+                <BiSolidDownvote className="w-6 h-6 text-red-500" />
+              </button>
             ) : (
-              <Button onClick={() => createVote(false)}>
-                <BiDownvote className="w-7 h-7 " />
-              </Button>
+              <button
+                className={`${
+                  isLoading ? "hover:cursor-not-allowed opacity-50" : ""
+                }`}
+                disabled={isLoading}
+                onClick={() => createVote(false)}
+              >
+                <BiDownvote className="w-6 h-6 " />
+              </button>
             )}
           </div>
           <div>{downvotesCount}</div>
@@ -153,6 +169,7 @@ const ReplyComments = memo(
     replayFormPrentId: string;
   }) => {
     const { data, status } = useSession();
+    const router = useRouter();
 
     const [id, setId] = useAtom(commentIdAtom);
 
@@ -166,6 +183,7 @@ const ReplyComments = memo(
 
     async function handleSubmit(formData: FormData) {
       await createCommentsWithDetails(formData);
+      router.refresh();
       setId(null);
     }
 

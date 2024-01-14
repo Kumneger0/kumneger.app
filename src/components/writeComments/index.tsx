@@ -24,6 +24,10 @@ function PostComments({ asset_id }: { asset_id: string }) {
 
   const createCommentsWithDetails = createComment.bind(null, details);
 
+  const postComment = async (formData: FormData) => {
+    await createCommentsWithDetails(formData);
+  };
+
   return (
     <>
       <form action={createCommentsWithDetails}>

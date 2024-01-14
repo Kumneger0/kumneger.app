@@ -232,7 +232,7 @@ export async function writeReply(details: Details, formData: FormData) {
       });
 
       revalidatePath(`/blog/${asset_id}`);
-
+      console.log("path revalidaed");
       return comment;
     }
   } catch (err) {
@@ -309,11 +309,9 @@ export async function getMoreCommentsFromDB(
         date: "desc"
       }
     });
+    console.log(comments);
     return comments;
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    }
-    throw new Error("Failed to get comments");
+    return;
   }
 }

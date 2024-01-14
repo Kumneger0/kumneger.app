@@ -17,6 +17,15 @@ import React, {
 import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
 
+import { ChevronsUpDown, Plus, X } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible";
+
 type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
 
 type CommentProps = Comments["comments"][number] & {
@@ -54,11 +63,13 @@ const Comments = ({ asset_id }: { asset_id: string }) => {
 
     moreComments.shift();
 
+    const concatinaedComments = {
+      comments: comments.concat(moreComments),
+      total: total
+    };
+
     startTransition(() => {
-      setComments((prv) => ({
-        comments: prv.comments.concat(moreComments),
-        total: prv.total
-      }));
+      setComments(concatinaedComments);
     });
   }
 
@@ -70,24 +81,13 @@ const Comments = ({ asset_id }: { asset_id: string }) => {
       <div className="w-full flex flex-col justify-center gap-20">
         <div>
           <div className="font-bold text-2xl mx-2">{total} Comments</div>
-          {comments.map((com) => (
-            <div
-              key={com.id}
-              className="w-full rounded-md h-full my-2 bg-gray-800"
-            >
-              <Suspense fallback={"please wait..."}>
-                <Comment depth={0} {...com} asset_id={asset_id} />
-              </Suspense>
-            </div>
-          ))}
+          <CommnetsWrapper asset_id={asset_id} commnets={{ comments, total }} />
           <div>
-            <MoreCommnets isPending={isPending}>
-              {remaingComments ? (
-                <button type="button" onClick={getMoreComments}>
-                  {remaingComments} more comments
-                </button>
-              ) : null}
-            </MoreCommnets>
+            <MoreCommnets
+              getMoreComments={getMoreComments}
+              remaingComments={remaingComments}
+              isPending={isPending}
+            ></MoreCommnets>
           </div>
         </div>
         <div>
@@ -100,101 +100,136 @@ const Comments = ({ asset_id }: { asset_id: string }) => {
 
 export default Comments;
 
-function MoreCommnets({
-  isPending,
-  children
+function CommnetsWrapper({
+  commnets,
+  asset_id
 }: {
-  isPending: boolean;
-  children: React.ReactNode;
+  commnets: Comments;
+  asset_id: string;
 }) {
-  if (isPending) return <div>loading...</div>;
-  return <>{children}</>;
-}
-
-async function Comment({ asset_id, depth, ...data }: CommentProps) {
-  const parentId = useId();
-
-  const [isPending, startTransion] = useTransition();
-
-  const [{ User: user, content, date, id, replies, votes }, setState] =
-    useState(data);
-
-  const [optimisticValue, setOptimisticValue] = useOptimistic(
-    data,
-    (prv, newState: typeof data) => {
-      return newState;
-    }
+  const [{ comments, total }, setComments] = useOptimistic(
+    commnets,
+    (prv, newState: typeof commnets) => newState
   );
-
-  async function getReplies() {
-    const comments = await getMoreCommentsFromDB(asset_id, id);
-    if (comments) startTransion(() => setState(comments));
-  }
-
-  const maxMarginLeft = 100;
-  const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
-
-  const diffInDays = differenceInCalendarDays(new Date(), date);
-  const diffInMin = differenceInMinutes(new Date(), date);
-
-  const diffrence = diffInDays < 1 ? `${diffInMin}m ` : `${diffInDays}d`;
-
   return (
-    <div
-      style={{
-        marginLeft: `${
-          depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5
-        }px`,
-        maxWidth: `${maxWidth}px)`
-      }}
-      className="w-full  flex flex-col border-l-2 px-2 p-2  maxWidthborder-slate-300  rounded-lg my-5"
-    >
-      <div className="flex gap-5">
-        <div>
-          <img
-            width={50}
-            height={50}
-            className="rounded-full object-cover object-center"
-            src={user?.image ?? ""}
-            alt="user profile "
-          />
+    <div>
+      {comments.map((com) => (
+        <div key={com.id} className="w-full rounded-md h-full my-2 bg-gray-800">
+          <Suspense fallback={"please wait..."}>
+            <CollapsibleComments depth={0} {...com} asset_id={asset_id} />
+          </Suspense>
         </div>
-        <div>
-          <div className="">
-            {user?.name} {diffrence}
-          </div>
-        </div>
-      </div>
-      <div className="ml-16">
-        <div className=" p-3">{content}</div>
-        <div className="flex items-center">
-          <Vote votes={votes} asset_id={asset_id} id={id} />
-
-          <ReplyComments
-            replayFormPrentId={parentId}
-            commentId={id}
-            asset_id={asset_id}
-          />
-          <Delete
-            userEmail={user?.email ?? null}
-            asset_id={asset_id}
-            commentId={id}
-          />
-        </div>
-        {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-        <div id={parentId}></div>
-      </div>
-      <Suspense fallback="replies loading">
-        <Replies
-          getReplies={getReplies}
-          asset_id={asset_id}
-          depth={depth}
-          replies={replies}
-        />
-      </Suspense>
+      ))}
     </div>
   );
 }
+
+function MoreCommnets({
+  isPending,
+  remaingComments,
+  getMoreComments
+}: {
+  isPending: boolean;
+  remaingComments: number;
+  getMoreComments: () => void;
+}) {
+  return (
+    <>
+      {" "}
+      {remaingComments ? (
+        <button type="button" onClick={getMoreComments}>
+          {remaingComments} more comments
+        </button>
+      ) : null}
+    </>
+  );
+}
+
+// async function Comment({ asset_id, depth, ...data }: CommentProps) {
+//   const parentId = useId();
+
+//   const [isPending, startTransion] = useTransition();
+
+//   const [{ User: user, content, date, id, replies, votes }, setState] =
+//     useState(data);
+
+//   const [optimisticValue, setOptimisticValue] = useOptimistic(
+//     data,
+//     (prv, newState: typeof data) => {
+//       return newState;
+//     }
+//   );
+
+//   async function getReplies() {
+//     const comments = await getMoreCommentsFromDB(asset_id, id);
+//     console.log(comments);
+//     if (comments) startTransion(() => setState(comments));
+//   }
+
+//   const maxMarginLeft = 100;
+//   const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
+
+//   const diffInDays = differenceInCalendarDays(new Date(), date);
+//   const diffInMin = differenceInMinutes(new Date(), date);
+
+//   const diffrence = diffInDays < 1 ? `${diffInMin}m ` : `${diffInDays}d`;
+
+//   return (
+//     <div
+//       style={{
+//         marginLeft: `${
+//           depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5
+//         }px`,
+//         maxWidth: `${maxWidth}px)`
+//       }}
+//       className="w-full  flex flex-col border-l-2 px-2 p-2  maxWidthborder-slate-300  rounded-lg my-5"
+//     >
+//       <div className="flex gap-5">
+//         <div>
+//           <img
+//             width={50}
+//             height={50}
+//             className="rounded-full object-cover object-center"
+//             src={user?.image ?? ""}
+//             alt="user profile "
+//           />
+//         </div>
+//         <div>
+//           <div className="">
+//             {user?.name} {diffrence}
+//           </div>
+//         </div>
+//       </div>
+//       <div className="ml-16">
+//         <div className=" p-3">{content}</div>
+//         <div className="flex items-center">
+//           <Vote votes={votes} asset_id={asset_id} id={id} />
+
+//           <ReplyComments
+//             replayFormPrentId={parentId}
+//             commentId={id}
+//             asset_id={asset_id}
+//           />
+//           <Delete
+//             userEmail={user?.email ?? null}
+//             asset_id={asset_id}
+//             commentId={id}
+//           />
+//         </div>
+//         {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+//         <div id={parentId}></div>
+//       </div>
+//       <Suspense fallback="replies loading">
+//         <Replies
+//           getReplies={getReplies}
+//           asset_id={asset_id}
+//           depth={depth}
+//           replies={replies}
+//         />
+//       </Suspense>
+//     </div>
+//   );
+// }
 
 function Replies({
   replies,
@@ -213,7 +248,7 @@ function Replies({
   if (isPending) return <div>loading...</div>;
 
   return (
-    <div>
+    <div className="my-5">
       {replies?.length && !showReplies ? (
         <button
           type="button"
@@ -230,11 +265,115 @@ function Replies({
       {showReplies ? (
         <div className="">
           {replies?.map((reply, index) => {
-            //@ts-ignore
-            return <Comment depth={depth + 1} {...reply} asset_id={asset_id} />;
+            return (
+              //@ts-ignore
+
+              <CollapsibleComments
+                depth={depth + 2}
+                {...reply}
+                asset_id={asset_id}
+              />
+            );
           })}
         </div>
       ) : null}
     </div>
+  );
+}
+
+export function CollapsibleComments({
+  asset_id,
+  depth,
+  ...data
+}: CommentProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const parentId = useId();
+
+  const [isPending, startTransion] = useTransition();
+
+  const [{ User: user, content, date, id, replies, votes }, setState] =
+    useState(data);
+
+  const [optimisticValue, setOptimisticValue] = useOptimistic(
+    data,
+    (prv, newState: typeof data) => {
+      return newState;
+    }
+  );
+
+  async function getReplies() {
+    const comments = await getMoreCommentsFromDB(asset_id, id);
+    console.log(comments);
+    if (comments) startTransion(() => setState(comments));
+  }
+
+  const maxMarginLeft = 100;
+  const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
+
+  const diffInDays = differenceInCalendarDays(new Date(), date);
+  const diffInMin = differenceInMinutes(new Date(), date);
+
+  const diffrence = diffInDays < 1 ? `${diffInMin}m ` : `${diffInDays}d`;
+
+  return (
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="w-full space-y-2 border-l-2"
+      style={{
+        marginLeft: `${depth}px`,
+        maxWidth: `calc(100% - ${depth * 20}px)`
+      }}
+    >
+      <div className="flex items-center justify-start space-x-4 px-4">
+        <div>
+          <img
+            width={40}
+            height={40}
+            className="rounded-full object-cover object-center"
+            src={user?.image ?? ""}
+            alt="user profile "
+          />
+        </div>
+        <h4 className="text-sm font-semibold">
+          {user?.name} {diffrence}
+        </h4>
+        <CollapsibleTrigger asChild>
+          <Button variant="ghost" size="sm" className="w-9 p-0">
+            <ChevronsUpDown className="h-4 w-4" />
+            <span className="sr-only">Toggle</span>
+          </Button>
+        </CollapsibleTrigger>
+      </div>
+
+      <CollapsibleContent className="space-y-2">
+        <div className="rounded-md px-4 py-3 font-mono text-sm">
+          <div className=" p-3">{content}</div>
+          <div className="flex items-center">
+            <Vote votes={votes} asset_id={asset_id} id={id} />
+
+            <ReplyComments
+              replayFormPrentId={parentId}
+              commentId={id}
+              asset_id={asset_id}
+            />
+            <Delete
+              userEmail={user?.email ?? null}
+              asset_id={asset_id}
+              commentId={id}
+            />
+          </div>
+        </div>
+        <div id={parentId}></div>
+        <Suspense fallback="replies loading">
+          <Replies
+            getReplies={getReplies}
+            asset_id={asset_id}
+            depth={depth}
+            replies={replies}
+          />
+        </Suspense>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
