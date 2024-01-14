@@ -4,7 +4,7 @@ import {
   getMoreCommentsFromDB,
   getMoreTopLevelComments
 } from "@/app/actions/action";
-import { differenceInCalendarDays, differenceInMinutes } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import React, {
   Suspense,
   useEffect,
@@ -16,6 +16,7 @@ import React, {
 } from "react";
 import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
+import type { FormatDistanceToNowOptions } from "date-fns";
 
 import { ChevronsUpDown, Plus, X } from "lucide-react";
 
@@ -83,11 +84,13 @@ const Comments = ({ asset_id }: { asset_id: string }) => {
           <div className="font-bold text-2xl mx-2">{total} Comments</div>
           <CommnetsWrapper asset_id={asset_id} commnets={{ comments, total }} />
           <div>
-            <MoreCommnets
-              getMoreComments={getMoreComments}
-              remaingComments={remaingComments}
-              isPending={isPending}
-            ></MoreCommnets>
+            <Suspense fallback={"please wait..."}>
+              <MoreCommnets
+                getMoreComments={getMoreComments}
+                remaingComments={remaingComments}
+                isPending={isPending}
+              ></MoreCommnets>
+            </Suspense>
           </div>
         </div>
         <div>
@@ -224,10 +227,10 @@ export function CollapsibleComments({
   const maxMarginLeft = 100;
   const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
 
-  const diffInDays = differenceInCalendarDays(new Date(), date);
-  const diffInMin = differenceInMinutes(new Date(), date);
-
-  const diffrence = diffInDays < 1 ? `${diffInMin}m ` : `${diffInDays}d`;
+  let commentTime = new Date(date);
+  let timeDifference = formatDistanceToNow(commentTime, {
+    addSuffix: false
+  } satisfies FormatDistanceToNowOptions);
 
   return (
     <Collapsible
@@ -250,7 +253,10 @@ export function CollapsibleComments({
           />
         </div>
         <h4 className="text-sm font-semibold">
-          {user?.name} {diffrence}
+          {user?.name}{" "}
+          <span className="text-[0.8em] text-sm font-normal">
+            {timeDifference}
+          </span>
         </h4>
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="sm" className="w-9 p-0">
