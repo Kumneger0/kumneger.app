@@ -26,7 +26,7 @@ import {
   CollapsibleTrigger
 } from "@/components/ui/collapsible";
 
-type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
+export type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
 
 type CommentProps = Comments["comments"][number] & {
   asset_id: string;
@@ -91,7 +91,7 @@ const Comments = ({ asset_id }: { asset_id: string }) => {
           </div>
         </div>
         <div>
-          <PostComments asset_id={asset_id} />
+          <PostComments setComments={setComments} asset_id={asset_id} />
         </div>
       </div>
     </div>
@@ -144,92 +144,6 @@ function MoreCommnets({
     </>
   );
 }
-
-// async function Comment({ asset_id, depth, ...data }: CommentProps) {
-//   const parentId = useId();
-
-//   const [isPending, startTransion] = useTransition();
-
-//   const [{ User: user, content, date, id, replies, votes }, setState] =
-//     useState(data);
-
-//   const [optimisticValue, setOptimisticValue] = useOptimistic(
-//     data,
-//     (prv, newState: typeof data) => {
-//       return newState;
-//     }
-//   );
-
-//   async function getReplies() {
-//     const comments = await getMoreCommentsFromDB(asset_id, id);
-//     console.log(comments);
-//     if (comments) startTransion(() => setState(comments));
-//   }
-
-//   const maxMarginLeft = 100;
-//   const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
-
-//   const diffInDays = differenceInCalendarDays(new Date(), date);
-//   const diffInMin = differenceInMinutes(new Date(), date);
-
-//   const diffrence = diffInDays < 1 ? `${diffInMin}m ` : `${diffInDays}d`;
-
-//   return (
-//     <div
-//       style={{
-//         marginLeft: `${
-//           depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5
-//         }px`,
-//         maxWidth: `${maxWidth}px)`
-//       }}
-//       className="w-full  flex flex-col border-l-2 px-2 p-2  maxWidthborder-slate-300  rounded-lg my-5"
-//     >
-//       <div className="flex gap-5">
-//         <div>
-//           <img
-//             width={50}
-//             height={50}
-//             className="rounded-full object-cover object-center"
-//             src={user?.image ?? ""}
-//             alt="user profile "
-//           />
-//         </div>
-//         <div>
-//           <div className="">
-//             {user?.name} {diffrence}
-//           </div>
-//         </div>
-//       </div>
-//       <div className="ml-16">
-//         <div className=" p-3">{content}</div>
-//         <div className="flex items-center">
-//           <Vote votes={votes} asset_id={asset_id} id={id} />
-
-//           <ReplyComments
-//             replayFormPrentId={parentId}
-//             commentId={id}
-//             asset_id={asset_id}
-//           />
-//           <Delete
-//             userEmail={user?.email ?? null}
-//             asset_id={asset_id}
-//             commentId={id}
-//           />
-//         </div>
-//         {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
-//         <div id={parentId}></div>
-//       </div>
-//       <Suspense fallback="replies loading">
-//         <Replies
-//           getReplies={getReplies}
-//           asset_id={asset_id}
-//           depth={depth}
-//           replies={replies}
-//         />
-//       </Suspense>
-//     </div>
-//   );
-// }
 
 function Replies({
   replies,

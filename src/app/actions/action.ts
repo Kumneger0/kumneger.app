@@ -41,7 +41,7 @@ export async function getAllComments(asset_id: string, skip = 0) {
       orderBy: {
         id: "desc"
       },
-      take: 2,
+      take: 5,
       skip
     });
 
@@ -115,7 +115,7 @@ export async function createComment(
 ) {
   const { userEmail, asset_id } = details;
   // we return early if either user email or post id is not available
-  if (!userEmail || !asset_id) return;
+  if (!userEmail || !asset_id) throw new Error("there was an error occured");
 
   const content = formData.get("content") as string;
 
@@ -132,16 +132,22 @@ export async function createComment(
 
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
-        include: { User: true }
+        include: {
+          User: true,
+          parentComment: true,
+          post: true,
+          votes: true,
+          replies: true
+        }
       });
 
       // after creating commnet successfully we can revalidate path so we can refetch and display in ui
       revalidatePath(`/blog/${asset_id}`);
-
+      console.log("commnet created", comment);
       return comment;
     }
   } catch (err) {
-    throw new Error("Failed to create comment");
+    return null;
   }
 }
 

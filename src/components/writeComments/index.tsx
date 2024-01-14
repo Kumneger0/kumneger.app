@@ -1,16 +1,31 @@
 import { createComment } from "@/app/actions/action";
 import { signIn, useSession } from "next-auth/react";
-import React, { ElementRef, useEffect, useRef } from "react";
+import React, {
+  Dispatch,
+  ElementRef,
+  SetStateAction,
+  startTransition,
+  useEffect,
+  useRef
+} from "react";
 import { Button } from "../ui/button";
 //@ts-ignore
 import { useFormStatus } from "react-dom";
 import { LoginModal } from "../blogHeader/blogHeader";
+import { useRouter } from "next/navigation";
+import { Comments } from "../comments";
 
-function PostComments({ asset_id }: { asset_id: string }) {
+function PostComments({
+  asset_id,
+  setComments
+}: {
+  asset_id: string;
+  setComments: Dispatch<SetStateAction<Comments>>;
+}) {
   const { data, status } = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<ElementRef<typeof LoginModal>>(null);
-
+  const router = useRouter();
   const handleUserLoginStatus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (status === "unauthenticated") {
       modalRef.current?.openModal();
@@ -25,12 +40,26 @@ function PostComments({ asset_id }: { asset_id: string }) {
   const createCommentsWithDetails = createComment.bind(null, details);
 
   const postComment = async (formData: FormData) => {
-    await createCommentsWithDetails(formData);
+    const data = await createCommentsWithDetails(formData);
+
+    console.log(data);
+    if (data) {
+      startTransition(() =>
+        setComments((prv) => {
+          prv.comments.unshift(data satisfies typeof prv.comments);
+          prv.total += 1;
+          return prv;
+        })
+      );
+      alert("set in ");
+    }
+    inputRef.current?.value === "";
+    router.refresh();
   };
 
   return (
     <>
-      <form action={createCommentsWithDetails}>
+      <form action={postComment}>
         <input
           ref={inputRef}
           onFocus={handleUserLoginStatus}
