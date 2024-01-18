@@ -87,12 +87,12 @@ export async function getMoreTopLevelComments(
                 parentComment: true,
                 _count: true,
                 post: true,
-                votes: { include: { User: true } },
+                votes: { select: { User: { select: { email: true } } } },
                 replies: true
               }
             },
             User: true,
-            votes: { include: { User: true } }
+            votes: { select: { User: { select: { email: true } } } }
           }
         }
       },
@@ -147,6 +147,7 @@ export async function createComment(
       return comment;
     }
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -161,7 +162,9 @@ export async function changeVote(
   try {
     const user = await getUser(userEmail);
 
-    if (!user) return null;
+    console.log(user);
+
+    if (!user) return new Error("user not founds");
     await db.vote.deleteMany({
       where: {
         userId: user?.id,
@@ -170,22 +173,22 @@ export async function changeVote(
       }
     });
 
-    const vote = await db.comment.update({
-      where: { id: commentId },
+    const vote = await db.vote.create({
       data: {
-        votes: {
-          create: {
-            isUpvote,
-            userId: user?.id
-          }
-        }
+        isUpvote,
+        userEmail,
+        commentId,
+        userId: user?.id
       }
     });
+
+    console.log(vote);
 
     revalidatePath(`/blog/${asset_id}`);
     console.log(asset_id);
     return vote;
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -249,6 +252,7 @@ export async function writeReply(details: Details, formData: FormData) {
       return comment;
     }
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -307,14 +311,14 @@ export async function getMoreCommentsFromDB(
                 User: true,
                 post: true,
                 parentComment: true,
-                votes: { include: { User: true } },
+                votes: { select: { User: { select: { email: true } } } },
                 _count: true,
                 replies: true
               }
             },
             post: true,
             User: true,
-            votes: { include: { User: true } }
+            votes: { select: { User: { select: { email: true } } } }
           }
         }
       },

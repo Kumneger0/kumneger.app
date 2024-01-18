@@ -86,6 +86,7 @@ model Vote {
   id        Int      @id @default(autoincrement())
   commentId Int
   userId    String
+  userEmail String
   User      User     @relation(fields: [userId], references: [id])
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   isUpvote  Boolean

@@ -1,4 +1,4 @@
-import { TBlogs } from "@/components/blogs/Blogs";
+import Blogs, { TBlogs } from "@/components/blogs/Blogs";
 import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import React from "react";
@@ -15,7 +15,7 @@ async function Page({ params }: { params: { slug: string } }) {
   );
 
   return (
-    <div className="space-y-4 ml-6">
+    <div className="space-y-4  my-5 max-w-5xl w-full mx-auto">
       <h2 className="text-2xl font-bold">Related Articles</h2>
       {/* @ts-ignore */}
       <Blogs className="justify-around" blogs={serializedBlog} />

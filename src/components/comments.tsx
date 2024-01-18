@@ -2,21 +2,18 @@
 import {
   getAllComments,
   getMoreCommentsFromDB,
-  getMoreTopLevelComments,
   getUser
 } from "@/app/actions/action";
 import { formatDistanceToNow } from "date-fns";
 import React, {
   Suspense,
   startTransition,
-  useEffect,
   useId,
   useOptimistic,
   useState,
-  useTransition,
-  use
+  useTransition
 } from "react";
-import { Delete, ReplyComments, Vote, commentIdAtom } from "./commentActions";
+import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
 
 import { ChevronsUpDown } from "lucide-react";
@@ -29,8 +26,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from "@/components/ui/collapsible";
-import { useAtom } from "jotai";
-import { useSession } from "next-auth/react";
 
 export const CommnetsContext = React.createContext<{
   comments: Comments;
@@ -120,6 +115,8 @@ function Replies({
   const [isPending, startTransion] = useTransition();
 
   if (isPending) return <div>loading...</div>;
+
+  console.log(replies.length);
 
   return (
     <div className="my-5">

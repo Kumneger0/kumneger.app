@@ -50,20 +50,14 @@ const Vote = memo(
     asset_id: string;
     votes: TVotes;
   }) => {
+    console.log(votes);
+
     const { data, status } = useSession();
     const router = useRouter();
 
     const modalBtn = useRef<ElementRef<typeof LoginModal>>(null);
 
     const [isLoading, setIsLoading] = useState(false);
-
-    const { user } = React.useContext(CommnetsContext)!;
-
-    const userString = localStorage.getItem("user");
-
-    console.log(userString);
-
-    const userFromLocal = JSON.parse(userString ?? "{}") as typeof user;
 
     const [_id, setId] = useAtom(commentIdAtom);
     const [optimisticVotes, setOptimisticVotes] = useOptimistic(
@@ -76,47 +70,28 @@ const Vote = memo(
     const upvotesCount = optimisticVotes.filter(
       ({ isUpvote }) => isUpvote
     ).length;
+
     const downvotesCount = optimisticVotes.length - upvotesCount;
 
-    const userVote = votes.find(
-      (vote) => vote.userId === (user?.id ?? userFromLocal?.id)
-    );
+    const userVote = votes.find((vote) => vote.userEmail === data?.user?.email);
 
     async function createVote(isUpvote: boolean) {
-      console.log({ userVote, user: user ?? userFromLocal }, "user vote");
-
-      if (!user) modalBtn.current?.openModal();
       if (status === "unauthenticated" || !data?.user?.email) return;
       if (isLoading) return;
-      setIsLoading(true);
-      flushSync(() => {
-        setId(Math.random());
-      });
+
+      console.log(data.user.email);
+
       const newVote = optimisticVotes.findIndex(
-        (vote) => vote.userId === user?.id
+        (vote) => vote.userEmail === data.user?.email
       );
       if (newVote !== -1) {
         const changedVote = [...optimisticVotes];
         changedVote[newVote].isUpvote = isUpvote;
 
         setOptimisticVotes(changedVote satisfies typeof optimisticVotes);
-      } else {
-        setOptimisticVotes([
-          ...optimisticVotes,
-          {
-            commentId: id,
-            date: new Date(),
-            id: optimisticVotes.length + 1,
-            isUpvote,
-            userId: ""
-          }
-        ]);
       }
-
       await changeVote(id, isUpvote, data?.user?.email, asset_id);
-      setIsLoading(false);
       router.refresh();
-      setId(null);
     }
 
     return (
