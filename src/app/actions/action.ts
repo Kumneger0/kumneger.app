@@ -87,12 +87,12 @@ export async function getMoreTopLevelComments(
                 parentComment: true,
                 _count: true,
                 post: true,
-                votes: true,
+                votes: { include: { User: true } },
                 replies: true
               }
             },
             User: true,
-            votes: true
+            votes: { include: { User: true } }
           }
         }
       },
@@ -307,14 +307,14 @@ export async function getMoreCommentsFromDB(
                 User: true,
                 post: true,
                 parentComment: true,
-                votes: true,
+                votes: { include: { User: true } },
                 _count: true,
                 replies: true
               }
             },
             post: true,
             User: true,
-            votes: true
+            votes: { include: { User: true } }
           }
         }
       },

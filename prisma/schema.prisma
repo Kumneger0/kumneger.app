@@ -2,16 +2,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider = "sqlite"
-//   url      = env("DATABASE_URL")
-// }
-
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
+
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("POSTGRES_URL") // uses connection pooling
+//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+// }
 
 model Account {
   id                String  @id @default(cuid())
@@ -49,6 +49,7 @@ model User {
   Comment       Comment[]
   sessions      Session[]
   date          DateTime  @default(now()) @updatedAt
+  Vote          Vote[]
 }
 
 model VerificationToken {
@@ -85,6 +86,7 @@ model Vote {
   id        Int      @id @default(autoincrement())
   commentId Int
   userId    String
+  User      User     @relation(fields: [userId], references: [id])
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   isUpvote  Boolean
   date      DateTime @default(now()) @updatedAt

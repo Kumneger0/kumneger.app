@@ -2,23 +2,26 @@
 import {
   getAllComments,
   getMoreCommentsFromDB,
-  getMoreTopLevelComments
+  getMoreTopLevelComments,
+  getUser
 } from "@/app/actions/action";
 import { formatDistanceToNow } from "date-fns";
 import React, {
   Suspense,
+  startTransition,
   useEffect,
   useId,
-  //@ts-ignore
   useOptimistic,
   useState,
-  useTransition
+  useTransition,
+  use
 } from "react";
-import { Delete, ReplyComments, Vote } from "./commentActions";
+import { Delete, ReplyComments, Vote, commentIdAtom } from "./commentActions";
 import PostComments from "./writeComments";
-import type { FormatDistanceToNowOptions } from "date-fns";
 
-import { ChevronsUpDown, Plus, X } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
+
+type User = Awaited<ReturnType<typeof getUser>> | null;
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +29,14 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from "@/components/ui/collapsible";
+import { useAtom } from "jotai";
+import { useSession } from "next-auth/react";
+
+export const CommnetsContext = React.createContext<{
+  comments: Comments;
+  setComments: (action: Comments) => void;
+  user: User;
+} | null>(null);
 
 export type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
 
@@ -34,115 +45,61 @@ type CommentProps = Comments["comments"][number] & {
   depth: number;
 };
 
-const Comments = ({ asset_id }: { asset_id: string }) => {
-  const [{ comments, total }, setComments] = useState<Comments>({
-    comments: [],
-    total: 0
-  });
-
-  const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    const fetchComments = () =>
-      getAllComments(asset_id).then((res) =>
-        startTransition(() => setComments(res))
-      );
-    fetchComments();
-  }, [asset_id]);
-
-  async function getMoreComments() {
-    const lastCommnetId = comments.at(-1)?.id;
-    const lastCommentDate = comments.at(-1)?.date;
-    if (!lastCommnetId || !lastCommentDate) return;
-    const moreComments = await getMoreTopLevelComments(
-      asset_id,
-      lastCommnetId,
-      lastCommentDate,
-      0
-    );
-    if (!moreComments) return;
-
-    moreComments.shift();
-
-    const concatinaedComments = {
-      comments: comments.concat(moreComments),
-      total: total
-    };
-
-    startTransition(() => {
-      setComments(concatinaedComments);
-    });
-  }
-
-  const remaingComments = total - comments.length;
-  if (isPending) return <div>loading...</div>;
-
-  return (
-    <div>
-      <div className="w-full flex flex-col justify-center gap-20">
-        <div>
-          <div className="font-bold text-2xl mx-2">{total} Comments</div>
-          <CommnetsWrapper asset_id={asset_id} commnets={{ comments, total }} />
-          <div>
-            <Suspense fallback={"please wait..."}>
-              <MoreCommnets
-                getMoreComments={getMoreComments}
-                remaingComments={remaingComments}
-                isPending={isPending}
-              ></MoreCommnets>
-            </Suspense>
-          </div>
-        </div>
-        <div>
-          <PostComments setComments={setComments} asset_id={asset_id} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default Comments;
-
-function CommnetsWrapper({
+export function CommnetsWrapper({
   commnets,
   asset_id
 }: {
   commnets: Comments;
   asset_id: string;
 }) {
-  const [{ comments, total }, setComments] = useOptimistic(
+  const [user, setUser] = useState<User | null>(null);
+
+  const [c, setComments] = useOptimistic(
     commnets,
     (prv, newState: typeof commnets) => newState
   );
+
   return (
-    <div>
-      {comments.map((com) => (
-        <div key={com.id} className="w-full rounded-md h-full my-2 bg-gray-800">
+    <>
+      <CommnetsContext.Provider value={{ comments: c, setComments, user }}>
+        <div className="my-5">
+          {commnets.comments.map((com) => (
+            <div
+              key={com.id}
+              className="w-full rounded-md h-full my-2 bg-gray-800"
+            >
+              <Suspense fallback={"please wait..."}>
+                <CollapsibleComments depth={0} {...com} asset_id={asset_id} />
+              </Suspense>
+            </div>
+          ))}
+        </div>
+        <div className="my-5">
           <Suspense fallback={"please wait..."}>
-            <CollapsibleComments depth={0} {...com} asset_id={asset_id} />
+            <MoreCommnets />
           </Suspense>
         </div>
-      ))}
-    </div>
+        <div>
+          <PostComments asset_id={asset_id} />
+        </div>
+      </CommnetsContext.Provider>
+    </>
   );
 }
 
-function MoreCommnets({
-  isPending,
-  remaingComments,
-  getMoreComments
-}: {
-  isPending: boolean;
-  remaingComments: number;
-  getMoreComments: () => void;
-}) {
+function MoreCommnets() {
+  const {
+    comments: { comments, total },
+    setComments
+  } = React.useContext(CommnetsContext)!;
+
+  const remaingComments = total - comments.length;
+
   return (
     <>
       {" "}
       {remaingComments ? (
-        <button type="button" onClick={getMoreComments}>
-          {remaingComments} more comments
-        </button>
+        <button type="button">{remaingComments} more comments</button>
       ) : null}
     </>
   );
@@ -206,31 +163,18 @@ export function CollapsibleComments({
   const [isOpen, setIsOpen] = React.useState(false);
   const parentId = useId();
 
-  const [isPending, startTransion] = useTransition();
-
   const [{ User: user, content, date, id, replies, votes }, setState] =
     useState(data);
-
-  const [optimisticValue, setOptimisticValue] = useOptimistic(
-    data,
-    (prv, newState: typeof data) => {
-      return newState;
-    }
-  );
 
   async function getReplies() {
     const comments = await getMoreCommentsFromDB(asset_id, id);
     console.log(comments);
-    if (comments) startTransion(() => setState(comments));
+    if (comments) startTransition(() => setState(comments));
   }
 
-  const maxMarginLeft = 100;
-  const maxWidth = depth * 5 > maxMarginLeft ? maxMarginLeft : depth * 5;
-
-  let commentTime = new Date(date);
-  let timeDifference = formatDistanceToNow(commentTime, {
+  const timeDifference = formatDistanceToNow(new Date(date), {
     addSuffix: false
-  } satisfies FormatDistanceToNowOptions);
+  });
 
   return (
     <Collapsible
@@ -284,7 +228,7 @@ export function CollapsibleComments({
             />
           </div>
         </div>
-        <div id={parentId}></div>
+        <div id={parentId} />
         <Suspense fallback="replies loading">
           <Replies
             getReplies={getReplies}
