@@ -2,21 +2,13 @@ import {
   changeVote,
   deleteComment,
   getAllComments,
-  getUser,
   writeReply
 } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, {
-  ElementRef,
-  memo,
-  startTransition,
-  useEffect,
-  useRef,
-  useState
-} from "react";
-import { createPortal, flushSync } from "react-dom";
+import { ElementRef, memo, startTransition, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   BiDownvote,
   BiSolidDownvote,
@@ -28,9 +20,6 @@ import { MdOutlineDelete } from "react-icons/md";
 import { LoginModal } from "../blogHeader/blogHeader";
 import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
-import { CommnetsContext } from "../comments";
-
-export const refetechAtom = atom(false);
 
 export const commentIdAtom = atom<number | null>(null);
 

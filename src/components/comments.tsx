@@ -57,48 +57,32 @@ export function CommnetsWrapper({
 
   return (
     <>
-      <CommnetsContext.Provider value={{ comments: c, setComments, user }}>
-        <div className="my-5">
-          {commnets.comments.map((com) => (
-            <div
-              key={com.id}
-              className="w-full rounded-md h-full my-2 bg-gray-800"
-            >
-              <Suspense fallback={"please wait..."}>
-                <CollapsibleComments depth={0} {...com} asset_id={asset_id} />
-              </Suspense>
-            </div>
-          ))}
-        </div>
-        <div className="my-5">
-          <Suspense fallback={"please wait..."}>
-            <MoreCommnets />
-          </Suspense>
-        </div>
-        <div>
-          <PostComments asset_id={asset_id} />
-        </div>
-      </CommnetsContext.Provider>
+      <div className="my-5">
+        {commnets.comments.map((com) => (
+          <div
+            key={com.id}
+            className="w-full rounded-md h-full my-2 bg-gray-800"
+          >
+            <Suspense fallback={"please wait..."}>
+              <CollapsibleComments depth={0} {...com} asset_id={asset_id} />
+            </Suspense>
+          </div>
+        ))}
+      </div>
+      <div className="my-5">
+        <Suspense fallback={"please wait..."}>
+          <MoreCommnets />
+        </Suspense>
+      </div>
+      <div>
+        <PostComments asset_id={asset_id} />
+      </div>
     </>
   );
 }
 
-function MoreCommnets() {
-  const {
-    comments: { comments, total },
-    setComments
-  } = React.useContext(CommnetsContext)!;
-
-  const remaingComments = total - comments.length;
-
-  return (
-    <>
-      {" "}
-      {remaingComments ? (
-        <button type="button">{remaingComments} more comments</button>
-      ) : null}
-    </>
-  );
+function MoreCommnets({}) {
+  return null;
 }
 
 async function getReplies(asset_id: string, id: number) {
