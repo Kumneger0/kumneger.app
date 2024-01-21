@@ -165,14 +165,14 @@ export async function changeVote(
     console.log(user);
 
     if (!user) return new Error("user not founds");
-    await db.vote.deleteMany({
+    const deletePreviosVotesIfAny = await db.vote.deleteMany({
       where: {
         userId: user?.id,
         commentId: commentId,
         isUpvote: !isUpvote
       }
     });
-
+    console.log(deletePreviosVotesIfAny);
     const vote = await db.vote.create({
       data: {
         isUpvote,

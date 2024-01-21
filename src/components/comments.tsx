@@ -8,6 +8,7 @@ import { formatDistanceToNow } from "date-fns";
 import React, {
   Suspense,
   startTransition,
+  useEffect,
   useId,
   useOptimistic,
   useState,
@@ -100,37 +101,54 @@ function MoreCommnets() {
   );
 }
 
+async function getReplies(asset_id: string, id: number) {
+  const comments = await getMoreCommentsFromDB(asset_id, id);
+  return comments;
+}
+
 function Replies({
-  replies,
   asset_id,
   depth,
-  getReplies
+  commnetId,
+  totalReplies
 }: {
-  replies: Comments["comments"][number]["replies"];
   depth: number;
   asset_id: string;
-  getReplies: () => void;
+  commnetId: number;
+  totalReplies: number;
 }) {
+  type Reples = NonNullable<Awaited<ReturnType<typeof getReplies>>>["replies"];
+
+  console.log(totalReplies);
+
+  const [replies, setReplies] = useState<Reples>([]);
   const [showReplies, setShowReplies] = useState(false);
   const [isPending, startTransion] = useTransition();
 
+  useEffect(() => {
+    if (!showReplies) return;
+    (() =>
+      getReplies(asset_id, commnetId).then((commet) =>
+        startTransion(() => setReplies((prv) => commet?.replies ?? prv))
+      ))();
+  }, [showReplies]);
+
   if (isPending) return <div>loading...</div>;
 
-  console.log(replies.length);
+  console.log("now");
 
   return (
     <div className="my-5">
-      {replies?.length && !showReplies ? (
+      {totalReplies && !showReplies ? (
         <button
           type="button"
           onClick={() => {
             startTransion(() => {
               setShowReplies((prv) => !prv);
             });
-            getReplies();
           }}
         >
-          {replies.length} replies
+          {totalReplies} replies
         </button>
       ) : null}
       {showReplies ? (
@@ -160,14 +178,10 @@ export function CollapsibleComments({
   const [isOpen, setIsOpen] = React.useState(false);
   const parentId = useId();
 
-  const [{ User: user, content, date, id, replies, votes }, setState] =
-    useState(data);
+  const { User: user, content, date, id, replies, votes } = data;
 
-  async function getReplies() {
-    const comments = await getMoreCommentsFromDB(asset_id, id);
-    console.log(comments);
-    if (comments) startTransition(() => setState(comments));
-  }
+  console.log(content, replies.length);
+  console.log(data.content, data.replies.length);
 
   const timeDifference = formatDistanceToNow(new Date(date), {
     addSuffix: false
@@ -228,10 +242,11 @@ export function CollapsibleComments({
         <div id={parentId} />
         <Suspense fallback="replies loading">
           <Replies
-            getReplies={getReplies}
+            key={replies.length}
+            totalReplies={replies.length}
             asset_id={asset_id}
             depth={depth}
-            replies={replies}
+            commnetId={id}
           />
         </Suspense>
       </CollapsibleContent>
