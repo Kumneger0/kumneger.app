@@ -110,6 +110,7 @@ function MoreCommnets({
     const moreComments = await getMoreTopLevelComments(asset_id, lastCommnetId);
     if (!moreComments) return;
     moreComments.shift();
+    //@ts-ignore
     startTransition(() => setMoreCommnets(moreComments));
   };
 

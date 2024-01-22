@@ -53,7 +53,7 @@ function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
               </CardContent>
               <CardFooter className="p-1 w-full flex justify-center">
                 <Button className="bg-gray-800 hover:bg-gray-600 rounded-lg">
-                  <Link scroll href={`/blog/${data.asset_id}`}>
+                  <Link scroll={true} href={`/blog/${data.asset_id}`}>
                     Read More
                   </Link>
                 </Button>
