@@ -61,7 +61,7 @@ export const LoginModal = forwardRef<
               className="capitalize"
               variant={"secondary"}
             >
-              sign in with gihtub
+              sign in with github
             </Button>
           ) : null}
         </DialogDescription>

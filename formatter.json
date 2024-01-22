@@ -1,0 +1,13 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.5.2/schema.json",
+  "formatter": {
+    "indentSize": 2
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded",
+      "indentSize": 2,
+      "indentStyle": "space"
+    }
+  }
+}

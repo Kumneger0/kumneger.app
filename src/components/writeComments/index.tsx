@@ -1,31 +1,28 @@
 import { createComment } from "@/app/actions/action";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, {
   Dispatch,
   ElementRef,
   SetStateAction,
   startTransition,
-  useEffect,
   useRef
 } from "react";
-import { Button } from "../ui/button";
-//@ts-ignore
 import { useFormStatus } from "react-dom";
 import { LoginModal } from "../blogHeader/blogHeader";
-import { useRouter } from "next/navigation";
 import { Comments } from "../comments";
+import { Button } from "../ui/button";
+import { commentIdAtom } from "../commentActions";
+import { useAtom } from "jotai";
 
-function PostComments({
-  asset_id,
-  setComments
-}: {
-  asset_id: string;
-  setComments: Dispatch<SetStateAction<Comments>>;
-}) {
+function PostComments({ asset_id }: { asset_id: string }) {
   const { data, status } = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<ElementRef<typeof LoginModal>>(null);
   const router = useRouter();
+
+  const [id, setId] = useAtom(commentIdAtom);
+
   const handleUserLoginStatus = (e: React.FocusEvent<HTMLInputElement>) => {
     if (status === "unauthenticated") {
       modalRef.current?.openModal();
@@ -40,20 +37,25 @@ function PostComments({
   const createCommentsWithDetails = createComment.bind(null, details);
 
   const postComment = async (formData: FormData) => {
+    if (status === "unauthenticated") {
+      modalRef.current?.openModal();
+      return;
+    }
     const data = await createCommentsWithDetails(formData);
 
     console.log(data);
     if (data) {
-      startTransition(() =>
-        setComments((prv) => {
-          //@ts-ignore
-          prv.comments.unshift(data satisfies typeof prv.comments);
-          prv.total += 1;
-          return prv;
-        })
-      );
+      // startTransition(() =>
+      //   setComments((prv) => {
+      //     //@ts-ignore
+      //     prv.comments.unshift(data satisfies typeof prv.comments);
+      //     prv.total += 1;
+      //     return prv;
+      //   })
+      // );
     }
-    inputRef.current?.value === "";
+    if (inputRef.current) inputRef.current.value = "";
+
     router.refresh();
   };
 

@@ -1,14 +1,11 @@
 import Blogs, { TBlogs } from "@/components/blogs/Blogs";
 import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
+import React from "react";
 
-const RelatedArticles = async ({
-  currentArticle
-}: {
-  currentArticle: string;
-}) => {
-  const blogs = await getSampleRelatedArticles(currentArticle, 3);
-
+async function Page({ params }: { params: { slug: string } }) {
+  const blogs = await getSampleRelatedArticles(params.slug, 3);
+  console.log("what hallpend");
   const serializedBlog = await Promise.all<TBlogs[]>(
     blogs?.map(async ({ title, content, data }) => ({
       title: data.title,
@@ -18,11 +15,12 @@ const RelatedArticles = async ({
   );
 
   return (
-    <div className="space-y-4 ml-6 my-5">
+    <div className="space-y-4 sm:ml-auto ml-6  my-5 max-w-5xl w-full mx-auto">
       <h2 className="text-2xl font-bold">Related Articles</h2>
       {/* @ts-ignore */}
       <Blogs className="justify-around" blogs={serializedBlog} />
     </div>
   );
-};
-export default RelatedArticles;
+}
+
+export default Page;

@@ -1,4 +1,3 @@
-import Comments from "@/components/comments";
 import { getAllBlogsFromCloundnary, getBlogBySlug } from "@/utils/utils";
 import { Metadata } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
@@ -8,6 +7,7 @@ import { FaBackward } from "react-icons/fa";
 import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Blog from "./wrapper";
 import { Suspense } from "react";
+import { getAllComments } from "@/app/actions/action";
 
 type TPrams = { params: { slug: string } };
 
@@ -79,10 +79,6 @@ async function Home({ params }: TPrams) {
             ? serialized
             : (null as unknown as MDXRemoteSerializeResult)}
         </Blog>
-        <Comments asset_id={asset_id} />
-        <div className="h-10" />
-        <RelatedArticles currentArticle={params.slug} />
-        <div className="h-10" />
       </div>
     </div>
   );

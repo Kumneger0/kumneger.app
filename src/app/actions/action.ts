@@ -63,7 +63,6 @@ export async function getMoreTopLevelComments(
   asset_id: string,
 
   id: number,
-  date: Date,
   skip = 0
 ) {
   try {
@@ -87,12 +86,12 @@ export async function getMoreTopLevelComments(
                 parentComment: true,
                 _count: true,
                 post: true,
-                votes: true,
+                votes: { select: { User: { select: { email: true } } } },
                 replies: true
               }
             },
             User: true,
-            votes: true
+            votes: { select: { User: { select: { email: true } } } }
           }
         }
       },
@@ -147,6 +146,7 @@ export async function createComment(
       return comment;
     }
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -161,31 +161,33 @@ export async function changeVote(
   try {
     const user = await getUser(userEmail);
 
-    if (!user) return null;
-    await db.vote.deleteMany({
+    console.log(user);
+
+    if (!user) return new Error("user not founds");
+    const deletePreviosVotesIfAny = await db.vote.deleteMany({
       where: {
         userId: user?.id,
         commentId: commentId,
         isUpvote: !isUpvote
       }
     });
-
-    const vote = await db.comment.update({
-      where: { id: commentId },
+    console.log(deletePreviosVotesIfAny);
+    const vote = await db.vote.create({
       data: {
-        votes: {
-          create: {
-            isUpvote,
-            userId: user?.id
-          }
-        }
+        isUpvote,
+        userEmail,
+        commentId,
+        userId: user?.id
       }
     });
+
+    console.log(vote);
 
     revalidatePath(`/blog/${asset_id}`);
     console.log(asset_id);
     return vote;
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -249,6 +251,7 @@ export async function writeReply(details: Details, formData: FormData) {
       return comment;
     }
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
@@ -307,14 +310,14 @@ export async function getMoreCommentsFromDB(
                 User: true,
                 post: true,
                 parentComment: true,
-                votes: true,
+                votes: { select: { User: { select: { email: true } } } },
                 _count: true,
                 replies: true
               }
             },
             post: true,
             User: true,
-            votes: true
+            votes: { select: { User: { select: { email: true } } } }
           }
         }
       },

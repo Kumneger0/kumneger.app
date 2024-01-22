@@ -2,40 +2,28 @@ import {
   changeVote,
   deleteComment,
   getAllComments,
-  getUser,
   writeReply
 } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { memo, useEffect, useState } from "react";
+import { ElementRef, memo, startTransition, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { GoReply } from "react-icons/go";
-import { IconType } from "react-icons/lib";
-import { MdOutlineDelete } from "react-icons/md";
-import { LoginModal } from "../blogHeader/blogHeader";
-import { Button } from "../ui/button";
-import { SubmitForm } from "../writeComments";
-const commentIdAtom = atom<number | null>(null);
 import {
   BiDownvote,
   BiSolidDownvote,
   BiSolidUpvote,
   BiUpvote
 } from "react-icons/bi";
-declare module "react" {
-  const useOptimistic: typeof experimental_useOptimistic;
-}
+import { GoReply } from "react-icons/go";
+import { MdOutlineDelete } from "react-icons/md";
+import { LoginModal } from "../blogHeader/blogHeader";
+import { Button } from "../ui/button";
+import { SubmitForm } from "../writeComments";
 
-const voteAtom = atom<{ id: null | number; isUpvote: boolean }>({
-  id: null,
-  isUpvote: false
-});
+export const commentIdAtom = atom<number | null>(null);
 
-import React, {
-  //@ts-ignore
-  useOptimistic
-} from "react";
+import { useOptimistic } from "react";
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
@@ -51,10 +39,13 @@ const Vote = memo(
     asset_id: string;
     votes: TVotes;
   }) => {
+    console.log(votes);
+
     const { data, status } = useSession();
-    const [userId, setUserId] = useState<string | null>(null);
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+
+    const modalBtn = useRef<ElementRef<typeof LoginModal>>(null);
+
     const [optimisticVotes, setOptimisticVotes] = useOptimistic(
       votes,
       (prv, newVotes: typeof votes) => {
@@ -62,47 +53,31 @@ const Vote = memo(
       }
     );
 
-    useEffect(() => {
-      (async () => {
-        if (!data?.user?.email) return;
-        getUser(data.user?.email).then((user) => setUserId(user?.id ?? null));
-      })();
-    }, [data?.user?.email]);
+    const upvotesCount = votes.filter(({ isUpvote }) => isUpvote).length;
 
-    const upvotesCount = optimisticVotes.filter(
-      ({ isUpvote }) => isUpvote
-    ).length;
-    const downvotesCount = optimisticVotes.length - upvotesCount;
+    const downvotesCount = votes.length - upvotesCount;
 
-    const userVote = votes.find((vote) => vote.userId === userId);
+    const userVote = votes.find((vote) => vote.userEmail === data?.user?.email);
 
     async function createVote(isUpvote: boolean) {
-      if (status === "unauthenticated" || !data?.user?.email) return;
-      if (isLoading) return;
-      setIsLoading(true);
+      if (status === "unauthenticated" || !data?.user?.email) {
+        modalBtn.current?.openModal();
+        return;
+      }
+
+      console.log(data.user.email);
+
       const newVote = optimisticVotes.findIndex(
-        (vote) => vote.userId === userId
+        (vote) => vote.userEmail === data.user?.email
       );
       if (newVote !== -1) {
         const changedVote = [...optimisticVotes];
         changedVote[newVote].isUpvote = isUpvote;
 
         setOptimisticVotes(changedVote satisfies typeof optimisticVotes);
-      } else {
-        setOptimisticVotes([
-          ...optimisticVotes,
-          {
-            commentId: id,
-            date: new Date(),
-            id: optimisticVotes.length + 1,
-            isUpvote,
-            userId: ""
-          }
-        ]);
       }
-
       await changeVote(id, isUpvote, data?.user?.email, asset_id);
-      setIsLoading(false);
+      router.refresh();
     }
 
     return (
@@ -114,13 +89,7 @@ const Vote = memo(
                 <BiSolidUpvote className="w-6 h-6 text-green-500" />
               </button>
             ) : (
-              <button
-                className={`${
-                  isLoading ? "hover:cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={isLoading}
-                onClick={() => createVote(true)}
-              >
+              <button onClick={() => createVote(true)}>
                 <BiUpvote className="w-6 h-6" />
               </button>
             )}
@@ -134,18 +103,15 @@ const Vote = memo(
                 <BiSolidDownvote className="w-6 h-6 text-red-500" />
               </button>
             ) : (
-              <button
-                className={`${
-                  isLoading ? "hover:cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={isLoading}
-                onClick={() => createVote(false)}
-              >
+              <button onClick={() => createVote(false)}>
                 <BiDownvote className="w-6 h-6 " />
               </button>
             )}
           </div>
           <div>{downvotesCount}</div>
+        </div>
+        <div className="invisible">
+          <LoginModal ref={modalBtn}> </LoginModal>
         </div>
       </div>
     );
@@ -183,8 +149,10 @@ const ReplyComments = memo(
 
     async function handleSubmit(formData: FormData) {
       await createCommentsWithDetails(formData);
+      startTransition(() => {
+        setId(null);
+      });
       router.refresh();
-      setId(null);
     }
 
     if (status === "unauthenticated")
@@ -204,7 +172,7 @@ const ReplyComments = memo(
           }`}
           onClick={() => {
             if (!setId) return;
-            setId((prv) => (prv === commentId ? null : commentId));
+            startTransition(() => setId(commentId));
           }}
           variant={"destructive"}
         >
@@ -223,7 +191,7 @@ const ReplyComments = memo(
                   autoFocus
                   type="text"
                   name="content"
-                  placeholder={`write a reply `}
+                  placeholder={"write a reply "}
                 />
                 <SubmitForm />
               </form>,
@@ -238,16 +206,18 @@ const ReplyComments = memo(
 
 const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
   const { data } = useSession();
-
+  const router = useRouter();
   if (data?.user?.email !== userEmail || !data.user) return;
 
-  function handleDeleteCommentAction() {
+  async function handleDeleteCommentAction() {
     if (!data?.user) return;
     deleteComment({
       asset_id,
       commentId,
       userEmail
     });
+    router.refresh();
+    console.log("refreshed delete");
   }
 
   return (

@@ -123,10 +123,29 @@ const getSampleRelatedArticles = async (
   }> = [];
   const allBlogs = await getAllBlogs();
   if (allBlogs.length) {
+    // for (const blog of allBlogs) {
+    //   if (
+    //     (limit && articles.length >= limit) ||
+    //     articleToExclude === blog?.asset_id
+    //   )
+    //     return;
+    //   const { data: config, content } = matter(blog?.rawMdx);
+    //   const data = config as (typeof articles)[number]["data"];
+    //   const [year, month, day] = data?.date?.split("/").map(Number);
+    //   const date = new Date(year, month, day).toDateString();
+    //   if (content) {
+    //     articles.push({
+    //       title: blog.rawMdx.split(".")[0],
+    //       content,
+    //       data: { ...data, date, year, month, day, asset_id: blog.asset_id }
+    //     });
+    //   }
+    // }
+
     allBlogs.forEach((blog) => {
       if (
         (limit && articles.length >= limit) ||
-        articleToExclude == blog?.asset_id
+        articleToExclude === blog?.asset_id
       )
         return;
       const { data: config, content } = matter(blog?.rawMdx);

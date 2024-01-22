@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_URL") // uses connection pooling
+  url       = env("POSTGRES_URL_NON_POOLING") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
@@ -49,6 +49,7 @@ model User {
   Comment       Comment[]
   sessions      Session[]
   date          DateTime  @default(now()) @updatedAt
+  Vote          Vote[]
 }
 
 model VerificationToken {
@@ -85,6 +86,8 @@ model Vote {
   id        Int      @id @default(autoincrement())
   commentId Int
   userId    String
+  userEmail String
+  User      User     @relation(fields: [userId], references: [id])
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   isUpvote  Boolean
   date      DateTime @default(now()) @updatedAt
