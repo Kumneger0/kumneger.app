@@ -2,7 +2,7 @@ import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import Blogs, { TBlogs } from "../../../components/blogs/Blogs";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 async function Home() {
   const blogs = await getSampleRelatedArticles();

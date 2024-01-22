@@ -44,16 +44,7 @@ function PostComments({ asset_id }: { asset_id: string }) {
     const data = await createCommentsWithDetails(formData);
 
     console.log(data);
-    if (data) {
-      // startTransition(() =>
-      //   setComments((prv) => {
-      //     //@ts-ignore
-      //     prv.comments.unshift(data satisfies typeof prv.comments);
-      //     prv.total += 1;
-      //     return prv;
-      //   })
-      // );
-    }
+
     if (inputRef.current) inputRef.current.value = "";
 
     router.refresh();
