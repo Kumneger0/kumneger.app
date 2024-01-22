@@ -2,7 +2,7 @@
 import React from "react";
 
 function Error() {
-  return <div>error</div>;
+  return <div className="max-w-5xl w-full mx-auto">error</div>;
 }
 
 export default Error;

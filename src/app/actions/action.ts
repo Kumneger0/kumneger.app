@@ -63,7 +63,6 @@ export async function getMoreTopLevelComments(
   asset_id: string,
 
   id: number,
-  date: Date,
   skip = 0
 ) {
   try {

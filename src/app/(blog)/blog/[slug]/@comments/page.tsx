@@ -1,6 +1,5 @@
 import { getAllComments } from "@/app/actions/action";
 import { CommnetsWrapper } from "@/components/comments";
-import RelatedArticles from "@/components/relatedAtriles/RelatedAtricles";
 import { unstable_noStore } from "next/cache";
 
 async function Page({ params }: { params: { slug: string } }) {

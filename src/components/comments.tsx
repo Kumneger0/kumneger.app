@@ -2,15 +2,16 @@
 import {
   getAllComments,
   getMoreCommentsFromDB,
+  getMoreTopLevelComments,
   getUser
 } from "@/app/actions/action";
 import { formatDistanceToNow } from "date-fns";
 import React, {
+  Dispatch,
+  SetStateAction,
   Suspense,
-  startTransition,
   useEffect,
   useId,
-  useOptimistic,
   useState,
   useTransition
 } from "react";
@@ -28,12 +29,6 @@ import {
   CollapsibleTrigger
 } from "@/components/ui/collapsible";
 
-export const CommnetsContext = React.createContext<{
-  comments: Comments;
-  setComments: (action: Comments) => void;
-  user: User;
-} | null>(null);
-
 export type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
 
 type CommentProps = Comments["comments"][number] & {
@@ -48,12 +43,7 @@ export function CommnetsWrapper({
   commnets: Comments;
   asset_id: string;
 }) {
-  const [user, setUser] = useState<User | null>(null);
-
-  const [c, setComments] = useOptimistic(
-    commnets,
-    (prv, newState: typeof commnets) => newState
-  );
+  const [moreComments, setMoreCommnets] = useState<Comments["comments"]>([]);
 
   return (
     <>
@@ -68,10 +58,28 @@ export function CommnetsWrapper({
             </Suspense>
           </div>
         ))}
+        {moreComments?.map((com) => (
+          <div
+            key={com.id}
+            className="w-full rounded-md h-full my-2 bg-gray-800"
+          >
+            <Suspense fallback={"please wait..."}>
+              <CollapsibleComments depth={0} {...com} asset_id={asset_id} />
+            </Suspense>
+          </div>
+        ))}
       </div>
       <div className="my-5">
         <Suspense fallback={"please wait..."}>
-          <MoreCommnets />
+          <MoreCommnets
+            setMoreCommnets={setMoreCommnets}
+            asset_id={asset_id}
+            currentlyLoadedCOmmnetsCount={
+              commnets.comments.length + moreComments.length
+            }
+            lastCommnetId={commnets.comments.at(-1)?.id ?? null}
+            total={commnets.total}
+          />
         </Suspense>
       </div>
       <div>
@@ -81,8 +89,47 @@ export function CommnetsWrapper({
   );
 }
 
-function MoreCommnets({}) {
-  return null;
+function MoreCommnets({
+  asset_id,
+  currentlyLoadedCOmmnetsCount,
+  total,
+  lastCommnetId,
+  setMoreCommnets
+}: {
+  asset_id: string;
+  currentlyLoadedCOmmnetsCount: number;
+  total: number;
+  lastCommnetId: number | null;
+  setMoreCommnets: Dispatch<SetStateAction<Comments["comments"]>>;
+}) {
+  const remainCOmmnets = total - currentlyLoadedCOmmnetsCount;
+
+  const [isPending, startTransition] = useTransition();
+
+  const fetchMoreComments = async (asset_id: string, lastCommnetId: number) => {
+    const moreComments = await getMoreTopLevelComments(asset_id, lastCommnetId);
+    if (!moreComments) return;
+    moreComments.shift();
+    startTransition(() => setMoreCommnets(moreComments));
+  };
+
+  if (isPending) return <div>loading more commnets</div>;
+
+  return (
+    <div>
+      {!!remainCOmmnets && remainCOmmnets > 0 && (
+        <Button
+          onClick={() =>
+            lastCommnetId && fetchMoreComments(asset_id, lastCommnetId)
+          }
+          type="button"
+          variant={"destructive"}
+        >
+          {remainCOmmnets} more
+        </Button>
+      )}{" "}
+    </div>
+  );
 }
 
 async function getReplies(asset_id: string, id: number) {
@@ -115,7 +162,7 @@ function Replies({
       getReplies(asset_id, commnetId).then((commet) =>
         startTransion(() => setReplies((prv) => commet?.replies ?? prv))
       ))();
-  }, [showReplies]);
+  }, [showReplies, totalReplies]);
 
   if (isPending) return <div>loading...</div>;
 

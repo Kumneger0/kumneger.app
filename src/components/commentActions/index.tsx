@@ -46,9 +46,6 @@ const Vote = memo(
 
     const modalBtn = useRef<ElementRef<typeof LoginModal>>(null);
 
-    const [isLoading, setIsLoading] = useState(false);
-
-    const [_id, setId] = useAtom(commentIdAtom);
     const [optimisticVotes, setOptimisticVotes] = useOptimistic(
       votes,
       (prv, newVotes: typeof votes) => {
@@ -56,17 +53,17 @@ const Vote = memo(
       }
     );
 
-    const upvotesCount = optimisticVotes.filter(
-      ({ isUpvote }) => isUpvote
-    ).length;
+    const upvotesCount = votes.filter(({ isUpvote }) => isUpvote).length;
 
-    const downvotesCount = optimisticVotes.length - upvotesCount;
+    const downvotesCount = votes.length - upvotesCount;
 
     const userVote = votes.find((vote) => vote.userEmail === data?.user?.email);
 
     async function createVote(isUpvote: boolean) {
-      if (status === "unauthenticated" || !data?.user?.email) return;
-      if (isLoading) return;
+      if (status === "unauthenticated" || !data?.user?.email) {
+        modalBtn.current?.openModal();
+        return;
+      }
 
       console.log(data.user.email);
 
@@ -92,13 +89,7 @@ const Vote = memo(
                 <BiSolidUpvote className="w-6 h-6 text-green-500" />
               </button>
             ) : (
-              <button
-                className={`${
-                  isLoading ? "hover:cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={isLoading}
-                onClick={() => createVote(true)}
-              >
+              <button onClick={() => createVote(true)}>
                 <BiUpvote className="w-6 h-6" />
               </button>
             )}
@@ -112,13 +103,7 @@ const Vote = memo(
                 <BiSolidDownvote className="w-6 h-6 text-red-500" />
               </button>
             ) : (
-              <button
-                className={`${
-                  isLoading ? "hover:cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={isLoading}
-                onClick={() => createVote(false)}
-              >
+              <button onClick={() => createVote(false)}>
                 <BiDownvote className="w-6 h-6 " />
               </button>
             )}

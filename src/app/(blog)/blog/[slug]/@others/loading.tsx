@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-function LoadingRelatedArticels(){
-  return (
-    <div>LoadingRelatedArticels</div>
-  )
+function LoadingRelatedArticels() {
+  return <div className="max-w-5xl w-full mx-auto">LoadingRelatedArticels</div>;
 }
 
-export default LoadingRelatedArticels
+export default LoadingRelatedArticels;

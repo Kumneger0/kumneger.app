@@ -15,7 +15,7 @@ async function Page({ params }: { params: { slug: string } }) {
   );
 
   return (
-    <div className="space-y-4  my-5 max-w-5xl w-full mx-auto">
+    <div className="space-y-4 sm:ml-auto ml-6  my-5 max-w-5xl w-full mx-auto">
       <h2 className="text-2xl font-bold">Related Articles</h2>
       {/* @ts-ignore */}
       <Blogs className="justify-around" blogs={serializedBlog} />
