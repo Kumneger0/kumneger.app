@@ -1,9 +1,9 @@
 import { getAllComments } from "@/app/actions/action";
 import { CommnetsWrapper } from "@/components/comments";
-import { unstable_noStore } from "next/cache";
+import { cookies } from "next/headers";
 
 async function Page({ params }: { params: { slug: string } }) {
-  unstable_noStore();
+  cookies();
   const commnets = await getAllComments(params.slug);
   console.log("refresh");
   return (

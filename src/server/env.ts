@@ -9,7 +9,9 @@ export const env = createEnv({
     api_key: z.string(),
     api_secret: z.string(),
     GITHUBCLIENTSECRET: z.string(),
-    GITHUBCLIENTID: z.string()
+    GITHUBCLIENTID: z.string(),
+    GITHUBCLIENTID_PROD: z.string(),
+    GITHUBCLIENTSECRET_PROD: z.string()
   },
   //@ts-ignore
   runtimeEnv: process.env

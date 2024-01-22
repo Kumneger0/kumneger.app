@@ -10,13 +10,17 @@ import { env } from "@/server/env";
 export const dynamic = "force-dynamic";
 
 const providers = [
-
   Github({
-    clientId: env.GITHUBCLIENTID,
-    clientSecret: env.GITHUBCLIENTSECRET
+    clientId:
+      process.env.NODE_ENV == "development"
+        ? env.GITHUBCLIENTID
+        : env.GITHUBCLIENTID_PROD,
+    clientSecret:
+      process.env.NODE_ENV == "development"
+        ? env.GITHUBCLIENTSECRET
+        : env.GITHUBCLIENTSECRET_PROD
   })
 ];
-
 
 const handler = NextAuth({
   // @ts-ignore
@@ -24,6 +28,4 @@ const handler = NextAuth({
   providers
 });
 
-
 export { handler as GET, handler as POST };
-
