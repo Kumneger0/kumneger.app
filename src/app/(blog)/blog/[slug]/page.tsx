@@ -1,15 +1,17 @@
+import { getAllComments } from "@/app/actions/action";
 import { getAllBlogsFromCloundnary, getBlogBySlug } from "@/utils/utils";
 import { Metadata } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
+import { Suspense } from "react";
 import { FaBackward } from "react-icons/fa";
 import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Blog from "./wrapper";
-import { Suspense } from "react";
-import { getAllComments } from "@/app/actions/action";
 
 type TPrams = { params: { slug: string } };
+
+export const dynamic = "force-static";
 
 export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
   const blogDetail = await getBlogBySlug(params.slug);

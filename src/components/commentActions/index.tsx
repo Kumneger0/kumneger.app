@@ -39,7 +39,7 @@ const Vote = memo(
     asset_id: string;
     votes: TVotes;
   }) => {
-    console.log(votes);
+    console.log({ votes, id });
 
     const { data, status } = useSession();
     const router = useRouter();
@@ -54,8 +54,7 @@ const Vote = memo(
     );
 
     const upvotesCount = votes.filter(({ isUpvote }) => isUpvote).length;
-
-    const downvotesCount = votes.length - upvotesCount;
+    const downvotesCount = votes.filter(({ isUpvote }) => !isUpvote).length;
 
     const userVote = votes.find((vote) => vote.userEmail === data?.user?.email);
 
@@ -84,12 +83,16 @@ const Vote = memo(
       <div className="flex justify-center gap-2 items-center">
         <div className="flex flex-col justify-center items-center">
           <div>
-            {userVote?.isUpvote ? (
-              <button className="hover:cursor-not-allowed" disabled={true}>
+            {userVote?.isUpvote === true ? (
+              <button
+                type="button"
+                className="hover:cursor-not-allowed"
+                disabled={true}
+              >
                 <BiSolidUpvote className="w-6 h-6 text-green-500" />
               </button>
             ) : (
-              <button onClick={() => createVote(true)}>
+              <button type="button" onClick={() => createVote(true)}>
                 <BiUpvote className="w-6 h-6" />
               </button>
             )}
@@ -99,11 +102,15 @@ const Vote = memo(
         <div className="flex flex-col justify-center items-center">
           <div>
             {userVote?.isUpvote === false ? (
-              <button className="hover:cursor-not-allowed" disabled={true}>
+              <button
+                type="button"
+                className="hover:cursor-not-allowed"
+                disabled={true}
+              >
                 <BiSolidDownvote className="w-6 h-6 text-red-500" />
               </button>
             ) : (
-              <button onClick={() => createVote(false)}>
+              <button type="button" onClick={() => createVote(false)}>
                 <BiDownvote className="w-6 h-6 " />
               </button>
             )}

@@ -5,12 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58bf80e7-3f7d-4107-83fe-03a560211ea1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/portifolio-website.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(blog)/blog/allPosts/Blogs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(blog)/blog/allPosts/Blogs.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(blog)/blog/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(blog)/blog/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/dev.db" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/dev.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/migrations/20240122074959_new_migration/migration.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/migrations/migration_lock.toml" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/migrations/migration_lock.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(blog)/blog/[slug]/error.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(blog)/blog/[slug]/error.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(blog)/blog/[slug]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(blog)/blog/[slug]/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/actions/action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/actions/action.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/blogs/Blogs.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/blogs/Blogs.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/commentActions/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/commentActions/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/comments.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/comments.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +44,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;comments&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/kumneger/projects/personalProjects/portifolio-website&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -58,6 +66,8 @@
       <updated>1698947366802</updated>
       <workItem from="1698947367922" duration="1132000" />
       <workItem from="1698992741771" duration="99000" />
+      <workItem from="1706174325342" duration="180000" />
+      <workItem from="1706175134293" duration="597000" />
     </task>
     <servers />
   </component>

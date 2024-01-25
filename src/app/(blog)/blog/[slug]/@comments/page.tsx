@@ -2,6 +2,7 @@ import { getAllComments } from "@/app/actions/action";
 import { CommnetsWrapper } from "@/components/comments";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
 async function Page({ params }: { params: { slug: string } }) {
   cookies();
   const commnets = await getAllComments(params.slug);

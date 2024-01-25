@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -e .env.development next dev",
+    "migrate:dev": "dotenv -e .env.development pnpm prisma migrate dev",
     "devTurbo": "next dev --turbo",
     "build": "next build",
     "start": "next start ",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 function Layout({
   children,
@@ -13,6 +13,7 @@ function Layout({
   return (
     <div>
       {children}
+
       {comments}
       {others}
     </div>

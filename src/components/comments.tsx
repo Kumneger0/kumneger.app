@@ -190,6 +190,7 @@ function Replies({
               //@ts-ignore
 
               <CollapsibleComments
+                key={index}
                 depth={depth + 2}
                 {...reply}
                 asset_id={asset_id}

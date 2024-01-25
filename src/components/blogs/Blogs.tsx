@@ -40,7 +40,10 @@ function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
         {blogs?.map(({ title, content, data }, index) => {
           const blogCOntent = content as unknown as MDXRemoteSerializeResult;
           return (
-            <Card className="w-[350px] min-w-[350px] max-[330px]:max-w-[310px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl">
+            <Card
+              key={data.asset_id}
+              className="w-[350px] min-w-[350px] max-[330px]:max-w-[310px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl"
+            >
               <CardHeader className="p-2">
                 <CardTitle className="capitalize">{data?.title}</CardTitle>
                 <CardDescription>
@@ -67,11 +70,3 @@ function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
 }
 
 export default Blogs;
-
-const ShowSampleBlog = ({
-  blogSampleContent
-}: {
-  blogSampleContent: MDXRemoteSerializeResult;
-}) => {
-  return <MDXRemote {...blogSampleContent} components={components} />;
-};

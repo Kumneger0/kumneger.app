@@ -161,17 +161,26 @@ export async function changeVote(
   try {
     const user = await getUser(userEmail);
 
-    console.log(user);
-
     if (!user) return new Error("user not founds");
-    const deletePreviosVotesIfAny = await db.vote.deleteMany({
+
+    // Fetch the existing vote, if any
+    const existingVote = await db.vote.findFirst({
       where: {
         userId: user?.id,
-        commentId: commentId,
-        isUpvote: !isUpvote
+        commentId: commentId
       }
     });
-    console.log(deletePreviosVotesIfAny);
+
+    // If the user has already voted, delete the existing vote
+    if (existingVote) {
+      await db.vote.delete({
+        where: {
+          id: existingVote.id
+        }
+      });
+    }
+
+    // Create a new vote
     const vote = await db.vote.create({
       data: {
         isUpvote,
@@ -181,10 +190,7 @@ export async function changeVote(
       }
     });
 
-    console.log(vote);
-
     revalidatePath(`/blog/${asset_id}`);
-    console.log(asset_id);
     return vote;
   } catch (err) {
     console.log(err);
@@ -310,14 +316,36 @@ export async function getMoreCommentsFromDB(
                 User: true,
                 post: true,
                 parentComment: true,
-                votes: { select: { User: { select: { email: true } } } },
+                votes: {
+                  select: {
+                    isUpvote: true,
+                    comment: true,
+                    date: true,
+                    commentId: true,
+                    id: true,
+                    userEmail: true,
+                    userId: true,
+                    User: { select: { email: true } }
+                  }
+                },
                 _count: true,
                 replies: true
               }
             },
             post: true,
             User: true,
-            votes: { select: { User: { select: { email: true } } } }
+            votes: {
+              select: {
+                isUpvote: true,
+                comment: true,
+                date: true,
+                commentId: true,
+                id: true,
+                userEmail: true,
+                userId: true,
+                User: { select: { email: true } }
+              }
+            }
           }
         }
       },
