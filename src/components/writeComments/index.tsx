@@ -69,7 +69,6 @@ function PostComments({ asset_id }: { asset_id: string }) {
           required
           autoCapitalize="on"
           spellCheck
-          autoFocus
           type="text"
           name="content"
           placeholder="write a comment"
@@ -78,7 +77,7 @@ function PostComments({ asset_id }: { asset_id: string }) {
       </form>
       <div className="hidden">
         <LoginModal ref={modalRef}>
-          <div></div>
+          <div />
         </LoginModal>
       </div>
     </>
