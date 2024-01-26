@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 async function Home() {
   const blogs = await getSampleRelatedArticles();
   const serializedBlog = await Promise.all<TBlogs[]>(
-    //@ts-expect-error i will figure out later
+    //@ts-expect-error I will figure out later
     blogs?.map(async ({ content, data }) => ({
       title: data.title,
       content: await serialize(content.slice(0, 200)),

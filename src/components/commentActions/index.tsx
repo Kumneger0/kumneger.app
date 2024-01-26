@@ -1,20 +1,10 @@
-import {
-  changeVote,
-  deleteComment,
-  getAllComments,
-  writeReply
-} from "@/app/actions/action";
+import { changeVote, deleteComment, getAllComments, writeReply } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ElementRef, memo, startTransition, useRef, useState } from "react";
+import { ElementRef, memo, startTransition, useOptimistic, useRef } from "react";
 import { createPortal } from "react-dom";
-import {
-  BiDownvote,
-  BiSolidDownvote,
-  BiSolidUpvote,
-  BiUpvote
-} from "react-icons/bi";
+import { BiDownvote, BiSolidDownvote, BiSolidUpvote, BiUpvote } from "react-icons/bi";
 import { GoReply } from "react-icons/go";
 import { MdOutlineDelete } from "react-icons/md";
 import { LoginModal } from "../blogHeader/blogHeader";
@@ -22,8 +12,6 @@ import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
 
 export const commentIdAtom = atom<number | null>(null);
-
-import { useOptimistic } from "react";
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
@@ -48,13 +36,13 @@ const Vote = memo(
 
     const [optimisticVotes, setOptimisticVotes] = useOptimistic(
       votes,
-      (prv, newVotes: typeof votes) => {
+      (_prv, newVotes: typeof votes) => {
         return newVotes;
       }
     );
 
-    const upvotesCount = votes.filter(({ isUpvote }) => isUpvote).length;
-    const downvotesCount = votes.filter(({ isUpvote }) => !isUpvote).length;
+    const upvoteCount = votes.filter(({ isUpvote }) => isUpvote).length;
+    const downvoteCount = votes.filter(({ isUpvote }) => !isUpvote).length;
 
     const userVote = votes.find((vote) => vote.userEmail === data?.user?.email);
 
@@ -97,7 +85,7 @@ const Vote = memo(
               </button>
             )}
           </div>
-          <div>{upvotesCount}</div>
+          <div>{upvoteCount}</div>
         </div>
         <div className="flex flex-col justify-center items-center">
           <div>
@@ -115,10 +103,10 @@ const Vote = memo(
               </button>
             )}
           </div>
-          <div>{downvotesCount}</div>
+          <div>{downvoteCount}</div>
         </div>
         <div className="invisible">
-          <LoginModal ref={modalBtn}> </LoginModal>
+          <LoginModal ref={modalBtn} ><div /></LoginModal>
         </div>
       </div>
     );
@@ -218,7 +206,7 @@ const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
 
   async function handleDeleteCommentAction() {
     if (!data?.user) return;
-    deleteComment({
+    await deleteComment({
       asset_id,
       commentId,
       userEmail

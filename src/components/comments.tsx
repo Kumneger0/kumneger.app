@@ -1,25 +1,9 @@
 "use client";
-import {
-  getAllComments,
-  getMoreCommentsFromDB,
-  getMoreTopLevelComments
-} from "@/app/actions/action";
+import { getAllComments, getMoreCommentsFromDB, getMoreTopLevelComments } from "@/app/actions/action";
 import { formatDistanceToNow } from "date-fns";
-import React, {
-  Dispatch,
-  SetStateAction,
-  Suspense,
-  useEffect,
-  useId,
-  useState,
-  useTransition
-} from "react";
+import React, { Dispatch, SetStateAction, Suspense, useEffect, useId, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
@@ -111,7 +95,7 @@ function MoreComments({
     startTransition(() => setMoreComments(moreComments));
   };
 
-  if (isPending) return <div>loading more commnets</div>;
+  if (isPending) return <div>loading more comments</div>;
 
   return (
     <div>
@@ -144,19 +128,19 @@ function Replies({
   commentId: number;
   totalReplies: number;
 }) {
-  type TReples = NonNullable<Awaited<ReturnType<typeof getReplies>>>["replies"];
+  type TReplies = NonNullable<Awaited<ReturnType<typeof getReplies>>>["replies"];
 
   console.log(totalReplies);
 
-  const [replies, setReplies] = useState<TReples>([]);
+  const [replies, setReplies] = useState<TReplies>([]);
   const [showReplies, setShowReplies] = useState(false);
-  const [isPending, startTransion] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (!showReplies) return;
     (() =>
-      getReplies(asset_id, commentId).then((commet) =>
-        startTransion(() => setReplies((prv) => commet?.replies ?? prv))
+      getReplies(asset_id, commentId).then((comment) =>
+        startTransition(() => setReplies((prv) => comment?.replies ?? prv))
       ))();
   }, [showReplies, totalReplies]);
 
@@ -168,7 +152,7 @@ function Replies({
         <button
           type="button"
           onClick={() => {
-            startTransion(() => {
+            startTransition(() => {
               setShowReplies((prv) => !prv);
             });
           }}

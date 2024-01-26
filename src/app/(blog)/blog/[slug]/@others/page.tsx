@@ -7,7 +7,6 @@ export const dynamic = "force-static";
 
 async function Page({ params }: { params: { slug: string } }) {
   const blogs = await getSampleRelatedArticles(params.slug, 3);
-  console.log("what hallpend");
   const serializedBlog = await Promise.all<TBlogs[]>(
     blogs?.map(async ({ title, content, data }) => ({
       title: data.title,

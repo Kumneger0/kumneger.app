@@ -1,13 +1,6 @@
 import React from "react";
 import type { MDXComponents } from "mdx/types.js";
-import {
-  Heading,
-  Paragraph,
-  Code,
-  LinkComponent,
-  Heading2,
-  Strong,
-} from "@/mdxComponents/components";
+import { Code, Heading, Heading2, LinkComponent, Paragraph, Strong } from "@/mdxComponents/components";
 
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 

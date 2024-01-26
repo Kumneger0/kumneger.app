@@ -30,23 +30,12 @@ export async function generateStaticParams() {
 
 async function Home({ params }: TPrams) {
   const asset_id = params.slug;
-  const { data, content } = (await getBlogBySlug(asset_id)) as {
-    content: string;
-    data: {
-      asset_id: string;
-      date: string;
+  const { data, content } = await getBlogBySlug(asset_id);
 
-      author: string;
-    };
-  };
-
-  let serialized: MDXRemoteSerializeResult | null = null;
-  if (typeof content === "string") {
-    serialized = await serialize(content);
-  }
+  const serialized = content ? await serialize(content) : null;
 
   const blogTitle =
-    "title" in data && typeof data.title === "string" ? data.title : "";
+    data && "title" in data && typeof data.title === "string" ? data.title : "";
 
   return (
     <div className="flex justify-center">
@@ -72,12 +61,7 @@ async function Home({ params }: TPrams) {
         <div>
           <h1 className="font-bold text-3xl mt-5">{blogTitle}</h1>
         </div>
-
-        <Blog>
-          {serialized
-            ? serialized
-            : (null as unknown as MDXRemoteSerializeResult)}
-        </Blog>
+        {!!serialized && <Blog>{serialized}</Blog>}
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-import matter from "gray-matter";
-import cloudinary, { ResourceApiResponse, v2 } from "cloudinary";
-import { db } from "./db";
-import { unstable_noStore } from "next/cache";
 import { env } from "@/server/env";
+import cloudinary, { ResourceApiResponse, v2 } from "cloudinary";
+import matter from "gray-matter";
+import { notFound } from "next/navigation";
+import { db } from "./db";
 
 v2.config({
   cloud_name: env.cloud_name,
@@ -17,25 +17,14 @@ interface resources extends ResourceApiResponse {
   asset_id: string;
 }
 
-const getBlogContentInParallel = async (
-  urls: {
-    url: string;
-    asset_id: string;
-  }[]
-) => {
-  const fetchContent = async ({
-    url,
-    asset_id
-  }: {
-    url: string;
-    asset_id: string;
-  }) => {
-    const rawMdx = await fetch(url, {
-      next: {
-        revalidate: 3600
-      }
-    }).then((res) => res.text());
+type TGetBlogParam = {
+  url: string;
+  asset_id: string;
+};
 
+const getBlogContent = async (urls: TGetBlogParam[]) => {
+  const fetchContent = async ({ url, asset_id }: TGetBlogParam) => {
+    const rawMdx = await fetch(url).then((res) => res.text());
     return { rawMdx, asset_id };
   };
   const allText = await Promise.allSettled(urls.map(fetchContent));
@@ -47,7 +36,6 @@ const getBlogContentInParallel = async (
 };
 
 async function getAllBlogsFromCloundnary() {
-  unstable_noStore();
   try {
     const folder: { resources: resources[] } =
       await cloudinary.v2.api.search("folder:blogs/*");
@@ -69,9 +57,13 @@ async function getBlogFromCloundnary(asset_id: string) {
   let rawMdx: string | null = null;
   const blog = await cloudinary.v2.api.resources_by_asset_ids(asset_id);
   if (blog.resources.length) {
-    rawMdx = await fetch(blog.resources[0].secure_url).then((res) =>
-      res.text()
-    );
+    rawMdx = await fetch(blog.resources[0].secure_url).then((res) => {
+      if (!res.ok) {
+        notFound();
+        return null;
+      }
+      return res.text();
+    });
   }
   return rawMdx;
 }
@@ -79,7 +71,7 @@ async function getBlogFromCloundnary(asset_id: string) {
 const getAllBlogs = async () => {
   const dir = `${process.cwd()}/src/blogs`;
   const urls = await getAllBlogsFromCloundnary();
-  const blogs = await getBlogContentInParallel(urls);
+  const blogs = await getBlogContent(urls);
   return blogs as {
     rawMdx: string;
     asset_id: string;
@@ -88,16 +80,15 @@ const getAllBlogs = async () => {
 
 const getBlogBySlug = async (slug: string) => {
   const blog = await getBlogFromCloundnary(slug);
+  if (!blog) return { data: null, content: null };
   try {
-    if (blog) {
-      const { data, content } = matter(blog);
-      const [year, month, day] = data?.date?.split("/").map(Number);
-      const date = new Date(year, month, day).toDateString();
-      return {
-        content,
-        data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" }
-      };
-    }
+    const { data, content } = matter(blog);
+    const [year, month, day] = data?.date?.split("/").map(Number);
+    const date = new Date(year, month, day).toDateString();
+    return {
+      content,
+      data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" }
+    };
   } catch (err) {
     console.error(err);
     return { data: null, content: null };
@@ -159,26 +150,29 @@ async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
     await db.$connect();
     const beforeCreting = await db.post.findMany();
 
-    const newBlogs = beforeCreting.length
-      ? beforeCreting.filter(({ asset_id }) =>
-          blogs.some((blog) => blog.asset_id !== asset_id)
-        )
-      : blogs;
+    const newBlogs = blogs.filter(
+      ({ asset_id }) =>
+        !beforeCreting.some(({ asset_id: aid }) => asset_id === aid)
+    );
 
     await Promise.allSettled(
-      blogs.map(async ({ asset_id, title }) => {
+      newBlogs.map(async ({ asset_id, title }) => {
         const blog = await db.post.create({ data: { asset_id, title } });
         return blog;
       })
     );
-
-    const afterCreating = await db.post.findMany();
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
+
+const filtered = ([1, 2, 3, 4] as const).filter((c) =>
+  [1, 2, 3, 4].some((n) => c !== n)
+);
 
 export {
   getAllBlogs,
+  getAllBlogsFromCloundnary,
   getBlogBySlug,
-  getSampleRelatedArticles,
-  getAllBlogsFromCloundnary
+  getSampleRelatedArticles
 };

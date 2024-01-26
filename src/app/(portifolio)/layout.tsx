@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
 };
 
-function PortifolioLayout({ children }: { children: React.ReactNode }) {
+function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body className="overflow-x-hidden">
@@ -27,4 +27,4 @@ function PortifolioLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default PortifolioLayout;
+export default PortfolioLayout;

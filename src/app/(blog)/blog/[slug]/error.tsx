@@ -2,7 +2,7 @@
 
 import React from "react";
 
-function ErrorComponet(props: { error: Error }) {
+function ErrorComponent() {
   return (
     <div className="min-h-[80svh] w-full flex justify-center items-center">
       <div>oops there was an error</div>
@@ -10,4 +10,4 @@ function ErrorComponet(props: { error: Error }) {
   );
 }
 
-export default ErrorComponet;
+export default ErrorComponent;
