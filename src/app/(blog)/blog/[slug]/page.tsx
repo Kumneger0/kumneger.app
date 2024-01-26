@@ -1,12 +1,9 @@
-import { getAllComments } from "@/app/actions/action";
 import { getAllBlogsFromCloundnary, getBlogBySlug } from "@/utils/utils";
 import { Metadata } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
-import { Suspense } from "react";
 import { FaBackward } from "react-icons/fa";
-import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Blog from "./wrapper";
 
 type TPrams = { params: { slug: string } };
