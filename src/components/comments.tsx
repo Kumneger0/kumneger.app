@@ -1,9 +1,25 @@
 "use client";
-import { getAllComments, getMoreCommentsFromDB, getMoreTopLevelComments } from "@/app/actions/action";
+import {
+  getAllComments,
+  getMoreCommentsFromDB,
+  getMoreTopLevelComments
+} from "@/app/actions/action";
 import { formatDistanceToNow } from "date-fns";
-import React, { Dispatch, SetStateAction, Suspense, useEffect, useId, useState, useTransition } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  Suspense,
+  useEffect,
+  useId,
+  useState,
+  useTransition
+} from "react";
 import { Button } from "@/components/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible";
 
 import { Delete, ReplyComments, Vote } from "./commentActions";
 import PostComments from "./writeComments";
@@ -95,7 +111,7 @@ function MoreComments({
     startTransition(() => setMoreComments(moreComments));
   };
 
-  if (isPending) return <div>loading more comments</div>;
+  if (isPending) return <div>loading more commnets</div>;
 
   return (
     <div>
@@ -114,9 +130,8 @@ function MoreComments({
   );
 }
 
-async function getReplies(asset_id: string, id: number) {
-  return await getMoreCommentsFromDB(asset_id, id);
-}
+const getReplies = async (asset_id: string, id: number) =>
+  await getMoreCommentsFromDB(asset_id, id);
 
 function Replies({
   asset_id,
@@ -135,19 +150,17 @@ function Replies({
 
   const [replies, setReplies] = useState<TReples>([]);
   const [showReplies, setShowReplies] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const [isPending, startTransion] = useTransition();
 
   useEffect(() => {
     if (!showReplies) return;
     (() =>
-      getReplies(asset_id, commentId).then((comment) =>
-        startTransition(() => setReplies((prv) => comment?.replies ?? prv))
+      getReplies(asset_id, commentId).then((commet) =>
+        startTransion(() => setReplies((prv) => commet?.replies ?? prv))
       ))();
   }, [showReplies, totalReplies]);
 
   if (isPending) return <div>loading...</div>;
-
-  console.log("now");
 
   return (
     <div className="my-5">
@@ -155,7 +168,7 @@ function Replies({
         <button
           type="button"
           onClick={() => {
-            startTransition(() => {
+            startTransion(() => {
               setShowReplies((prv) => !prv);
             });
           }}
