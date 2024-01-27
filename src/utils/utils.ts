@@ -30,17 +30,17 @@ const getBlogContent = async (urls: TGetBlogParam[]) => {
   const allText = await Promise.allSettled(urls.map(fetchContent));
 
   const blogs = allText.map((result) =>
-    result.status == "fulfilled" ? result.value : null
+    result.status === "fulfilled" ? result.value : null
   );
   return blogs;
 };
 
-async function getAllBlogsFromCloundnary() {
+const getAllBlogsFromCloundnary = async () => {
   try {
     const folder: { resources: resources[] } =
       await cloudinary.v2.api.search("folder:blogs/*");
     const blogs = folder.resources.filter(
-      (res) => res.public_id.split(".")[1]?.toLowerCase().trim() == "mdx"
+      (res) => res.public_id.split(".")[1]?.toLowerCase().trim() === "mdx"
     );
     const blogSecureUrl = blogs.map((blog) => ({
       url: blog?.secure_url,
@@ -51,22 +51,27 @@ async function getAllBlogsFromCloundnary() {
     console.log(err);
     throw new Error("there was an error occured");
   }
-}
+};
 
-async function getBlogFromCloundnary(asset_id: string) {
+const getBlogFromCloundnary = async (asset_id: string) => {
   let rawMdx: string | null = null;
-  const blog = await cloudinary.v2.api.resources_by_asset_ids(asset_id);
-  if (blog.resources.length) {
+  console.log(asset_id);
+  try {
+    const blog = await cloudinary.v2.api.resources_by_asset_ids(asset_id);
+    console.log(blog);
     rawMdx = await fetch(blog.resources[0].secure_url).then((res) => {
+      console.log(res);
       if (!res.ok) {
-        notFound();
         return null;
       }
       return res.text();
     });
+    return rawMdx;
+  } catch (err) {
+    console.log("not found");
+    notFound();
   }
-  return rawMdx;
-}
+};
 
 const getAllBlogs = async () => {
   const dir = `${process.cwd()}/src/blogs`;
@@ -79,20 +84,19 @@ const getAllBlogs = async () => {
 };
 
 const getBlogBySlug = async (slug: string) => {
+  const blogFromDB = await db.post.findUnique({ where: { asset_id: slug } });
+  if (!blogFromDB) {
+    notFound();
+  }
   const blog = await getBlogFromCloundnary(slug);
   if (!blog) return { data: null, content: null };
-  try {
-    const { data, content } = matter(blog);
-    const [year, month, day] = data?.date?.split("/").map(Number);
-    const date = new Date(year, month, day).toDateString();
-    return {
-      content,
-      data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" }
-    };
-  } catch (err) {
-    console.error(err);
-    return { data: null, content: null };
-  }
+  const { data, content } = matter(blog);
+  const [year, month, day] = data?.date?.split("/").map(Number);
+  const date = new Date(year, month, day).toDateString();
+  return {
+    content,
+    data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" }
+  };
 };
 
 const getSampleRelatedArticles = async (
@@ -113,32 +117,32 @@ const getSampleRelatedArticles = async (
     };
   }> = [];
   const allBlogs = await getAllBlogs();
-  if (allBlogs.length) {
-    allBlogs.forEach((blog) => {
-      if (
-        (limit && articles.length >= limit) ||
-        articleToExclude === blog?.asset_id
-      )
-        return;
-      const { data: config, content } = matter(blog?.rawMdx);
-      const data = config as (typeof articles)[number]["data"];
-      const [year, month, day] = data?.date?.split("/").map(Number);
-      const date = new Date(year, month, day).toDateString();
-      if (content) {
-        articles.push({
-          title: blog.rawMdx.split(".")[0],
-          content,
-          data: { ...data, date, year, month, day, asset_id: blog.asset_id }
-        });
-      }
-    });
-  }
+  // biome-ignore lint/complexity/noForEach: i am getting all blogs is not iterable error when using for of loop
+  allBlogs.forEach((blog) => {
+    if (
+      (limit && articles.length >= limit) ||
+      articleToExclude === blog?.asset_id
+    )
+      return;
+    const { data: config, content } = matter(blog?.rawMdx);
+    const data = config as (typeof articles)[number]["data"];
+    const [year, month, day] = data?.date?.split("/").map(Number);
+    const date = new Date(year, month, day).toDateString();
+    if (content) {
+      articles.push({
+        title: blog.rawMdx.split(".")[0],
+        content,
+        data: { ...data, date, year, month, day, asset_id: blog.asset_id }
+      });
+    }
+  });
+
   addBlogsTodb(
     articles.map(({ data: { asset_id, title } }) => ({ asset_id, title }))
   );
   return articles.sort((a, b) =>
-    a.data.year == b.data.year
-      ? a.data.month == b.data.month
+    a.data.year === b.data.year
+      ? a.data.month === b.data.month
         ? b.data.day - a.data.day
         : b.data.month - a.data.month
       : b.data.year - a.data.year
@@ -165,10 +169,6 @@ async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
     console.error(err);
   }
 }
-
-const filtered = ([1, 2, 3, 4] as const).filter((c) =>
-  [1, 2, 3, 4].some((n) => c !== n)
-);
 
 export {
   getAllBlogs,

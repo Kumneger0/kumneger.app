@@ -5,6 +5,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
 import { FaBackward } from "react-icons/fa";
 import Blog from "./wrapper";
+import { notFound } from "next/navigation";
 
 type TPrams = { params: { slug: string } };
 
@@ -31,7 +32,10 @@ export async function generateStaticParams() {
 async function Home({ params }: TPrams) {
   const asset_id = params.slug;
   const { data, content } = await getBlogBySlug(asset_id);
-
+  if (!data || !content) {
+    console.log("not found");
+    notFound();
+  }
   const serialized = content ? await serialize(content) : null;
 
   const blogTitle =
