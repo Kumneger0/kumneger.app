@@ -4,12 +4,12 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
 import { FaBackward } from "react-icons/fa";
-import RelatedArticles from "../../../../components/relatedAtriles/RelatedAtricles";
 import Blog from "./wrapper";
-import { Suspense } from "react";
-import { getAllComments } from "@/app/actions/action";
+import { notFound } from "next/navigation";
 
 type TPrams = { params: { slug: string } };
+
+export const dynamic = "force-static";
 
 export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
   const blogDetail = await getBlogBySlug(params.slug);
@@ -31,23 +31,15 @@ export async function generateStaticParams() {
 
 async function Home({ params }: TPrams) {
   const asset_id = params.slug;
-  const { data, content } = (await getBlogBySlug(asset_id)) as {
-    content: string;
-    data: {
-      asset_id: string;
-      date: string;
-
-      author: string;
-    };
-  };
-
-  let serialized: MDXRemoteSerializeResult | null = null;
-  if (typeof content === "string") {
-    serialized = await serialize(content);
+  const { data, content } = await getBlogBySlug(asset_id);
+  if (!data || !content) {
+    console.log("not found");
+    notFound();
   }
+  const serialized = content ? await serialize(content) : null;
 
   const blogTitle =
-    "title" in data && typeof data.title === "string" ? data.title : "";
+    data && "title" in data && typeof data.title === "string" ? data.title : "";
 
   return (
     <div className="flex justify-center">
@@ -73,12 +65,7 @@ async function Home({ params }: TPrams) {
         <div>
           <h1 className="font-bold text-3xl mt-5">{blogTitle}</h1>
         </div>
-
-        <Blog>
-          {serialized
-            ? serialized
-            : (null as unknown as MDXRemoteSerializeResult)}
-        </Blog>
+        {!!serialized && <Blog>{serialized}</Blog>}
       </div>
     </div>
   );

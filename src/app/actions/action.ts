@@ -3,9 +3,6 @@
 import { Details } from "@/components/commentActions";
 import { db } from "@/utils/db";
 import { revalidatePath } from "next/cache";
-import { date } from "zod";
-
-// export const dynamic = "force-dynamic";
 
 export async function getAllComments(asset_id: string, skip = 0) {
   try {
@@ -86,12 +83,34 @@ export async function getMoreTopLevelComments(
                 parentComment: true,
                 _count: true,
                 post: true,
-                votes: { select: { User: { select: { email: true } } } },
+                votes: {
+                  select: {
+                    isUpvote: true,
+                    comment: true,
+                    date: true,
+                    commentId: true,
+                    id: true,
+                    userEmail: true,
+                    userId: true,
+                    User: { select: { email: true } }
+                  }
+                },
                 replies: true
               }
             },
             User: true,
-            votes: { select: { User: { select: { email: true } } } }
+            votes: {
+              select: {
+                isUpvote: true,
+                comment: true,
+                date: true,
+                commentId: true,
+                id: true,
+                userEmail: true,
+                userId: true,
+                User: { select: { email: true } }
+              }
+            }
           }
         }
       },
@@ -113,7 +132,6 @@ export async function createComment(
   formData: FormData
 ) {
   const { userEmail, asset_id } = details;
-  // we return early if either user email or post id is not available
   if (!userEmail || !asset_id) throw new Error("there was an error occured");
 
   const content = formData.get("content") as string;
@@ -121,14 +139,10 @@ export async function createComment(
   if (typeof userEmail === "number")
     throw new Error("user email must be string type");
   try {
-    // get post id
     const post = await db.post.findUnique({ where: { asset_id } });
 
-    // get user
     const user = await getUser(userEmail);
     if (post && user) {
-      // at time we know that both user and post id is not null so we can create comment
-
       const comment = await db.comment.create({
         data: { postId: post.id, content, userId: user?.id },
         include: {
@@ -140,7 +154,6 @@ export async function createComment(
         }
       });
 
-      // after creating commnet successfully we can revalidate path so we can refetch and display in ui
       revalidatePath(`/blog/${asset_id}`);
       console.log("commnet created", comment);
       return comment;
@@ -161,17 +174,24 @@ export async function changeVote(
   try {
     const user = await getUser(userEmail);
 
-    console.log(user);
-
     if (!user) return new Error("user not founds");
-    const deletePreviosVotesIfAny = await db.vote.deleteMany({
+
+    const existingVote = await db.vote.findFirst({
       where: {
         userId: user?.id,
-        commentId: commentId,
-        isUpvote: !isUpvote
+        commentId: commentId
       }
     });
-    console.log(deletePreviosVotesIfAny);
+
+    if (existingVote) {
+      await db.vote.delete({
+        where: {
+          id: existingVote.id
+        }
+      });
+    }
+
+    // Create a new vote
     const vote = await db.vote.create({
       data: {
         isUpvote,
@@ -181,10 +201,7 @@ export async function changeVote(
       }
     });
 
-    console.log(vote);
-
     revalidatePath(`/blog/${asset_id}`);
-    console.log(asset_id);
     return vote;
   } catch (err) {
     console.log(err);
@@ -310,14 +327,36 @@ export async function getMoreCommentsFromDB(
                 User: true,
                 post: true,
                 parentComment: true,
-                votes: { select: { User: { select: { email: true } } } },
+                votes: {
+                  select: {
+                    isUpvote: true,
+                    comment: true,
+                    date: true,
+                    commentId: true,
+                    id: true,
+                    userEmail: true,
+                    userId: true,
+                    User: { select: { email: true } }
+                  }
+                },
                 _count: true,
                 replies: true
               }
             },
             post: true,
             User: true,
-            votes: { select: { User: { select: { email: true } } } }
+            votes: {
+              select: {
+                isUpvote: true,
+                comment: true,
+                date: true,
+                commentId: true,
+                id: true,
+                userEmail: true,
+                userId: true,
+                User: { select: { email: true } }
+              }
+            }
           }
         }
       },

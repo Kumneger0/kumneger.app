@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -e .env.development next dev",
+    "migrate:dev": "dotenv -e .env.development pnpm prisma migrate dev",
     "devTurbo": "next dev --turbo",
     "build": "next build",
     "start": "next start ",
@@ -39,7 +40,7 @@
     "lottie-web": "^5.12.2",
     "lucide-react": "^0.260.0",
     "million": "^2.6.4",
-    "next": "14.0.4",
+    "next": "14.1.0",
     "next-auth": "^4.24.5",
     "next-mdx-remote": "^4.4.1",
     "next-progress": "^2.3.1",

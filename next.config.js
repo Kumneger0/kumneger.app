@@ -1,6 +1,12 @@
 // const million = require("million/compiler");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  compiler: {
+    removeConsole: {
+      exclude: ["error"]
+    }
+  },
+
   reactStrictMode: false
 };
 

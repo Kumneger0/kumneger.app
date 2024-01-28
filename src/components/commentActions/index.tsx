@@ -1,20 +1,10 @@
-import {
-  changeVote,
-  deleteComment,
-  getAllComments,
-  writeReply
-} from "@/app/actions/action";
+import { changeVote, deleteComment, getAllComments, writeReply } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ElementRef, memo, startTransition, useRef, useState } from "react";
+import { ElementRef, memo, startTransition, useOptimistic, useRef } from "react";
 import { createPortal } from "react-dom";
-import {
-  BiDownvote,
-  BiSolidDownvote,
-  BiSolidUpvote,
-  BiUpvote
-} from "react-icons/bi";
+import { BiDownvote, BiSolidDownvote, BiSolidUpvote, BiUpvote } from "react-icons/bi";
 import { GoReply } from "react-icons/go";
 import { MdOutlineDelete } from "react-icons/md";
 import { LoginModal } from "../blogHeader/blogHeader";
@@ -22,8 +12,6 @@ import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
 
 export const commentIdAtom = atom<number | null>(null);
-
-import { useOptimistic } from "react";
 
 type TVotes = NonNullable<
   Awaited<ReturnType<typeof getAllComments>>
@@ -39,7 +27,7 @@ const Vote = memo(
     asset_id: string;
     votes: TVotes;
   }) => {
-    console.log(votes);
+    console.log({ votes, id });
 
     const { data, status } = useSession();
     const router = useRouter();
@@ -48,14 +36,13 @@ const Vote = memo(
 
     const [optimisticVotes, setOptimisticVotes] = useOptimistic(
       votes,
-      (prv, newVotes: typeof votes) => {
+      (_prv, newVotes: typeof votes) => {
         return newVotes;
       }
     );
 
-    const upvotesCount = votes.filter(({ isUpvote }) => isUpvote).length;
-
-    const downvotesCount = votes.length - upvotesCount;
+    const upvoteCount = votes.filter(({ isUpvote }) => isUpvote).length;
+    const downvoteCount = votes.filter(({ isUpvote }) => !isUpvote).length;
 
     const userVote = votes.find((vote) => vote.userEmail === data?.user?.email);
 
@@ -84,34 +71,42 @@ const Vote = memo(
       <div className="flex justify-center gap-2 items-center">
         <div className="flex flex-col justify-center items-center">
           <div>
-            {userVote?.isUpvote ? (
-              <button className="hover:cursor-not-allowed" disabled={true}>
+            {userVote?.isUpvote === true ? (
+              <button
+                type="button"
+                className="hover:cursor-not-allowed"
+                disabled={true}
+              >
                 <BiSolidUpvote className="w-6 h-6 text-green-500" />
               </button>
             ) : (
-              <button onClick={() => createVote(true)}>
+              <button type="button" onClick={() => createVote(true)}>
                 <BiUpvote className="w-6 h-6" />
               </button>
             )}
           </div>
-          <div>{upvotesCount}</div>
+          <div>{upvoteCount}</div>
         </div>
         <div className="flex flex-col justify-center items-center">
           <div>
             {userVote?.isUpvote === false ? (
-              <button className="hover:cursor-not-allowed" disabled={true}>
+              <button
+                type="button"
+                className="hover:cursor-not-allowed"
+                disabled={true}
+              >
                 <BiSolidDownvote className="w-6 h-6 text-red-500" />
               </button>
             ) : (
-              <button onClick={() => createVote(false)}>
+              <button type="button" onClick={() => createVote(false)}>
                 <BiDownvote className="w-6 h-6 " />
               </button>
             )}
           </div>
-          <div>{downvotesCount}</div>
+          <div>{downvoteCount}</div>
         </div>
         <div className="invisible">
-          <LoginModal ref={modalBtn}> </LoginModal>
+          <LoginModal ref={modalBtn} ><div /></LoginModal>
         </div>
       </div>
     );
@@ -211,7 +206,7 @@ const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
 
   async function handleDeleteCommentAction() {
     if (!data?.user) return;
-    deleteComment({
+    await deleteComment({
       asset_id,
       commentId,
       userEmail
