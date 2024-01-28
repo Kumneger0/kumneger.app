@@ -1,7 +1,14 @@
-import React from "react";
+import NotFound from "@/components/404";
+import { Metadata } from "next";
 
-function NotFound() {
-  return <div>not-found root</div>;
+export function generateMetadata(): Metadata {
+  return {
+    title: "Not Found"
+  };
 }
 
-export default NotFound;
+function Page() {
+  return <NotFound />;
+}
+
+export default Page;

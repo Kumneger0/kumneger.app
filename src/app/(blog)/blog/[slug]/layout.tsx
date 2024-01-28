@@ -13,7 +13,6 @@ function Layout({
   return (
     <div>
       {children}
-
       {comments}
       {others}
     </div>

@@ -1,15 +1,15 @@
-import Link from "next/link";
-import React from "react";
+import NotFound from "@/components/404";
+import { Metadata } from "next";
 
-function NotFound() {
-  return (
-    <div className="w-full grid place-items-center max-w-6xl mx-auto h-full">
-      <div>The Page You are looking for is not found</div>
-      <div>
-        <Link href={"/"}>Back To Home</Link>
-      </div>
-    </div>
-  );
+export function generateMetadata(): Metadata {
+  return {
+    title: "Page Not Found",
+    openGraph: { images: [{ url: "/api/gen-og-images/page-not-found" }] }
+  };
 }
 
-export default NotFound;
+function Page() {
+  return <NotFound />;
+}
+
+export default Page;

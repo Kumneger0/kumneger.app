@@ -117,7 +117,7 @@ const getSampleRelatedArticles = async (
     };
   }> = [];
   const allBlogs = await getAllBlogs();
-  // biome-ignore lint/complexity/noForEach: i am getting all blogs is not iterable error when using for of loop
+  // biome-ignore lint/complexity/noForEach:
   allBlogs.forEach((blog) => {
     if (
       (limit && articles.length >= limit) ||
