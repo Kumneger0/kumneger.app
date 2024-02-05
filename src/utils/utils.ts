@@ -114,6 +114,7 @@ const getSampleRelatedArticles = async (
       month: number;
       day: number;
       asset_id: string;
+      mode?: string;
     };
   }> = [];
   const allBlogs = await getAllBlogs();
@@ -128,7 +129,11 @@ const getSampleRelatedArticles = async (
     const data = config as (typeof articles)[number]["data"];
     const [year, month, day] = data?.date?.split("/").map(Number);
     const date = new Date(year, month, day).toDateString();
-    if (content) {
+
+    const isPreview =
+      process.env.NODE_ENV === "development" ? false : data?.mode === "preview";
+
+    if (content && !isPreview) {
       articles.push({
         title: blog.rawMdx.split(".")[0],
         content,

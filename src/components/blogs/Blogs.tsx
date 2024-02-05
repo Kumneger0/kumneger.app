@@ -30,7 +30,7 @@ export type TBlogs = {
 
 function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
   return (
-    <div className="max-w-11/12  max-[400px]:w-[300px]">
+    <div className="max-w-11/12 max-[400px]:w-[300px]">
       <div
         className={twMerge(
           className,
@@ -42,7 +42,7 @@ function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
           return (
             <Card
               key={data.asset_id}
-              className="w-[350px] min-w-[350px] max-[330px]:max-w-[310px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl"
+              className="w-[350px]  min-w-[350px] max-[330px]:max-w-[310px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl"
             >
               <CardHeader className="p-2">
                 <CardTitle className="capitalize">{data?.title}</CardTitle>
@@ -51,10 +51,14 @@ function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
                   <div>{(data.date as string) || ""}</div>
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-2 line-clamp-3">
-                <MDXRemote {...blogCOntent} components={components} />
+              <CardContent className="p-2  line-clamp-3">
+                <MDXRemote
+                  {...blogCOntent}
+                  // @ts-ignore
+                  components={{ ...components }}
+                />
               </CardContent>
-              <CardFooter className="p-1 w-full flex justify-center">
+              <CardFooter className="py-2 w-full  items-center flex justify-center">
                 <Button className="bg-gray-800 hover:bg-gray-600 rounded-lg">
                   <Link scroll={true} href={`/blog/${data.asset_id}`}>
                     Read More

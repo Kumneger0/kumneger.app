@@ -3,8 +3,6 @@ import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import React from "react";
 
-export const dynamic = "force-static";
-
 async function Page({ params }: { params: { slug: string } }) {
   const blogs = await getSampleRelatedArticles(params.slug, 3);
   const serializedBlog = await Promise.all<TBlogs[]>(
@@ -16,8 +14,10 @@ async function Page({ params }: { params: { slug: string } }) {
   );
 
   return (
-    <div className="space-y-4 sm:ml-auto ml-6  my-5 max-w-5xl w-full mx-auto">
-      <h2 className="text-2xl font-bold">Related Articles</h2>
+    <div className="space-y-4 sm:ml-auto  my-5 max-w-6xl mt-4 w-full  ml-6 mx-auto">
+      <h2 className="text-2xl font-bold w-full text-center">
+        Related Articles
+      </h2>
       {/* @ts-ignore */}
       <Blogs className="justify-around" blogs={serializedBlog} />
     </div>
