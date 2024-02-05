@@ -27,7 +27,7 @@ export default function ContactMe() {
                   </div>
                   <div className="flex w-full gap-3 flex-wrap justify-center items-center">
                     <div>
-                      <Link href="https://twitter.com/kumneger_01">
+                      <Link href="https://twitter.com/kumneger01">
                         <FaTwitter className="text-blue-400 w-7 h-7" />
                       </Link>
                     </div>

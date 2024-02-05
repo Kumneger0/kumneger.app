@@ -26,7 +26,7 @@ function Footer() {
             © 2023 All Rights Reserved.
           </span>
           <div className="flex mt-4 space-x-5 sm:justify-center sm:mt-0 text-white">
-            <Link target="_blank" href="https://twitter.com/kumneger_01">
+            <Link target="_blank" href="https://twitter.com/kumneger01">
               <FaTwitter className="text-blue-400 w-7 h-7" />
             </Link>
             <Link
