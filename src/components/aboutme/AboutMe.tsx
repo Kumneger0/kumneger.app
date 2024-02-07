@@ -15,7 +15,7 @@ function AboutMe() {
       Lottie.loadAnimation({
         container: lottieRef.current,
         animationData: lottieJson,
-        renderer: "svg",
+        renderer: "svg"
       });
       const childs = lottieRef.current.childNodes;
       if (childs.length > 1) {
@@ -27,7 +27,7 @@ function AboutMe() {
       strings: ["I am Kumneger Wondimu", "I am Web Developer"],
       typeSpeed: 70,
       backSpeed: 70,
-      loop: true,
+      loop: true
     });
 
     return () => {
@@ -36,11 +36,14 @@ function AboutMe() {
   }, []);
 
   const aboutMe = {
-    description: `A passionate Full Stack Developer based in Ethiopia with experience in building applications with JavaScript / React / Node.js and some other cool libraries and frameworks.`,
+    description: `A passionate Full Stack Developer based in Ethiopia with experience in building applications with JavaScript / React / Node.js and some other cool libraries and frameworks.`
   };
 
   return (
-    <div id="aboutme" className="min-w-[300px] w-11/12 z-10 mt-10 ">
+    <div
+      id="aboutme"
+      className="min-w-[300px] w-11/12 max-w-7xl mx-auto z-10 mt-10 "
+    >
       <div className="flex justify-around gap-5 items-center flex-wrap min-w-[300px] w-full ">
         <div className="lg:w-[45%] w-11/12">
           <div className="w-full mb-5 p-3 rounded-lg">

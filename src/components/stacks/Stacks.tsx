@@ -6,7 +6,7 @@ import {
   SiTailwindcss,
   SiTypescript,
   SiSvelte,
-  SiExpress,
+  SiExpress
 } from "react-icons/si";
 import { TbBrandNextjs } from "react-icons/tb";
 import { BsGit } from "react-icons/bs";
@@ -15,7 +15,7 @@ import { BiLogoMongodb, BiLogoGoLang } from "react-icons/bi";
 
 function Stacks() {
   return (
-    <div className="min-w-[300px]">
+    <div className="min-w-[300px] max-w-5xl mx-auto">
       <h2 className="w-full text-center font-bold text-lg p-3 m-2 text-white">
         Tools And Technologies I use
       </h2>

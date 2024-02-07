@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   title: "Portifolio | Kumneger Wondimu",
   description: "a passionate full stack developer based in ethiopia",
   other: {
-    "google-site-verification": "oDVfNqx1QrRnGvkWz-i646WtX-rsZn1h2J7jdBwyHvU",
-  },
+    "google-site-verification": "oDVfNqx1QrRnGvkWz-i646WtX-rsZn1h2J7jdBwyHvU"
+  }
 };
 
 function PortfolioLayout({ children }: { children: React.ReactNode }) {
@@ -19,7 +19,7 @@ function PortfolioLayout({ children }: { children: React.ReactNode }) {
     <html>
       <body className="overflow-x-hidden">
         <Header />
-        <main className="max-w-7xl mx-auto font-serif">{children}</main>
+        <main className="mx-auto">{children}</main>
         <Analytics />
         <Footer />
       </body>

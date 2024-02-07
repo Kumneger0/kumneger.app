@@ -1,11 +1,8 @@
 import Link from "next/link";
-import React from "react";
 import { AiFillLinkedin } from "react-icons/ai";
 import { BiLogoGithub } from "react-icons/bi";
 import { FaTwitter } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
-import logo from "../../../public/logo.png";
-import Image from "next/image";
 
 function Footer() {
   return (
