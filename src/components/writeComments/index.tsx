@@ -14,16 +14,17 @@ import { Comments } from "../comments";
 import { Button } from "../ui/button";
 import { commentIdAtom } from "../commentActions";
 import { useAtom } from "jotai";
+import { Card, CardContent } from "../ui/card";
 
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data, status } = useSession();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const modalRef = useRef<ElementRef<typeof LoginModal>>(null);
   const router = useRouter();
 
   const [id, setId] = useAtom(commentIdAtom);
 
-  const handleUserLoginStatus = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleUserLoginStatus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
     if (status === "unauthenticated") {
       modalRef.current?.openModal();
     }
@@ -52,20 +53,28 @@ function PostComments({ asset_id }: { asset_id: string }) {
 
   return (
     <>
-      <form action={postComment}>
-        <input
-          ref={inputRef}
-          onFocus={handleUserLoginStatus}
-          className="border-2 text-black border-gray-300 rounded-md p-2"
-          required
-          autoCapitalize="on"
-          spellCheck
-          type="text"
-          name="content"
-          placeholder="write a comment"
-        />
-        <SubmitForm />
-      </form>
+      <section className="mt-12">
+        <h2 className="text-3xl font-bold text-center">Add a Comment</h2>
+        <Card className="border-none">
+          <CardContent>
+            <form action={postComment} className="space-y-4">
+              <textarea
+                ref={inputRef}
+                onFocus={handleUserLoginStatus}
+                required
+                autoCapitalize="on"
+                spellCheck
+                name="content"
+                className="w-full p-2 border text-black border-gray-300 rounded"
+                placeholder="Your Comment"
+                rows={4}
+              />
+              <SubmitForm />
+            </form>
+          </CardContent>
+        </Card>
+      </section>
+
       <div className="hidden">
         <LoginModal ref={modalRef}>
           <div />
@@ -86,7 +95,7 @@ export function SubmitForm() {
       variant={"secondary"}
       type="submit"
     >
-      {pending ? "Loading..." : "post"}
+      {pending ? "Loading..." : "Post Comment"}
     </Button>
   );
 }

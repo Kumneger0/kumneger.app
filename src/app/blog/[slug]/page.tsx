@@ -1,24 +1,33 @@
+import { LoginModal } from "@/components/blogHeader/blogHeader";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getAllBlogsFromCloundnary, getBlogBySlug } from "@/utils/utils";
-import { Metadata } from "next";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
-import { FaBackward } from "react-icons/fa";
-import Blog from "./wrapper";
 import { notFound } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { LoginModal } from "@/components/blogHeader/blogHeader";
+import Blog from "./wrapper";
+import { Metadata } from "next";
 
 type TPrams = { params: { slug: string } };
 
 export const dynamic = "force-static";
+
+export async function generateStaticParams() {
+  return (await getAllBlogsFromCloundnary()).map(({ asset_id }) => ({
+    slug: asset_id
+  }));
+}
+
+export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
+  const asset_id = params.slug;
+  const { data } = await getBlogBySlug(asset_id);
+  return {
+    title: data?.title,
+    description: data?.seoDescription,
+    openGraph: {
+      images: [{ url: `/api/gen-og-images/${data?.title}` }]
+    }
+  };
+}
 
 export default async function BlogSlug({ params }: TPrams) {
   const asset_id = params.slug;
@@ -42,7 +51,7 @@ export default async function BlogSlug({ params }: TPrams) {
       <main className="container max-w-5xl mx-auto px-4  md:px-6 lg:px-8">
         <section className="mt-12">
           <div className="flex justify-between">
-            <Link className="underline text-blue-400" href="#">
+            <Link className="underline text-blue-400" href="/blog">
               Back to Blog
             </Link>
             <LoginModal>sign in</LoginModal>
@@ -62,10 +71,10 @@ export default async function BlogSlug({ params }: TPrams) {
               <div className="flex justify-between items-center">
                 <div className="text-gray-400">
                   <p>
-                    Published on: <span className="font-bold">Feb 6, 2024</span>
+                    Published on: <span className="font-bold">{data.date}</span>
                   </p>
                   <p>
-                    Author: <span className="font-bold">John Doe</span>
+                    Author: <span className="font-bold">{data.author}</span>
                   </p>
                 </div>
               </div>

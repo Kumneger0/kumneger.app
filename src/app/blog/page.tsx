@@ -9,64 +9,28 @@ import {
 import { getSampleRelatedArticles } from "@/utils/utils";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
-import Blogs, { TBlogs } from "../../components/blogs/Blogs";
+import Blogs from "../../components/blogs/Blogs";
 
 export const dynamic = "force-static";
 
-// async function Home() {
-//   const blogs = await getSampleRelatedArticles();
-//   const serializedBlog = await Promise.all<TBlogs[]>(
-//     //@ts-expect-error I will figure out later
-//     blogs?.map(async ({ content, data }) => ({
-//       title: data.title,
-//       content: await serialize(content.slice(0, 200)),
-//       data
-//     })) as unknown as TBlogs
-//   );
-
-//   return (
-//     <>
-//       <div className="w-11/12 mx-auto flex min-h-screen flex-col items-center p-5">
-//         <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
-//           Latest Articles
-//         </div>
-//
-//         <Blogs className="justify-center" blogs={serializedBlog} />
-//       </div>
-//     </>
-//   );
-// }
-
-// export default Home;
 export default async function Home() {
   const blogs = await getSampleRelatedArticles();
-  const serializedBlog = await Promise.all<TBlogs[]>(
-    //@ts-expect-error I will figure out later
-    blogs?.map(async ({ content, data }) => ({
-      title: data.title,
-      content: await serialize(content.slice(0, 200)),
-      data
-    })) as unknown as TBlogs
-  );
 
   return (
     <div className="dark min-h-screen bg-gray-800 text-white flex flex-col">
       <header className="fixed top-0 z-10 bg-gray-800  w-full">
-        <div className="container mx-auto px-4 py-4 md:px-6 lg:px-8">
+        <div className="container flex items-center gap-2 mx-auto px-4 py-4 md:px-6 lg:px-8">
+          <Link href={"/"}>
+            <div className="w-14 h-14 rounded-full  bg-green-500"></div>
+          </Link>
           <h1 className="text-2xl font-bold">Kumneger's Blog</h1>
         </div>
       </header>
       <main className="container mx-auto px-4 mt-12 md:px-6 lg:px-8 flex-1 overflow-y-auto">
         <section className="">
           <ul className="flex flex-col items-center">
-            {/* @ts-ignore */}
-            <Blogs className="justify-center" blogs={serializedBlog} />
+            <Blogs className="justify-center" blogs={blogs} />
           </ul>
-          <div className="mt-6 flex justify-center">
-            <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Load More
-            </Button>
-          </div>
         </section>
         <section className="mt-12">
           <h2 className="text-3xl font-bold text-center">Contact</h2>

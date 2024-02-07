@@ -4,7 +4,7 @@ import { BiCopy } from "react-icons/bi";
 import { BsBookmarkCheck } from "react-icons/bs";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { paraisoDark as theme } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export const Heading = ({ children }: { children: React.ReactNode }) => {
   return <h1 className="font-bold capitalize text-2xl mt-3">{children}</h1>;
@@ -33,7 +33,7 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-3">
-      <SyntaxHighlighter language="javascript" style={atomOneDark}>
+      <SyntaxHighlighter language="javascript" style={theme}>
         {children as string}
       </SyntaxHighlighter>
       <button

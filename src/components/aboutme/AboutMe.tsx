@@ -13,20 +13,21 @@ function AboutMe() {
         />
       </div>
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold">Your Name</h1>
+        <h1 className="text-4xl font-bold">Kumneger Wondimu (a.k.a Kune)</h1>
         <p className="text-lg text-gray-300">
           👨‍💻 A passionate Full Stack Developer based in Ethiopia 🇪🇹 with
           experience in building applications with JavaScript / React / Node.js
           and some other cool libraries and frameworks. I write about web
           development on my blog 🌐💡💻
         </p>
-        <h2 className="text-2xl font-semibold">Tools I use:</h2>
+        <h2 className="text-2xl font-semibold">Tools I use the most</h2>
         <ul className="list-disc list-inside text-gray-300">
-          <li>JavaScript (ES6+)</li>
+          <li>JavaScript </li>
+          <li>TypeScript</li>
+          <li>Next.js</li>
+          <li>Tailwind CSS</li>
           <li>React</li>
           <li>Node.js</li>
-          <li>GraphQL</li>
-          <li>TypeScript</li>
         </ul>
       </div>
     </section>
