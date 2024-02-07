@@ -1,10 +1,9 @@
+import { Analytics } from "@vercel/analytics/react";
+import { Metadata } from "next";
+import React from "react";
 import "../globals.css";
 import "./portifolio.css";
-import React from "react";
-import Header from "@/components/header/Header";
-import Footer from "@/components/blogFooter/Footer";
-import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
+import Footer from "@/components/footer/footer";
 
 export const metadata: Metadata = {
   title: "Portifolio | Kumneger Wondimu",
@@ -18,10 +17,15 @@ function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body className="overflow-x-hidden">
-        <Header />
-        <main className="mx-auto">{children}</main>
+        <main className="mx-auto">
+          <div className="dark min-h-screen bg-gray-800 text-white">
+            <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+              {children}
+              <Footer />
+            </main>
+          </div>
+        </main>
         <Analytics />
-        <Footer />
       </body>
     </html>
   );

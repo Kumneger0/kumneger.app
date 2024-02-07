@@ -1,69 +1,36 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import Typed from "typed.js";
-import Lottie from "lottie-web";
-import lottieJson from "../../../public/lottie.json";
-import aos from "aos";
 
 function AboutMe() {
-  const itroRef = useRef<HTMLHeadingElement>(null);
-  const lottieRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    aos.init({ duration: 1000 });
-    aos.refresh();
-    if (lottieRef.current) {
-      Lottie.loadAnimation({
-        container: lottieRef.current,
-        animationData: lottieJson,
-        renderer: "svg"
-      });
-      const childs = lottieRef.current.childNodes;
-      if (childs.length > 1) {
-        childs[childs.length - 1].remove();
-      }
-    }
-
-    const typed = new Typed(itroRef.current, {
-      strings: ["I am Kumneger Wondimu", "I am Web Developer"],
-      typeSpeed: 70,
-      backSpeed: 70,
-      loop: true
-    });
-
-    return () => {
-      typed.destroy();
-    };
-  }, []);
-
-  const aboutMe = {
-    description: `A passionate Full Stack Developer based in Ethiopia with experience in building applications with JavaScript / React / Node.js and some other cool libraries and frameworks.`
-  };
-
   return (
-    <div
-      id="aboutme"
-      className="min-w-[300px] w-11/12 max-w-7xl mx-auto z-10 mt-10 "
-    >
-      <div className="flex justify-around gap-5 items-center flex-wrap min-w-[300px] w-full ">
-        <div className="lg:w-[45%] w-11/12">
-          <div className="w-full mb-5 p-3 rounded-lg">
-            <h1 className="font-semibold font-serif  text-4xl text-slate-200">
-              Hi! <span ref={itroRef}></span>
-            </h1>
-          </div>
-          <div data-aos="flip-down" dat-aos-delay="1000">
-            {" "}
-            <div className="w-11/12 max-w-md p-2 bg-white rounded shadow-lg">
-              <p>{aboutMe.description}</p>
-            </div>
-          </div>
-        </div>
-        <div ref={lottieRef} id="lottie" className=""></div>
+    <section className="grid gap-8 md:grid-cols-2">
+      <div className="flex items-center justify-center">
+        <img
+          alt="Your Name"
+          className="aspect-square rounded-full object-cover"
+          height="200"
+          src="https://pics.craiyon.com/2023-10-03/c64134a721434b048ae228cc6a16643e.webp"
+          width="200"
+        />
       </div>
-    </div>
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold">Your Name</h1>
+        <p className="text-lg text-gray-300">
+          👨‍💻 A passionate Full Stack Developer based in Ethiopia 🇪🇹 with
+          experience in building applications with JavaScript / React / Node.js
+          and some other cool libraries and frameworks. I write about web
+          development on my blog 🌐💡💻
+        </p>
+        <h2 className="text-2xl font-semibold">Tools I use:</h2>
+        <ul className="list-disc list-inside text-gray-300">
+          <li>JavaScript (ES6+)</li>
+          <li>React</li>
+          <li>Node.js</li>
+          <li>GraphQL</li>
+          <li>TypeScript</li>
+        </ul>
+      </div>
+    </section>
   );
 }
 
-const About = React.memo(AboutMe);
-
-export default About;
+export default AboutMe;
