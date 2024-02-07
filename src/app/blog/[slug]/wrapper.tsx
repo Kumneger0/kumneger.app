@@ -3,18 +3,15 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 import Blog from "./blog";
 
-
 import { SessionProvider } from "next-auth/react";
 
-
-
 function Wrapper({ children }: { children: MDXRemoteSerializeResult }) {
-  return <>
-    <SessionProvider>
+  return (
+    <>
       <Blog blogContent={children} />
-
-    </SessionProvider>
-
-  </>
+    </>
+  );
 }
 export default Wrapper;
+
+export { SessionProvider as NextAuthWrapper };

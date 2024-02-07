@@ -10,17 +10,35 @@ import {
   CardTitle
 } from "../ui/card";
 
+const sampleProjects = [
+  {
+    title: `React-PocketChat`,
+    descreption:
+      "Explore a new real-time chat app built with React, TypeScript, and Pocketbase. Connect with friends via usernames, have private chats, and view profiles. Experience smooth, interactive communication now!"
+  },
+  {
+    title: `KDrive - Your Personal Cloud`,
+    descreption:
+      "Developed KDrive, a cloud storage solution using React and Firebase, purely for personal enjoyment Emphasizes my skills in leveraging Firebase for cloud storage."
+  },
+  {
+    title: `Tasty - Your Culinary Adventure Starts Here`,
+    descreption:
+      "Experience Tasty, a recipe app powered by Next.js and TypeScript, featuring a wide range of meals with videos and step-by-step instructions. Start cooking with Tasty today!"
+  }
+];
+
 function Projects() {
   return (
     <section className="mt-12">
       <h2 className="text-3xl font-bold">Sample Projects</h2>
       <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 3 }, (_arr, i) => (
-          <Card key={i}>
+        {sampleProjects.map(({ descreption, title }) => (
+          <Card key={title}>
             <CardHeader>
-              <CardTitle>Project {i + 1}</CardTitle>
-              <CardDescription>
-                A brief description of Project {i + 1}.
+              <CardTitle>Project {title}</CardTitle>
+              <CardDescription className="text-lg mt-4">
+                {descreption}
               </CardDescription>
             </CardHeader>
             <CardContent>

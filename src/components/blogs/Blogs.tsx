@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
-import { components } from "../../app/(blog)/blog/[slug]/blog";
+import { components } from "../../app/blog/[slug]/blog";
 
 import {
   Card,
@@ -30,46 +30,32 @@ export type TBlogs = {
 
 function Blogs({ blogs, className }: { blogs?: TBlogs; className: string }) {
   return (
-    <div className="max-w-11/12 max-[400px]:w-[300px]">
-      <div
-        className={twMerge(
-          className,
-          "w-full max-w-6xl flex  flex-wrap gap-5 mx-auto"
-        )}
-      >
-        {blogs?.map(({ title, content, data }, index) => {
-          const blogCOntent = content as unknown as MDXRemoteSerializeResult;
-          return (
-            <Card
-              key={data.asset_id}
-              className="w-[350px]  min-w-[350px] max-[330px]:max-w-[310px] p-2 shadow-sm border-[0.2px] border-gray-600 shadow-gray-600 rounded-xl"
-            >
-              <CardHeader className="p-2">
-                <CardTitle className="capitalize">{data?.title}</CardTitle>
+    <>
+      {blogs?.map(({ title, content, data }, index) => {
+        const blogCOntent = content as unknown as MDXRemoteSerializeResult;
+        return (
+          <li className="py-4 w-full md:w-2/3">
+            <Card>
+              <CardHeader>
+                <CardTitle>{data?.title}</CardTitle>
                 <CardDescription>
-                  <div>{(data.author as string) || ""}</div>
-                  <div>{(data.date as string) || ""}</div>
+                  <MDXRemote
+                    {...blogCOntent}
+                    // @ts-ignore
+                    components={{ ...components }}
+                  />
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-2  line-clamp-3">
-                <MDXRemote
-                  {...blogCOntent}
-                  // @ts-ignore
-                  components={{ ...components }}
-                />
+              <CardContent>
+                <Link scroll={true} href={`/blog/${data.asset_id}`}>
+                  Read More
+                </Link>
               </CardContent>
-              <CardFooter className="py-2 w-full  items-center flex justify-center">
-                <Button className="bg-gray-800 hover:bg-gray-600 rounded-lg">
-                  <Link scroll={true} href={`/blog/${data.asset_id}`}>
-                    Read More
-                  </Link>
-                </Button>
-              </CardFooter>
             </Card>
-          );
-        })}
-      </div>
-    </div>
+          </li>
+        );
+      })}
+    </>
   );
 }
 
