@@ -45,7 +45,7 @@ export const LoginModal = forwardRef<
 
   return (
     <Dialog>
-      <DialogTrigger ref={dialogTriggerRef} className="text-white">
+      <DialogTrigger id="modal" ref={dialogTriggerRef} className="text-white">
         {children}
       </DialogTrigger>
       <DialogContent className="bg-white">
@@ -74,30 +74,22 @@ function blogHeader() {
   const { data, status } = useSession();
 
   return (
-    <>
-      <header className="bg-gray-800 p-5  w-full z-50 overflow-x-hidden">
-        <nav className="flex items-center justify-between flex-wrap w-4/5 max-w-7xl mx-auto lg:gap-20">
-          <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <Link
-              href="/"
-              className="group text-white max-[500px]:text-lg flex  items-center gap-2 text-2xl transition duration-300 font-serif"
-            >
-              Kumneger
-              <span className="block z-50 max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white" />
-            </Link>
-          </div>
-          <div>
-            {status === "authenticated" ? (
-              <Button className="text-white" onClick={() => signOut()}>
-                sign out
-              </Button>
-            ) : (
-              <LoginModal>Sign in</LoginModal>
-            )}
-          </div>
-        </nav>
+    <div className="min-w-screen w-full fixed top-0 z-10 bg-gray-800">
+      <header className="flex justify-between py-5 items-center bg-gray-800 sticky max-w-5xl w-11/12 top-0  z-10">
+        <div className="">
+          <h1 className="text-2xl font-bold ">Kumneger's Blog</h1>
+        </div>
+        <div className="">
+          {status === "authenticated" ? (
+            <Button className="text-white" onClick={() => signOut()}>
+              sign out
+            </Button>
+          ) : (
+            <LoginModal>Sign in</LoginModal>
+          )}
+        </div>
       </header>
-    </>
+    </div>
   );
 }
 

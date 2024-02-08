@@ -1,15 +1,6 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
 import { getSampleRelatedArticles } from "@/utils/utils";
-import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
-import Blogs from "../../components/blogs/Blogs";
+import Blogs from "../../../components/blogs/Blogs";
 
 export const dynamic = "force-static";
 
@@ -18,15 +9,7 @@ export default async function Home() {
 
   return (
     <div className="dark min-h-screen bg-gray-800 text-white flex flex-col">
-      <header className="fixed top-0 z-10 bg-gray-800  w-full">
-        <div className="container flex items-center gap-2 mx-auto px-4 py-4 md:px-6 lg:px-8">
-          <Link href={"/"}>
-            <div className="w-14 h-14 rounded-full  bg-green-500"></div>
-          </Link>
-          <h1 className="text-2xl font-bold">Kumneger's Blog</h1>
-        </div>
-      </header>
-      <main className="container mx-auto px-4 mt-12 md:px-6 lg:px-8 flex-1 overflow-y-auto">
+      <main className=" mx-auto px-4 mt-12 md:px-6 lg:px-8 flex-1 overflow-y-auto">
         <section className="">
           <ul className="flex flex-col items-center">
             <Blogs className="justify-center" blogs={blogs} />
@@ -41,7 +24,6 @@ export default async function Home() {
               <a className="underline text-blue-400" href="#">
                 your-email@example.com
               </a>
-              .
             </p>
           </div>
         </section>

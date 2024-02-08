@@ -13,8 +13,10 @@ function AboutMe() {
         />
       </div>
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold">Kumneger Wondimu (a.k.a Kune)</h1>
-        <p className="text-lg text-gray-300">
+        <h1 className="md:text-3xl text-2xl font-bold">
+          Kumneger Wondimu (a.k.a Kune)
+        </h1>
+        <p className="text-gray-300">
           👨‍💻 A passionate Full Stack Developer based in Ethiopia 🇪🇹 with
           experience in building applications with JavaScript / React / Node.js
           and some other cool libraries and frameworks. I write about web

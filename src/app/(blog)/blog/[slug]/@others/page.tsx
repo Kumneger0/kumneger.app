@@ -1,4 +1,4 @@
-import Blogs, { TBlogs } from "@/components/blogs/Blogs";
+import Blogs from "@/components/blogs/Blogs";
 import {
   getAllBlogsFromCloundnary,
   getSampleRelatedArticles
@@ -16,13 +16,6 @@ export async function generateStaticParams() {
 
 async function Page({ params }: { params: { slug: string } }) {
   const blogs = await getSampleRelatedArticles(params.slug, 3);
-  const serializedBlog = await Promise.all<TBlogs[]>(
-    blogs?.map(async ({ title, content, data }) => ({
-      title: data.title,
-      content: await serialize(content.slice(0, 200)),
-      data
-    })) as unknown as TBlogs[]
-  );
 
   return (
     <div className="space-y-4  sm:ml-auto  mt-12 max-w-6xl w-full  mx-auto">
@@ -31,8 +24,7 @@ async function Page({ params }: { params: { slug: string } }) {
       </h2>
       {/* @ts-ignore */}
       <ul className="flex flex-col items-center">
-        {/* @ts-ignore */}
-        <Blogs className="justify-around" blogs={serializedBlog} />
+        <Blogs className="justify-around" blogs={blogs} />
       </ul>
     </div>
   );

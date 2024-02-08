@@ -31,13 +31,13 @@ const sampleProjects = [
 function Projects() {
   return (
     <section className="mt-12">
-      <h2 className="text-3xl font-bold">Sample Projects</h2>
+      <h2 className="text-2xl font-bold">Sample Projects</h2>
       <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
         {sampleProjects.map(({ descreption, title }) => (
-          <Card key={title}>
+          <Card className="border-none bg-gray-700 rounded-lg" key={title}>
             <CardHeader>
-              <CardTitle>Project {title}</CardTitle>
-              <CardDescription className="text-lg mt-4">
+              <CardTitle className="text-xl">{title}</CardTitle>
+              <CardDescription className="text-base mt-4">
                 {descreption}
               </CardDescription>
             </CardHeader>

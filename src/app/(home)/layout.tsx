@@ -1,9 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { Metadata } from "next";
 import React from "react";
-import "./globals.css";
-import NextAuthWrapper from "@/components/nextAuthWrapper";
-// import "./portifolio.css";
+import "./../globals.css";
 
 export const metadata: Metadata = {
   title: "Portifolio | Kumneger Wondimu",
@@ -18,13 +16,11 @@ function PortfolioLayout({ children }: { children: React.ReactNode }) {
     <html>
       <body className="overflow-x-hidden">
         <main className="mx-auto">
-          <NextAuthWrapper>
-            <div className="dark min-h-screen bg-gray-800 text-white">
-              <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
-                {children}
-              </main>
-            </div>
-          </NextAuthWrapper>
+          <div className="dark min-h-screen bg-gray-800 text-white">
+            <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+              {children}
+            </main>
+          </div>
         </main>
         <Analytics />
       </body>

@@ -43,20 +43,14 @@ export default async function BlogSlug({ params }: TPrams) {
 
   return (
     <div className="dark min-h-screen bg-gray-800 text-white flex items-center justify-center">
-      <header className="fixed top-0 z-10 bg-gray-800  w-full">
-        <div className="container mx-auto px-4 py-4 md:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold">Kumneger's Blog</h1>
-        </div>
-      </header>
       <main className="container max-w-5xl mx-auto px-4  md:px-6 lg:px-8">
         <section className="mt-12">
-          <div className="flex justify-between">
-            <Link className="underline text-blue-400" href="/blog">
-              Back to Blog
-            </Link>
-            <LoginModal>sign in</LoginModal>
-          </div>
-          <h1 className="text-4xl font-bold text-center mt-6">{blogTitle}</h1>
+          <Link className="underline text-blue-400" href="/blog">
+            Back to Blog
+          </Link>
+          <h1 className="text-2xl py-3 md:text-3xl font-bold text-center mt-6">
+            {blogTitle}
+          </h1>
 
           <div>
             <img
@@ -66,23 +60,19 @@ export default async function BlogSlug({ params }: TPrams) {
               alt="header"
             />
           </div>
-          <Card className="border-none">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <div className="text-gray-400">
-                  <p>
-                    Published on: <span className="font-bold">{data.date}</span>
-                  </p>
-                  <p>
-                    Author: <span className="font-bold">{data.author}</span>
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {!!serialized && <Blog>{serialized}</Blog>}
-            </CardContent>
-          </Card>
+
+          <div className="flex w-full justify-between items-center">
+            <div className="text-gray-400">
+              <p>
+                Published on: <span className="font-bold">{data.date}</span>
+              </p>
+              <p>
+                Author: <span className="font-bold">{data.author}</span>
+              </p>
+            </div>
+          </div>
+
+          {!!serialized && <Blog>{serialized}</Blog>}
         </section>
       </main>
     </div>
