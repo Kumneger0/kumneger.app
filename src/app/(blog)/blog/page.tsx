@@ -15,32 +15,6 @@ export default async function Home() {
             <Blogs className="justify-center" blogs={blogs} />
           </ul>
         </section>
-        <section className="mt-12">
-          <h2 className="text-3xl font-bold text-center">Contact</h2>
-          <div className="mt-4 text-center">
-            <p className="text-lg text-gray-300">
-              If you want to get in touch with me, feel free to send me an email
-              at
-              <a className="underline text-blue-400" href="#">
-                your-email@example.com
-              </a>
-            </p>
-          </div>
-        </section>
-        <section className="mt-12">
-          <h2 className="text-3xl font-bold text-center">Social Media</h2>
-          <div className="flex space-x-4 mt-4 justify-center">
-            <Link href="#">
-              <img alt="Twitter" className="w-6 h-6" src="/placeholder.svg" />
-            </Link>
-            <Link href="#">
-              <img alt="LinkedIn" className="w-6 h-6" src="/placeholder.svg" />
-            </Link>
-            <Link href="#">
-              <img alt="GitHub" className="w-6 h-6" src="/placeholder.svg" />
-            </Link>
-          </div>
-        </section>
       </main>
     </div>
   );
