@@ -16,7 +16,7 @@ function Blogs({ blogs, className }: { blogs?: AllBlogs; className: string }) {
     <>
       {blogs?.map(({ title, content, data }, index) => {
         return (
-          <li className="py-4 w-full md:w-2/3">
+          <li className="py-4 w-full">
             <Card className="border-none bg-gray-700">
               <CardHeader>
                 <CardTitle>{data?.title}</CardTitle>
