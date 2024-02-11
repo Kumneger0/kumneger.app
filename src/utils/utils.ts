@@ -11,6 +11,17 @@ v2.config({
   secure: true
 });
 
+const seoDesctiptionsForAtriclesThatHaveNoSeoDescription = {
+  ec640e0c27eaac4c5f68874b42606e37:
+    "Discover how to build a peer-to-peer video call app from scratch. Learn the latest in P2P technology and enhance your web development skills.",
+  f5741adffcb5ac3ddaf32dfa2677a0b1:
+    "Learn how to resolve 'Rendered more hooks than during the previous render' errors in React. Our guide provides solutions for accidental early return statements affecting hook rendering",
+  a333cdd959cdc14f68a5540b70cae98f:
+    "Explore the power of screen capture with `navigator.mediaDevices.getDisplayMedia`. Learn how to implement screen sharing in web apps, enhancing collaboration and productivity",
+  "9086fc7f65195c918ed70636078f7805":
+    "Boost user experience with our guide on clipboard access in JavaScript. Discover how to create intuitive 'Copy to Clipboard' features, making it easier for users to interact with your web content"
+};
+
 interface resources extends ResourceApiResponse {
   public_id: string;
   secure_url: string;
@@ -49,6 +60,7 @@ const getAllBlogsFromCloundnary = async () => {
     return blogSecureUrl;
   } catch (err) {
     console.log(err);
+    console.log(err)
     throw new Error("there was an error occured");
   }
 };
@@ -95,7 +107,18 @@ const getBlogBySlug = async (slug: string) => {
   const date = new Date(year, month, day).toDateString();
   return {
     content,
-    data: { ...data, asset_id: slug, date, author: "Kumneger Wondimu" }
+    data: {
+      ...data,
+      asset_id: slug,
+      title: data.title,
+      date,
+      author: "Kumneger Wondimu",
+      seoDescription:
+        data.seoDescription ??
+        seoDesctiptionsForAtriclesThatHaveNoSeoDescription[
+          slug as keyof typeof seoDesctiptionsForAtriclesThatHaveNoSeoDescription
+        ]
+    }
   };
 };
 
@@ -114,6 +137,8 @@ const getSampleRelatedArticles = async (
       month: number;
       day: number;
       asset_id: string;
+      mode?: string;
+      seoDescription?: string;
     };
   }> = [];
   const allBlogs = await getAllBlogs();
@@ -128,11 +153,27 @@ const getSampleRelatedArticles = async (
     const data = config as (typeof articles)[number]["data"];
     const [year, month, day] = data?.date?.split("/").map(Number);
     const date = new Date(year, month, day).toDateString();
-    if (content) {
+
+    const isPreview =
+      process.env.NODE_ENV === "development" ? false : data?.mode === "preview";
+
+    if (content && !isPreview) {
       articles.push({
         title: blog.rawMdx.split(".")[0],
         content,
-        data: { ...data, date, year, month, day, asset_id: blog.asset_id }
+        data: {
+          ...data,
+          date,
+          year,
+          month,
+          day,
+          asset_id: blog.asset_id,
+          seoDescription:
+            data.seoDescription ??
+            seoDesctiptionsForAtriclesThatHaveNoSeoDescription[
+              blog.asset_id as keyof typeof seoDesctiptionsForAtriclesThatHaveNoSeoDescription
+            ]
+        }
       });
     }
   });

@@ -1,31 +1,21 @@
 import { getSampleRelatedArticles } from "@/utils/utils";
-import { serialize } from "next-mdx-remote/serialize";
-import Blogs, { TBlogs } from "../../../components/blogs/Blogs";
+import Link from "next/link";
+import Blogs from "../../../components/blogs/Blogs";
 
 export const dynamic = "force-static";
 
-async function Home() {
+export default async function Home() {
   const blogs = await getSampleRelatedArticles();
-  const serializedBlog = await Promise.all<TBlogs[]>(
-    //@ts-expect-error I will figure out later
-    blogs?.map(async ({ content, data }) => ({
-      title: data.title,
-      content: await serialize(content.slice(0, 200)),
-      data
-    })) as unknown as TBlogs
-  );
 
   return (
-    <>
-      <div className="w-11/12 mx-auto flex min-h-screen flex-col items-center p-5">
-        <div className="w-11/12 max-w-6xl mx-auto my-5 font-bold text-xl">
-          Latest Articles
-        </div>
-        {/* @ts-ignore */}
-        <Blogs className="justify-center" blogs={serializedBlog} />
-      </div>
-    </>
+    <div className="dark min-h-screen bg-gray-800 text-white flex flex-col">
+      <main className=" mx-auto px-4 mt-12 md:px-6 lg:px-8 flex-1 overflow-y-auto">
+        <section className="">
+          <ul className="flex flex-col items-center">
+            <Blogs className="bg-gray-700 my-2" blogs={blogs} />
+          </ul>
+        </section>
+      </main>
+    </div>
   );
 }
-
-export default Home;

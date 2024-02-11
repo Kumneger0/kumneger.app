@@ -4,10 +4,9 @@ import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 async function Page({ params }: { params: { slug: string } }) {
-  cookies();
   const comments = await getAllComments(params.slug);
   return (
-    <div className="max-w-5xl w-full mx-auto">
+    <div className="max-w-4xl mt-12  w-full mx-auto">
       <pre className="font-bold text-2xl mt-3">{comments.total} Comments</pre>
       <CommentsWrapper asset_id={params.slug} comments={comments} />
     </div>

@@ -4,17 +4,17 @@ import { BiCopy } from "react-icons/bi";
 import { BsBookmarkCheck } from "react-icons/bs";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { paraisoDark as theme } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 export const Heading = ({ children }: { children: React.ReactNode }) => {
-  return <h1 className="font-bold capitalize text-2xl mt-5">{children}</h1>;
+  return <h1 className="font-bold capitalize text-2xl mt-3">{children}</h1>;
 };
 export const Heading2 = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="font-bold capitalize text-xl mt-5">{children}</h2>;
+  return <h2 className="font-bold capitalize text-xl mt-2">{children}</h2>;
 };
 
 export const Paragraph = ({ children }: { children: React.ReactNode }) => {
-  return <p className="py-5 ">{children}</p>;
+  return <p className="mt-2">{children}</p>;
 };
 
 export const Code = ({ children }: { children: React.ReactNode }) => {
@@ -27,17 +27,19 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
       })
       .catch((err) => {
         alert("failed to copy");
-      });
+      })
+      .finally(() => setTimeout(() => setIsCopied(false), 1000));
   }
 
   return (
-    <div className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-5">
-      <SyntaxHighlighter language="javascript" style={atomOneDark}>
+    <div className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-3">
+      <SyntaxHighlighter language="javascript" style={theme}>
         {children as string}
       </SyntaxHighlighter>
       <button
         onClick={() => copyCodeToClipboard(children)}
-        className="absolute right-5 top-5">
+        className="absolute right-5 top-5"
+      >
         {!isCopied ? <BiCopy /> : <BsBookmarkCheck />}
       </button>
     </div>
@@ -55,7 +57,7 @@ export function LinkComponent<
 
 export const Strong = ({ children }: { children: React.ReactNode }) => {
   return (
-    <strong className="bg-slate-200 text-black px-1 rounded-md">
+    <strong className="bg-slate-400 text-black px-1 rounded-md">
       {children}
     </strong>
   );

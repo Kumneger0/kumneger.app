@@ -1,33 +1,23 @@
 import React from "react";
 const Work = () => {
-  const works = [
-    {
-      company: "Dynamo Center For Technology",
-      role: "Full Stack Developer",
-      year: "May 2023 - Present",
-      description:
-        "Worked on several web applications using React, Node.js, Express, and MongoDB.",
-    },
-  ];
-
   return (
-    <div
-      id="work"
-      className="flex flex-col items-center w-full  max-[400px]:w-[300px] min-w-[300px]">
-      <h2 className="text-2xl font-bold mb-5 my-10 text-white">
-        Work Experience
-      </h2>
-      {works.map((work, index) => (
-        <div
-          key={index}
-          className="w-full max-w-[500px] p-2 bg-white rounded shadow-lg mb-5">
-          <h3 className="text-xl font-bold mb-2">{work.company}</h3>
-          <h4 className="text-lg mb-2">{work.role}</h4>
-          <h4 className="text-gray-500 mb-3">{work.year}</h4>
-          <p>{work.description}</p>
-        </div>
-      ))}
-    </div>
+    <section className="mt-12">
+      <h2 className="text-2xl font-bold">Employment History</h2>
+      <ul className="list-inside list-none mt-4 text-lg text-gray-300 space-y-4">
+        <li>
+          <h3 className="text-xl font-semibold">
+            {" "}
+            Dynamo Center For Technology
+          </h3>
+          <p className="text-base py-1">Role: Full Stack Developer</p>
+          <p className="text-base">Duration: May 2023 - Present</p>
+          <p className="text-base max-w-3xl">
+            Worked on several web applications using React, Node.js, Express,
+            and MongoDB.
+          </p>
+        </li>
+      </ul>
+    </section>
   );
 };
 
