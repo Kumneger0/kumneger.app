@@ -1,4 +1,5 @@
-"use client";
+import { TfiHandPointRight } from "react-icons/tfi";
+
 
 function AboutMe() {
   return (
@@ -23,13 +24,13 @@ function AboutMe() {
           development on my blog 🌐💡💻
         </p>
         <h2 className="text-2xl font-semibold">Tools I use the most</h2>
-        <ul className="list-disc list-inside text-gray-300">
-          <li>JavaScript </li>
-          <li>TypeScript</li>
-          <li>Next.js</li>
-          <li>Tailwind CSS</li>
-          <li>React</li>
-          <li>Node.js</li>
+        <ul className="list-inside text-gray-300">
+          <li className="flex gap-2 items-center "><TfiHandPointRight className="text-white"/> JavaScript </li>
+          <li className="flex gap-2 items-center "><TfiHandPointRight className="text-white"/> TypeScript</li>
+          <li className = "flex gap-2 items-center"> <TfiHandPointRight className = "text-white"/> Next.js</li>
+          <li className = "flex gap-2 items-center"> <TfiHandPointRight className = "text-white"/> Tailwind CSS</li>
+          <li className = "flex gap-2 items-center"> <TfiHandPointRight className = "text-white"/> React</li>
+          <li className = "flex gap-2 items-center"> <TfiHandPointRight className = "text-white"/> Node.js</li>
         </ul>
       </div>
     </section>

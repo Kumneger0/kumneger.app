@@ -2,10 +2,16 @@ import React from "react";
 import "./../../globals.css";
 import NextAuthWrapper from "@/components/nextAuthWrapper";
 import BlogHeader from "@/components/blogHeader/blogHeader";
+import {Open_Sans} from 'next/font/google'
+
+const openSans = Open_Sans({
+   subsets: ['latin'],
+  display: 'swap',
+})
 
 function Bloglayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html className={openSans.className}>
       <body>
         <NextAuthWrapper>
           <div className="dark min-h-screen  bg-gray-800 text-white">

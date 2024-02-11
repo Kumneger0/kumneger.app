@@ -60,6 +60,7 @@ const getAllBlogsFromCloundnary = async () => {
     return blogSecureUrl;
   } catch (err) {
     console.log(err);
+    console.log(err)
     throw new Error("there was an error occured");
   }
 };

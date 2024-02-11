@@ -1,6 +1,9 @@
 "use client";
-import Link from "next/link";
-import React from "react";
+
+import DrawerComponent, { Project } from "../drawer";
+import reactPocketChatApp from "../../../public/chatapp.png";
+import Kdrive from "../../../public/Kdrive.png";
+import NextRecipe from "../../../public/recipe.png";
 
 import {
   Card,
@@ -10,20 +13,32 @@ import {
   CardTitle
 } from "../ui/card";
 
-const sampleProjects = [
+const sampleProjects: Project[] = [
   {
-    title: `React-PocketChat`,
-    descreption:
-      "Explore a new real-time chat app built with React, TypeScript, and Pocketbase. Connect with friends via usernames, have private chats, and view profiles. Experience smooth, interactive communication now!"
+    projectTitle: `React-PocketChat`,
+    description:
+      "Explore a new real-time chat app built with React, TypeScript, and Pocketbase. Connect with friends via usernames, have private chats, and view profiles. Experience smooth, interactive communication now!",
+    images: [reactPocketChatApp],
+    projectGithubRepo: "",
+    projectLiveUrl: " ",
+    usedTechStackInProject: ["pocketbase", "React"]
   },
   {
-    title: `KDrive - Your Personal Cloud`,
-    descreption:
+    images: [Kdrive],
+    projectGithubRepo: "",
+    projectLiveUrl: "",
+    usedTechStackInProject: ["firebase", "React"],
+    projectTitle: `KDrive - Your Personal Cloud`,
+    description:
       "Developed KDrive, a cloud storage solution using React and Firebase, purely for personal enjoyment Emphasizes my skills in leveraging Firebase for cloud storage."
   },
   {
-    title: `Tasty - Your Culinary Adventure Starts Here`,
-    descreption:
+    projectGithubRepo: "",
+    images: [NextRecipe],
+    projectLiveUrl: "",
+    usedTechStackInProject: ["nextJS"],
+    projectTitle: "Tasty - Your Culinary Adventure Starts Here",
+    description:
       "Experience Tasty, a recipe app powered by Next.js and TypeScript, featuring a wide range of meals with videos and step-by-step instructions. Start cooking with Tasty today!"
   }
 ];
@@ -33,18 +48,23 @@ function Projects() {
     <section className="mt-12">
       <h2 className="text-2xl font-bold">Sample Projects</h2>
       <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-        {sampleProjects.map(({ descreption, title }) => (
-          <Card className="border-none bg-gray-700 rounded-lg" key={title}>
+        {sampleProjects.map(({ description, projectTitle, ...project }) => (
+          <Card
+            className="border-none bg-gray-700 rounded-lg"
+            key={projectTitle}
+          >
             <CardHeader>
-              <CardTitle className="text-xl">{title}</CardTitle>
+              <CardTitle className="text-xl">{projectTitle}</CardTitle>
               <CardDescription className="text-base mt-4">
-                {descreption}
+                {description}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Link className="underline text-blue-400" href="#">
-                View Project
-              </Link>
+              <DrawerComponent
+                project={{ description, projectTitle, ...project }}
+              >
+                Details
+              </DrawerComponent>
             </CardContent>
           </Card>
         ))}
