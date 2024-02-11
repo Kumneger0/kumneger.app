@@ -12,12 +12,8 @@ const Work = () => {
           <p className="text-base py-1">Role: Full Stack Developer</p>
           <p className="text-base">Duration: May 2023 - Present</p>
           <p className="text-base max-w-3xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Voluptatibus placeat repellendus tenetur, autem qui ex nihil,
-            officiis itaque, omnis aut at dolore consectetur voluptates quod
-            voluptas illo? Neque deserunt consectetur dicta soluta tenetur,
-            nostrum aut dolorem itaque voluptates, qui accusantium adipisci
-            corrupti magni! Assumenda.
+            Worked on several web applications using React, Node.js, Express,
+            and MongoDB.
           </p>
         </li>
       </ul>
