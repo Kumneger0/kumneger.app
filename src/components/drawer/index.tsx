@@ -26,8 +26,11 @@ export function ImagesCarousel({ images }: { images: Array<StaticImageData> }) {
     <Carousel className="w-4/5 mx-auto">
       <CarouselContent className="">
         {images.map((src, i) => (
-          <CarouselItem className="w-full" key={i}>
-            <div className="p-1 w-full max-h-[500px] aspect-video object-center object-cover">
+          <CarouselItem
+            className="w-full relative z-50 border border-green-500"
+            key={i}
+          >
+            <div className="p-1 w-full z-40 relative aspect-video object-center object-cover">
               <Image
                 className="w-full aspect-video object-contain object-center"
                 alt="project image"
@@ -63,8 +66,8 @@ export default function DrawerComponent({
     <div className="max-w-5xl mx-auto">
       <Drawer>
         <DrawerTrigger className="">{children}</DrawerTrigger>
-        <DrawerContent className="bg-gray-700 overflow-y-auto h-[80vh]  grid place-items-center ">
-          <DrawerHeader className="">
+        <DrawerContent className="bg-gray-700 overflow-y-auto  grid place-items-center ">
+          <DrawerHeader className="max-h-[400px]  z-[9999]">
             <DrawerTitle className="w-full text-center">
               {project.projectTitle}
             </DrawerTitle>
@@ -96,7 +99,7 @@ export default function DrawerComponent({
             </div>
           </DrawerHeader>
 
-          <DrawerFooter className="flex  relative z-[99999] justify-center items-center gap-3 w-full">
+          <DrawerFooter className="flex bg-black  relative z-[99999] justify-center items-center gap-3 w-full">
             <div className=" flex w-full justify-center">
               <div>
                 {" "}

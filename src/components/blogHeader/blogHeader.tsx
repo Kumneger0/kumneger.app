@@ -1,7 +1,6 @@
 "use client";
 
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
-import Link from "next/link";
+import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 
 import {
   Dialog,
@@ -11,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
 import {
   ElementRef,
   forwardRef,
@@ -20,6 +18,9 @@ import {
   useRef,
   useState
 } from "react";
+import { Button } from "../ui/button";
+import { Github } from "lucide-react";
+import Link from "next/link";
 
 export const LoginModal = forwardRef<
   { openModal: () => void },
@@ -58,9 +59,9 @@ export const LoginModal = forwardRef<
               onClick={() => {
                 signIn("github", { callbackUrl: location.href });
               }}
-              className="capitalize"
-              variant={"secondary"}
+              className="capitalize bg-gray-950 text-white shadow-sm rounded-[8px] hover:bg-gray-900"
             >
+              <Github className="text-white mr-2" />
               sign in with github
             </Button>
           ) : null}
@@ -74,14 +75,19 @@ function blogHeader() {
   const { data, status } = useSession();
 
   return (
-    <div className="min-w-screen w-full fixed top-0 z-10 bg-gray-800">
-      <header className="flex justify-between py-5 items-center bg-gray-800 sticky max-w-5xl w-11/12 top-0  z-10">
+    <div className="min-w-screen bg-gray-800">
+      <header className="flex justify-between py-5 items-center  max-w-5xl mx-auto w-11/12  z-10">
         <div className="">
-          <h1 className="text-2xl font-bold ">Kumneger's Blog</h1>
+          <Link href={"/"}>
+            <h1 className="text-2xl font-bold text-white">Kumneger</h1>
+          </Link>
         </div>
         <div className="">
           {status === "authenticated" ? (
-            <Button className="text-white" onClick={() => signOut()}>
+            <Button
+              className="bg-blue-700 hover:bg-blue-600 rounded-[8px] text-white"
+              onClick={() => signOut()}
+            >
               sign out
             </Button>
           ) : (

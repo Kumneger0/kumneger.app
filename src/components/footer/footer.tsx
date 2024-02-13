@@ -4,7 +4,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <>
+    <div className="max-w-[1300px] w-11/12 py-5 mx-auto">
       <section className="mt-12">
         <h2 className="text-xl font-bold">Contact</h2>
         <div className="mt-4">
@@ -40,7 +40,7 @@ function Footer() {
           </Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

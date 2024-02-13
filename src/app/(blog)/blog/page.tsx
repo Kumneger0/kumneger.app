@@ -12,7 +12,7 @@ export default async function Home() {
       <main className=" mx-auto px-4 mt-12 md:px-6 lg:px-8 flex-1 overflow-y-auto">
         <section className="">
           <ul className="flex flex-col items-center">
-            <Blogs className="bg-gray-700 my-2" blogs={blogs} />
+            <Blogs className="bg-gray-700 my-2 rounded-xl" blogs={blogs} />
           </ul>
         </section>
       </main>

@@ -24,7 +24,7 @@ async function Page({ params }: { params: { slug: string } }) {
       </h2>
       {/* @ts-ignore */}
       <ul className="flex flex-col items-center">
-        <Blogs className="justify-around" blogs={blogs} />
+        <Blogs className="bg-gray-700 rounded-xl" blogs={blogs} />
       </ul>
     </div>
   );

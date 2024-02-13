@@ -2,7 +2,6 @@ import AboutMe from "@/components/aboutme/AboutMe";
 import Projects from "@/components/previosProjects/previosProjects";
 import Work from "@/components/works/Work";
 
-import Footer from "@/components/footer/footer";
 import PublishedArticles from "@/components/publishedArticles/PublishedArticles";
 
 export default function Home() {
@@ -12,7 +11,6 @@ export default function Home() {
       <Work />
       <PublishedArticles />
       <Projects />
-      <Footer />
     </>
   );
 }
