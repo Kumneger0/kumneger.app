@@ -4,11 +4,18 @@ import { serialize } from "next-mdx-remote/serialize";
 import { Open_Sans } from "next/font/google";
 import Link from "next/link";
 import Blog from "./wrapper";
+import { unstable_cache } from "next/cache";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
   display: "swap"
 });
+
+const getBlog = unstable_cache(
+  (asset_id: string) => getBlogBySlug(asset_id),
+  [],
+  { revalidate: false }
+);
 
 type TPrams = { params: { slug: string } };
 
@@ -18,9 +25,12 @@ export async function generateStaticParams() {
   }));
 }
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
   const asset_id = params.slug;
-  const { data } = await getBlogBySlug(asset_id);
+  const { data } = await getBlog(asset_id);
   return {
     title: data?.title,
     description: data?.seoDescription,
@@ -32,7 +42,7 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 
 export default async function BlogSlug({ params }: TPrams) {
   const asset_id = params.slug;
-  const { data, content } = await getBlogBySlug(asset_id);
+  const { data, content } = await getBlog(asset_id);
 
   const serialized = content ? await serialize(content) : null;
 

@@ -16,7 +16,7 @@ import {
 } from "../ui/card";
 import { Eye } from "lucide-react";
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { Github, LinkIcon } from "lucide-react";
 
 const sampleProjects: Partial<Project & Record<string, any>>[] = [
   {
@@ -24,14 +24,15 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     description:
       "Highly Experimental React Library. Converts React components to static HTML for enhanced performance and SEO, with support for React Server Components. Optimizes for speed, SEO, and scalability.",
     projectGithubRepo: "https://github.com/Kumneger0/reactBunode",
-    docs: "https://reactbunode.pages.dev/"
+    projectLiveUrl: "https://reactbunode.pages.dev/"
   },
   {
     projectTitle: `React-PocketChat`,
     description:
       "Explore a new real-time chat app built with React, TypeScript, and Pocketbase. Connect with friends via usernames, have private chats, and view profiles. Experience smooth, interactive communication now!",
     images: [reactPocketChatApp],
-    projectGithubRepo: "",
+    projectGithubRepo:
+      "https://github.com/Kumneger0/chat-app-with-react-and-pocketbase",
     projectLiveUrl: "https://react-pocketchat.web.app/ ",
     usedTechStackInProject: [
       { name: "pocketbase", url: "https://pocketbase.io" },
@@ -40,8 +41,7 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
   },
   {
     images: [Kdrive],
-    projectGithubRepo:
-      "https://github.com/Kumneger0/chat-app-with-react-and-pocketbase",
+    projectGithubRepo: "https://github.com/Kumneger0/KDrive",
     projectLiveUrl: "https://kunedrive.web.app/",
     usedTechStackInProject: [
       { name: "firebase", url: "https://firebase.google.com" },
@@ -52,7 +52,7 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
       "Developed KDrive, a cloud storage solution using React and Firebase, purely for personal enjoyment Emphasizes my skills in leveraging Firebase for cloud storage."
   },
   {
-    projectGithubRepo: "",
+    projectGithubRepo: "https://github.com/Kumneger0/recipe-app-nextjs.",
     images: [NextRecipe, NextRecipe2, NextRecipe3],
     projectLiveUrl: "",
     usedTechStackInProject: [{ name: "nextJS", url: "https://nextjs.org" }],
@@ -78,13 +78,23 @@ function Projects() {
                 {description}
               </CardDescription>
             </CardHeader>
-            <CardContent className="relative bottom-0 right-0">
+            <CardContent className="relative flex gap-5 justify-start items-center bottom-0 right-0">
               {project.images?.length ? (
-                <DrawerComponent
-                  project={{ description, projectTitle, ...project }}
-                >
-                  <Eye />
-                </DrawerComponent>
+                <>
+                  <DrawerComponent
+                    project={{ description, projectTitle, ...project }}
+                  >
+                    <Eye />
+                  </DrawerComponent>
+                  <div>
+                    <Link
+                      href={project.projectGithubRepo as string}
+                      target="_blank"
+                    >
+                      <Github />
+                    </Link>
+                  </div>
+                </>
               ) : (
                 <Link
                   href={project.projectGithubRepo as string}
@@ -93,6 +103,11 @@ function Projects() {
                   <Github />
                 </Link>
               )}
+              <div>
+                <Link target="_blank" href={project.projectLiveUrl as string}>
+                  <LinkIcon />
+                </Link>
+              </div>
             </CardContent>
           </Card>
         ))}
