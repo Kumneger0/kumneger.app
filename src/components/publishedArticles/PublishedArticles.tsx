@@ -6,6 +6,7 @@ import Blogs, { AllBlogs } from "../blogs/Blogs";
 
 async function PublishedArticles() {
   const articles = (await getSampleRelatedArticles()).slice(0, 3);
+  // const articles = [];
 
   return (
     <section className="mt-12">

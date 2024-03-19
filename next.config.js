@@ -6,7 +6,6 @@ const nextConfig = {
       exclude: ["error"]
     }
   },
-
   reactStrictMode: false
 };
 

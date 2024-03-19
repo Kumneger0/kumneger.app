@@ -14,8 +14,18 @@ import {
   CardHeader,
   CardTitle
 } from "../ui/card";
+import { Eye } from "lucide-react";
+import Link from "next/link";
+import { Github } from "lucide-react";
 
-const sampleProjects: Project[] = [
+const sampleProjects: Partial<Project & Record<string, any>>[] = [
+  {
+    projectTitle: "ReactBunode",
+    description:
+      "Highly Experimental React Library. Converts React components to static HTML for enhanced performance and SEO, with support for React Server Components. Optimizes for speed, SEO, and scalability.",
+    projectGithubRepo: "https://github.com/Kumneger0/reactBunode",
+    docs: "https://reactbunode.pages.dev/"
+  },
   {
     projectTitle: `React-PocketChat`,
     description:
@@ -59,7 +69,7 @@ function Projects() {
       <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
         {sampleProjects.map(({ description, projectTitle, ...project }) => (
           <Card
-            className="border-none bg-gray-700 rounded-xl"
+            className="border-none bg-gray-700 relative rounded-xl"
             key={projectTitle}
           >
             <CardHeader>
@@ -68,12 +78,21 @@ function Projects() {
                 {description}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <DrawerComponent
-                project={{ description, projectTitle, ...project }}
-              >
-                Details
-              </DrawerComponent>
+            <CardContent className="relative bottom-0 right-0">
+              {project.images?.length ? (
+                <DrawerComponent
+                  project={{ description, projectTitle, ...project }}
+                >
+                  <Eye />
+                </DrawerComponent>
+              ) : (
+                <Link
+                  href={project.projectGithubRepo as string}
+                  target="_blank"
+                >
+                  <Github />
+                </Link>
+              )}
             </CardContent>
           </Card>
         ))}

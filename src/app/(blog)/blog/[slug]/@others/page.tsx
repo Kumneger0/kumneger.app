@@ -20,7 +20,7 @@ async function Page({ params }: { params: { slug: string } }) {
   return (
     <div className="space-y-4  sm:ml-auto  mt-12 max-w-6xl w-full  mx-auto">
       <h2 className="text-2xl font-bold w-full text-center">
-        Related Articles
+        Related Articles {Math.random()}
       </h2>
       {/* @ts-ignore */}
       <ul className="flex flex-col items-center">

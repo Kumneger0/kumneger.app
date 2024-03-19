@@ -3,7 +3,6 @@ import { Metadata } from "next";
 import { serialize } from "next-mdx-remote/serialize";
 import { Open_Sans } from "next/font/google";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import Blog from "./wrapper";
 
 const openSans = Open_Sans({
@@ -12,8 +11,6 @@ const openSans = Open_Sans({
 });
 
 type TPrams = { params: { slug: string } };
-
-export const dynamic = "force-static";
 
 export async function generateStaticParams() {
   return (await getAllBlogsFromCloundnary()).map(({ asset_id }) => ({
@@ -36,10 +33,7 @@ export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
 export default async function BlogSlug({ params }: TPrams) {
   const asset_id = params.slug;
   const { data, content } = await getBlogBySlug(asset_id);
-  if (!data || !content) {
-    console.log("not found");
-    notFound();
-  }
+
   const serialized = content ? await serialize(content) : null;
 
   const blogTitle =
@@ -70,10 +64,13 @@ export default async function BlogSlug({ params }: TPrams) {
           <div className="flex w-full justify-between items-center">
             <div className="text-gray-400">
               <p>
-                Published on: <span className="font-bold">{data.date}</span>
+                Published on:{" "}
+                <span className="font-bold" suppressHydrationWarning>
+                  {data?.date} {Math.random()}
+                </span>
               </p>
               <p>
-                Author: <span className="font-bold">{data.author}</span>
+                Author: <span className="font-bold">{data?.author}</span>
               </p>
             </div>
           </div>

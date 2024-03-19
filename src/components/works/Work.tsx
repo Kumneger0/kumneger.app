@@ -10,7 +10,7 @@ const Work = () => {
             Dynamo Center For Technology
           </h3>
           <p className="text-base py-1">Role: Full Stack Developer</p>
-          <p className="text-base">Duration: May 2023 - Present</p>
+          <p className="text-base">Duration: May 2023 - February 2024</p>
           <p className="text-base max-w-3xl">
             Worked on several web applications using React, Node.js, Express,
             and MongoDB.
