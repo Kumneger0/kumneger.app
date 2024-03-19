@@ -21,14 +21,6 @@ function NavBarMenu({ className }: { className: string }) {
           </Link>
         </Button>
       </div>
-      <div className="mt-2 h-full">/</div>
-      <div>
-        <Button variant={"link"}>
-          <Link className="text-xl" href={"/about"}>
-            About
-          </Link>
-        </Button>
-      </div>
     </div>
   );
 }
