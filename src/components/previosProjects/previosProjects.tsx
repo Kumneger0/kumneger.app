@@ -52,9 +52,9 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
       "Developed KDrive, a cloud storage solution using React and Firebase, purely for personal enjoyment Emphasizes my skills in leveraging Firebase for cloud storage."
   },
   {
-    projectGithubRepo: "https://github.com/Kumneger0/recipe-app-nextjs.",
+    projectGithubRepo: "https://github.com/Kumneger0/recipe-app-nextjs",
     images: [NextRecipe, NextRecipe2, NextRecipe3],
-    projectLiveUrl: "",
+    projectLiveUrl: "https://food-app-lac.vercel.app/",
     usedTechStackInProject: [{ name: "nextJS", url: "https://nextjs.org" }],
     projectTitle: "Tasty - Your Culinary Adventure Starts Here",
     description:
