@@ -1,15 +1,33 @@
-import { changeVote, deleteComment, getAllComments, writeReply } from "@/app/actions/action";
+import {
+  changeVote,
+  deleteComment,
+  getAllComments,
+  writeReply
+} from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ElementRef, memo, startTransition, useOptimistic, useRef } from "react";
+import {
+  ElementRef,
+  memo,
+  startTransition,
+  useOptimistic,
+  useRef,
+  useState
+} from "react";
 import { createPortal } from "react-dom";
-import { BiDownvote, BiSolidDownvote, BiSolidUpvote, BiUpvote } from "react-icons/bi";
+import {
+  BiDownvote,
+  BiSolidDownvote,
+  BiSolidUpvote,
+  BiUpvote
+} from "react-icons/bi";
 import { GoReply } from "react-icons/go";
 import { MdOutlineDelete } from "react-icons/md";
 import { LoginModal } from "../blogHeader/blogHeader";
 import { Button } from "../ui/button";
-import { SubmitForm } from "../writeComments";
+import { RichEditorExample, SubmitForm } from "../writeComments";
+import { EditorState, convertToRaw } from "draft-js";
 
 export const commentIdAtom = atom<number | null>(null);
 
@@ -106,7 +124,9 @@ const Vote = memo(
           <div>{downvoteCount}</div>
         </div>
         <div className="invisible">
-          <LoginModal ref={modalBtn} ><div /></LoginModal>
+          <LoginModal ref={modalBtn}>
+            <div />
+          </LoginModal>
         </div>
       </div>
     );
@@ -130,6 +150,8 @@ const ReplyComments = memo(
     replayFormPrentId: string;
   }) => {
     const { data, status } = useSession();
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
     const router = useRouter();
 
     const [id, setId] = useAtom(commentIdAtom);
@@ -143,11 +165,17 @@ const ReplyComments = memo(
     const createCommentsWithDetails = writeReply.bind(null, details);
 
     async function handleSubmit(formData: FormData) {
+      const contentState = editorState.getCurrentContent();
+      const rawContent = convertToRaw(contentState);
+      const jsonString = JSON.stringify(rawContent);
+
+      formData.set("content", jsonString);
       await createCommentsWithDetails(formData);
       startTransition(() => {
         setId(null);
       });
       router.refresh();
+      setEditorState(EditorState.createEmpty());
     }
 
     if (status === "unauthenticated")
@@ -177,16 +205,9 @@ const ReplyComments = memo(
           <>
             {createPortal(
               <form action={handleSubmit}>
-                <input
-                  className="border-2 text-black border-gray-300 rounded-md p-2"
-                  required
-                  autoCapitalize="on"
-                  spellCheck
-                  // biome-ignore lint/a11y/noAutofocus: <explanation>
-                  autoFocus
-                  type="text"
-                  name="content"
-                  placeholder={"write a reply "}
+                <RichEditorExample
+                  editorState={editorState}
+                  setEditorState={setEditorState}
                 />
                 <SubmitForm />
               </form>,

@@ -27,6 +27,13 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     projectLiveUrl: "https://reactbunode.pages.dev/"
   },
   {
+    projectTitle: "My Blog",
+    description:
+      "This blog app, crafted with Next.js, serves as a platform for sharing insights and articles on web development. Occasionally, I pen my thoughts and tutorials, making it a space where I explore and document my journey in the dynamic world of web development.",
+    projectGithubRepo: "https://github.com/Kumneger0/portifolio-website",
+    projectLiveUrl: "/blog"
+  },
+  {
     projectTitle: `React-PocketChat`,
     description:
       "Explore a new real-time chat app built with React, TypeScript, and Pocketbase. Connect with friends via usernames, have private chats, and view profiles. Experience smooth, interactive communication now!",

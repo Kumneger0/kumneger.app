@@ -1,8 +1,13 @@
 import { getSampleRelatedArticles } from "@/utils/utils";
 import Link from "next/link";
 import Blogs from "../../../components/blogs/Blogs";
+import { Metadata } from "next";
 
 export const dynamic = "force-static";
+
+export const metadata: Metadata = {
+  title: "Kumneger Wondimu | blog"
+};
 
 export default async function Home() {
   const blogs = await getSampleRelatedArticles();

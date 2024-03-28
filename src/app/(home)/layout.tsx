@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   }
 };
 
-function PortfolioLayout({ children }: { children: React.ReactNode }) {
+async function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className={openSans.className}>
       <body className="overflow-x-hidden  mx-auto dark min-h-screen bg-gray-800 text-white">

@@ -193,7 +193,7 @@ const getSampleRelatedArticles = async (
 async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
   try {
     await db.$connect();
-    const beforeCreting = await db.post.findMany();
+    const beforeCreting = (await db.post.findMany()) as typeof blogs;
 
     const newBlogs = blogs.filter(
       ({ asset_id }) =>

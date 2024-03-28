@@ -76,7 +76,7 @@ export default async function BlogSlug({ params }: TPrams) {
               <p>
                 Published on:{" "}
                 <span className="font-bold" suppressHydrationWarning>
-                  {data?.date} {Math.random()}
+                  {data?.date}
                 </span>
               </p>
               <p>
