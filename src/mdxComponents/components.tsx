@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
-import { BiCopy } from "react-icons/bi";
-import { BsBookmarkCheck } from "react-icons/bs";
+import { Copy, Check } from "lucide-react";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { paraisoDark as theme } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -40,7 +39,7 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
         onClick={() => copyCodeToClipboard(children)}
         className="absolute right-5 top-5"
       >
-        {!isCopied ? <BiCopy /> : <BsBookmarkCheck />}
+        {!isCopied ? <Copy /> : <Check />}
       </button>
     </div>
   );

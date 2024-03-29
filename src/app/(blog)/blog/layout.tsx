@@ -12,6 +12,9 @@ const openSans = Open_Sans({
 function Bloglayout({ children }: { children: React.ReactNode }) {
   return (
     <html className={openSans.className}>
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body>
         <NextAuthWrapper>
           <BlogHeader />

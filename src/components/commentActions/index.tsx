@@ -5,6 +5,7 @@ import {
   writeReply
 } from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
+import { Reply, ThumbsDown, ThumbsUp, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -12,22 +13,14 @@ import {
   memo,
   startTransition,
   useOptimistic,
-  useRef,
-  useState
+  useRef
 } from "react";
 import { createPortal } from "react-dom";
-import {
-  BiDownvote,
-  BiSolidDownvote,
-  BiSolidUpvote,
-  BiUpvote
-} from "react-icons/bi";
-import { GoReply } from "react-icons/go";
-import { MdOutlineDelete } from "react-icons/md";
+
 import { LoginModal } from "../blogHeader/blogHeader";
+import EmojiInput from "../emojiInput";
 import { Button } from "../ui/button";
-import { RichEditorExample, SubmitForm } from "../writeComments";
-import { EditorState, convertToRaw } from "draft-js";
+import { SubmitForm } from "../writeComments";
 
 export const commentIdAtom = atom<number | null>(null);
 
@@ -95,11 +88,11 @@ const Vote = memo(
                 className="hover:cursor-not-allowed"
                 disabled={true}
               >
-                <BiSolidUpvote className="w-6 h-6 text-green-500" />
+                <ThumbsUp className="w-6 h-6 text-green-500" />
               </button>
             ) : (
               <button type="button" onClick={() => createVote(true)}>
-                <BiUpvote className="w-6 h-6" />
+                <ThumbsUp className="w-6 h-6" />
               </button>
             )}
           </div>
@@ -113,11 +106,11 @@ const Vote = memo(
                 className="hover:cursor-not-allowed"
                 disabled={true}
               >
-                <BiSolidDownvote className="w-6 h-6 text-red-500" />
+                <ThumbsDown className="w-6 h-6 text-red-500" />
               </button>
             ) : (
               <button type="button" onClick={() => createVote(false)}>
-                <BiDownvote className="w-6 h-6 " />
+                <ThumbsDown className="w-6 h-6 " />
               </button>
             )}
           </div>
@@ -150,7 +143,6 @@ const ReplyComments = memo(
     replayFormPrentId: string;
   }) => {
     const { data, status } = useSession();
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
     const router = useRouter();
 
@@ -165,24 +157,18 @@ const ReplyComments = memo(
     const createCommentsWithDetails = writeReply.bind(null, details);
 
     async function handleSubmit(formData: FormData) {
-      const contentState = editorState.getCurrentContent();
-      const rawContent = convertToRaw(contentState);
-      const jsonString = JSON.stringify(rawContent);
-
-      formData.set("content", jsonString);
       await createCommentsWithDetails(formData);
       startTransition(() => {
         setId(null);
       });
       router.refresh();
-      setEditorState(EditorState.createEmpty());
     }
 
     if (status === "unauthenticated")
       return (
         <LoginModal>
           {" "}
-          <GoReply className="w-7 h-7 text-white" />
+          <Reply className="w-7 h-7 text-white" />
         </LoginModal>
       );
 
@@ -199,18 +185,16 @@ const ReplyComments = memo(
           }}
           variant={"destructive"}
         >
-          <GoReply className="w-7 h-7 text-white" />
+          <Reply className="w-7 h-7 text-white" />
         </Button>
         {id === commentId ? (
           <>
             {createPortal(
-              <form action={handleSubmit}>
-                <RichEditorExample
-                  editorState={editorState}
-                  setEditorState={setEditorState}
-                />
-                <SubmitForm />
-              </form>,
+              <>
+                <EmojiInput handleSubmit={handleSubmit}>
+                  <SubmitForm />
+                </EmojiInput>
+              </>,
               document.getElementById(replayFormPrentId) as HTMLDivElement
             )}
           </>
@@ -238,7 +222,7 @@ const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
 
   return (
     <Button onClick={handleDeleteCommentAction} variant={"destructive"}>
-      <MdOutlineDelete className="w-7 h-7 text-red-600" />
+      <Trash className="w-7 h-7 text-red-600" />
     </Button>
   );
 });
