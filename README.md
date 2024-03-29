@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tools I use to build my site
 
-## Getting Started
+## typescript
 
-First, run the development server:
+js superset with that has static type for better dx
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## React
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+js library to build ui
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Next.js(app route)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+full stack react libray
 
-## Learn More
+## tailwind css
 
-To learn more about Next.js, take a look at the following resources:
+css utility first libray
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## prisma
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+orm used to intract with database
 
-## Deploy on Vercel
+## postgresql
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+relational database i use to store commnets and users in blog app
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## MDX
+
+markdown with jsx support i write my blog in markdow
+
+## vercel
+
+hosting campnay where i hosted my app
+
+## cloudnary
+
+where i store my blog files
+
+## next auth
+
+an auth libray for next js with many providrs support
+
+## lucide-react
+
+icon libray i use to for icons in website
+
+## shadcn
+
+set of prebuilt unstyled ui componets
