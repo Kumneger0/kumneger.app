@@ -160,7 +160,9 @@ function Replies({
     if (!showReplies) return;
     (() =>
       getReplies(asset_id, commentId).then((comment) =>
-        startTransition(() => setReplies((prv) => comment?.replies ?? prv))
+        startTransition(() =>
+          setReplies((prv: TReplies) => comment?.replies ?? prv)
+        )
       ))();
   }, [showReplies, totalReplies]);
 

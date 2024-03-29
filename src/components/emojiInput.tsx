@@ -1,5 +1,6 @@
 import EmojiPicker from "emoji-picker-react";
 import React, { useRef, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 
 function EmojiInput<T extends React.HtmlHTMLAttributes<HTMLFormElement>>({
   children,
@@ -34,13 +35,13 @@ function EmojiInput<T extends React.HtmlHTMLAttributes<HTMLFormElement>>({
           )}
         </div>
         <div className="flex gap-5 items-center justify-between">
-          <textarea
+          <Textarea
             ref={inputRef}
             required
             autoCapitalize="on"
             spellCheck
             name="content"
-            className="w-full p-2 border text-black border-gray-300 rounded"
+            className="w-full p-2 border text-black"
             placeholder="Your Comment"
             rows={4}
           />

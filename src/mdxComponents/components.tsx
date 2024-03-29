@@ -31,7 +31,7 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="w-auto min-w-full relative text-white max-w-fit overflow-auto p-3 my-3">
+    <div className="w-auto min-w-full relative text-white max-w-fit  overflow-auto md:p-3 my-3">
       <SyntaxHighlighter language="javascript" style={theme}>
         {children as string}
       </SyntaxHighlighter>

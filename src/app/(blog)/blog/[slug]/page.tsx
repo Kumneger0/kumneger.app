@@ -53,7 +53,7 @@ export default async function BlogSlug({ params }: TPrams) {
     <div
       className={`dark min-h-screen bg-gray-800 text-white flex items-center justify-center ${openSans.className}`}
     >
-      <main className="container max-w-5xl mx-auto px-4  md:px-6 lg:px-8">
+      <main className="container max-w-5xl mx-auto px-2 sm:px-4  md:px-6 lg:px-8">
         <section className="mt-12">
           <Link className="underline text-blue-400" href="/blog">
             Back to Blog

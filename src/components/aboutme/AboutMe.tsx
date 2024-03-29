@@ -1,4 +1,4 @@
-import { TfiHandPointRight } from "react-icons/tfi";
+import { ArrowRight } from "lucide-react";
 
 function AboutMe() {
   return (
@@ -26,26 +26,26 @@ function AboutMe() {
           <h2 className="text-2xl font-semibold">Tools I use the most</h2>
           <ul className="list-inside text-gray-300">
             <li className="flex gap-2 items-center ">
-              <TfiHandPointRight className="text-white" /> JavaScript{" "}
+              <ArrowRight className="text-white" /> JavaScript{" "}
             </li>
             <li className="flex gap-2 items-center ">
-              <TfiHandPointRight className="text-white" /> TypeScript
+              <ArrowRight className="text-white" /> TypeScript
             </li>
             <li className="flex gap-2 items-center">
               {" "}
-              <TfiHandPointRight className="text-white" /> Next.js
+              <ArrowRight className="text-white" /> Next.js
             </li>
             <li className="flex gap-2 items-center">
               {" "}
-              <TfiHandPointRight className="text-white" /> Tailwind CSS
+              <ArrowRight className="text-white" /> Tailwind CSS
             </li>
             <li className="flex gap-2 items-center">
               {" "}
-              <TfiHandPointRight className="text-white" /> React
+              <ArrowRight className="text-white" /> React
             </li>
             <li className="flex gap-2 items-center">
               {" "}
-              <TfiHandPointRight className="text-white" /> Node.js
+              <ArrowRight className="text-white" /> Node.js
             </li>
           </ul>
         </div>
