@@ -15,7 +15,7 @@ async function PublishedArticles() {
       </h2>
       <ul className="list-inside list-none  my-4 text-lg text-gray-300 space-y-4">
         <Blogs
-          className="bg-gray-700 rounded-xl md:w-[47%] w-full"
+          className="bg-gray-700 rounded-xl md:w-[47%] w-full min-w-[300px]"
           blogs={articles as unknown as AllBlogs}
         />
       </ul>

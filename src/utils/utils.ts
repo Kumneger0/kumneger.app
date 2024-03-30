@@ -86,7 +86,6 @@ const getBlogFromCloundnary = async (asset_id: string) => {
 };
 
 const getAllBlogs = async () => {
-  const dir = `${process.cwd()}/src/blogs`;
   const urls = await getAllBlogsFromCloundnary();
   const blogs = await getBlogContent(urls);
   return blogs as {

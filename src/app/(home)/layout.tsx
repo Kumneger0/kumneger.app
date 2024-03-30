@@ -5,6 +5,7 @@ import "./../globals.css";
 import Navbar1 from "@/components/header/Header";
 import { Open_Sans } from "next/font/google";
 import Footer from "@/components/footer/footer";
+import Providers from "@/components/progressBarContext";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -23,12 +24,14 @@ async function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className={openSans.className}>
       <body className="overflow-x-hidden  mx-auto dark min-h-screen bg-gray-800 text-white">
-        <Navbar1 />
-        <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
-          {children}
-        </main>
-        <Analytics />
-        <Footer />
+        <Providers>
+          <Navbar1 />
+          <main className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
+            {children}
+          </main>
+          <Analytics />
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

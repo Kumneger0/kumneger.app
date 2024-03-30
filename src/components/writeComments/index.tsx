@@ -1,15 +1,12 @@
 import { createComment } from "@/app/actions/action";
-import { useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { ElementRef, useRef, useState } from "react";
+import { ElementRef, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { LoginModal } from "../blogHeader/blogHeader";
-import { commentIdAtom } from "../commentActions";
+import EmojiInput from "../emojiInput";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import EmojiPicker from "emoji-picker-react";
-import EmojiInput from "../emojiInput";
 
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data, status } = useSession();

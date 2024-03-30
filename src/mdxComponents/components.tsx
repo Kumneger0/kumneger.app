@@ -9,7 +9,7 @@ export const Heading = ({ children }: { children: React.ReactNode }) => {
   return <h1 className="font-bold capitalize text-2xl mt-3">{children}</h1>;
 };
 export const Heading2 = ({ children }: { children: React.ReactNode }) => {
-  return <h2 className="font-bold capitalize text-xl mt-2">{children}</h2>;
+  return <h2 className="font-bold capitalize text-xl  mt-2">{children}</h2>;
 };
 
 export const Paragraph = ({ children }: { children: React.ReactNode }) => {
@@ -48,7 +48,7 @@ export function LinkComponent<
   T extends { href: string; children: React.ReactNode }
 >({ href, children }: T) {
   return (
-    <Link target="_blank" className="underline text-blue-600" href={href}>
+    <Link target="_blank" className="underline text-blue-500" href={href}>
       {children}
     </Link>
   );
