@@ -2,18 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
-  --tw-gradient-stops:green
+:root {
+  --tw-gradient-stops: green;
 }
 
-
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   overflow-x: hidden;
-} 
-
-
-
+}

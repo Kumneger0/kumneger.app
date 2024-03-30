@@ -1,13 +1,24 @@
-import { changeVote, deleteComment, getAllComments, writeReply } from "@/app/actions/action";
+import {
+  changeVote,
+  deleteComment,
+  getAllComments,
+  writeReply
+} from "@/app/actions/action";
 import { atom, useAtom } from "jotai";
+import { Reply, ThumbsDown, ThumbsUp, Trash } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ElementRef, memo, startTransition, useOptimistic, useRef } from "react";
+import {
+  ElementRef,
+  memo,
+  startTransition,
+  useOptimistic,
+  useRef
+} from "react";
 import { createPortal } from "react-dom";
-import { BiDownvote, BiSolidDownvote, BiSolidUpvote, BiUpvote } from "react-icons/bi";
-import { GoReply } from "react-icons/go";
-import { MdOutlineDelete } from "react-icons/md";
+
 import { LoginModal } from "../blogHeader/blogHeader";
+import EmojiInput from "../emojiInput";
 import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
 
@@ -77,11 +88,11 @@ const Vote = memo(
                 className="hover:cursor-not-allowed"
                 disabled={true}
               >
-                <BiSolidUpvote className="w-6 h-6 text-green-500" />
+                <ThumbsUp className="w-6 h-6 text-green-500" />
               </button>
             ) : (
               <button type="button" onClick={() => createVote(true)}>
-                <BiUpvote className="w-6 h-6" />
+                <ThumbsUp className="w-6 h-6" />
               </button>
             )}
           </div>
@@ -95,18 +106,20 @@ const Vote = memo(
                 className="hover:cursor-not-allowed"
                 disabled={true}
               >
-                <BiSolidDownvote className="w-6 h-6 text-red-500" />
+                <ThumbsDown className="w-6 h-6 text-red-500" />
               </button>
             ) : (
               <button type="button" onClick={() => createVote(false)}>
-                <BiDownvote className="w-6 h-6 " />
+                <ThumbsDown className="w-6 h-6 " />
               </button>
             )}
           </div>
           <div>{downvoteCount}</div>
         </div>
         <div className="invisible">
-          <LoginModal ref={modalBtn} ><div /></LoginModal>
+          <LoginModal ref={modalBtn}>
+            <div />
+          </LoginModal>
         </div>
       </div>
     );
@@ -130,6 +143,7 @@ const ReplyComments = memo(
     replayFormPrentId: string;
   }) => {
     const { data, status } = useSession();
+
     const router = useRouter();
 
     const [id, setId] = useAtom(commentIdAtom);
@@ -154,7 +168,7 @@ const ReplyComments = memo(
       return (
         <LoginModal>
           {" "}
-          <GoReply className="w-7 h-7 text-white" />
+          <Reply className="w-7 h-7 text-white" />
         </LoginModal>
       );
 
@@ -171,25 +185,16 @@ const ReplyComments = memo(
           }}
           variant={"destructive"}
         >
-          <GoReply className="w-7 h-7 text-white" />
+          <Reply className="w-7 h-7 text-white" />
         </Button>
         {id === commentId ? (
           <>
             {createPortal(
-              <form action={handleSubmit}>
-                <input
-                  className="border-2 text-black border-gray-300 rounded-md p-2"
-                  required
-                  autoCapitalize="on"
-                  spellCheck
-                  // biome-ignore lint/a11y/noAutofocus: <explanation>
-                  autoFocus
-                  type="text"
-                  name="content"
-                  placeholder={"write a reply "}
-                />
-                <SubmitForm />
-              </form>,
+              <>
+                <EmojiInput handleSubmit={handleSubmit}>
+                  <SubmitForm />
+                </EmojiInput>
+              </>,
               document.getElementById(replayFormPrentId) as HTMLDivElement
             )}
           </>
@@ -217,7 +222,7 @@ const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
 
   return (
     <Button onClick={handleDeleteCommentAction} variant={"destructive"}>
-      <MdOutlineDelete className="w-7 h-7 text-red-600" />
+      <Trash className="w-7 h-7 text-red-600" />
     </Button>
   );
 });

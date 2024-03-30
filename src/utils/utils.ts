@@ -60,7 +60,7 @@ const getAllBlogsFromCloundnary = async () => {
     return blogSecureUrl;
   } catch (err) {
     console.log(err);
-    console.log(err)
+    console.log(err);
     throw new Error("there was an error occured");
   }
 };
@@ -86,7 +86,6 @@ const getBlogFromCloundnary = async (asset_id: string) => {
 };
 
 const getAllBlogs = async () => {
-  const dir = `${process.cwd()}/src/blogs`;
   const urls = await getAllBlogsFromCloundnary();
   const blogs = await getBlogContent(urls);
   return blogs as {
@@ -193,7 +192,7 @@ const getSampleRelatedArticles = async (
 async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
   try {
     await db.$connect();
-    const beforeCreting = await db.post.findMany();
+    const beforeCreting = (await db.post.findMany()) as typeof blogs;
 
     const newBlogs = blogs.filter(
       ({ asset_id }) =>

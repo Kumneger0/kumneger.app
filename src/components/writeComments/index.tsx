@@ -1,30 +1,21 @@
 import { createComment } from "@/app/actions/action";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, {
-  Dispatch,
-  ElementRef,
-  SetStateAction,
-  startTransition,
-  useRef
-} from "react";
+import { ElementRef, useRef } from "react";
 import { useFormStatus } from "react-dom";
 import { LoginModal } from "../blogHeader/blogHeader";
-import { Comments } from "../comments";
+import EmojiInput from "../emojiInput";
 import { Button } from "../ui/button";
-import { commentIdAtom } from "../commentActions";
-import { useAtom } from "jotai";
 import { Card, CardContent } from "../ui/card";
 
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data, status } = useSession();
-  const inputRef = useRef<HTMLTextAreaElement>(null);
   const modalRef = useRef<ElementRef<typeof LoginModal>>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
   const router = useRouter();
 
-  const [id, setId] = useAtom(commentIdAtom);
-
-  const handleUserLoginStatus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+  const handleUserLoginStatus = () => {
     if (status === "unauthenticated") {
       modalRef.current?.openModal();
     }
@@ -43,9 +34,6 @@ function PostComments({ asset_id }: { asset_id: string }) {
       return;
     }
     const data = await createCommentsWithDetails(formData);
-
-    console.log(data);
-
     if (inputRef.current) inputRef.current.value = "";
 
     router.refresh();
@@ -55,22 +43,15 @@ function PostComments({ asset_id }: { asset_id: string }) {
     <>
       <section className="mt-12">
         <h2 className="text-3xl font-bold text-center">Add a Comment</h2>
+
         <Card className="border-none">
           <CardContent>
-            <form action={postComment} className="space-y-4">
-              <textarea
-                ref={inputRef}
-                onFocus={handleUserLoginStatus}
-                required
-                autoCapitalize="on"
-                spellCheck
-                name="content"
-                className="w-full p-2 border text-black border-gray-300 rounded"
-                placeholder="Your Comment"
-                rows={4}
-              />
+            <EmojiInput
+              onFocus={handleUserLoginStatus}
+              handleSubmit={postComment}
+            >
               <SubmitForm />
-            </form>
+            </EmojiInput>
           </CardContent>
         </Card>
       </section>

@@ -14,14 +14,32 @@ import {
   CardHeader,
   CardTitle
 } from "../ui/card";
+import { Eye } from "lucide-react";
+import Link from "next/link";
+import { Github, LinkIcon } from "lucide-react";
 
-const sampleProjects: Project[] = [
+const sampleProjects: Partial<Project & Record<string, any>>[] = [
+  {
+    projectTitle: "ReactBunode",
+    description:
+      "Highly Experimental React Library. Converts React components to static HTML for enhanced performance and SEO, with support for React Server Components. Optimizes for speed, SEO, and scalability.",
+    projectGithubRepo: "https://github.com/Kumneger0/reactBunode",
+    projectLiveUrl: "https://reactbunode.pages.dev/"
+  },
+  {
+    projectTitle: "My Blog",
+    description:
+      "This blog app, crafted with Next.js, serves as a platform for sharing insights and articles on web development. Occasionally, I pen my thoughts and tutorials, making it a space where I explore and document my journey in the dynamic world of web development.",
+    projectGithubRepo: "https://github.com/Kumneger0/portifolio-website",
+    projectLiveUrl: "/blog"
+  },
   {
     projectTitle: `React-PocketChat`,
     description:
       "Explore a new real-time chat app built with React, TypeScript, and Pocketbase. Connect with friends via usernames, have private chats, and view profiles. Experience smooth, interactive communication now!",
     images: [reactPocketChatApp],
-    projectGithubRepo: "",
+    projectGithubRepo:
+      "https://github.com/Kumneger0/chat-app-with-react-and-pocketbase",
     projectLiveUrl: "https://react-pocketchat.web.app/ ",
     usedTechStackInProject: [
       { name: "pocketbase", url: "https://pocketbase.io" },
@@ -30,8 +48,7 @@ const sampleProjects: Project[] = [
   },
   {
     images: [Kdrive],
-    projectGithubRepo:
-      "https://github.com/Kumneger0/chat-app-with-react-and-pocketbase",
+    projectGithubRepo: "https://github.com/Kumneger0/KDrive",
     projectLiveUrl: "https://kunedrive.web.app/",
     usedTechStackInProject: [
       { name: "firebase", url: "https://firebase.google.com" },
@@ -42,9 +59,9 @@ const sampleProjects: Project[] = [
       "Developed KDrive, a cloud storage solution using React and Firebase, purely for personal enjoyment Emphasizes my skills in leveraging Firebase for cloud storage."
   },
   {
-    projectGithubRepo: "",
+    projectGithubRepo: "https://github.com/Kumneger0/recipe-app-nextjs",
     images: [NextRecipe, NextRecipe2, NextRecipe3],
-    projectLiveUrl: "",
+    projectLiveUrl: "https://food-app-lac.vercel.app/",
     usedTechStackInProject: [{ name: "nextJS", url: "https://nextjs.org" }],
     projectTitle: "Tasty - Your Culinary Adventure Starts Here",
     description:
@@ -59,7 +76,7 @@ function Projects() {
       <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
         {sampleProjects.map(({ description, projectTitle, ...project }) => (
           <Card
-            className="border-none bg-gray-700 rounded-xl"
+            className="border-none bg-gray-700 relative rounded-xl"
             key={projectTitle}
           >
             <CardHeader>
@@ -68,12 +85,36 @@ function Projects() {
                 {description}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <DrawerComponent
-                project={{ description, projectTitle, ...project }}
-              >
-                Details
-              </DrawerComponent>
+            <CardContent className="relative flex gap-5 justify-start items-center bottom-0 right-0">
+              {project.images?.length ? (
+                <>
+                  <DrawerComponent
+                    project={{ description, projectTitle, ...project }}
+                  >
+                    <Eye />
+                  </DrawerComponent>
+                  <div>
+                    <Link
+                      href={project.projectGithubRepo as string}
+                      target="_blank"
+                    >
+                      <Github />
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <Link
+                  href={project.projectGithubRepo as string}
+                  target="_blank"
+                >
+                  <Github />
+                </Link>
+              )}
+              <div>
+                <Link target="_blank" href={project.projectLiveUrl as string}>
+                  <LinkIcon />
+                </Link>
+              </div>
             </CardContent>
           </Card>
         ))}

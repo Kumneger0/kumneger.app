@@ -1,14 +1,32 @@
 "use client";
-import { getAllComments, getMoreCommentsFromDB, getMoreTopLevelComments } from "@/app/actions/action";
-import { formatDistanceToNow } from "date-fns";
-import React, { Dispatch, SetStateAction, Suspense, useEffect, useId, useState, useTransition } from "react";
+import {
+  getAllComments,
+  getMoreCommentsFromDB,
+  getMoreTopLevelComments
+} from "@/app/actions/action";
 import { Button } from "@/components/ui/button";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "@/components/ui/collapsible";
+import { formatDistanceToNow } from "date-fns";
+import React, {
+  Dispatch,
+  SetStateAction,
+  Suspense,
+  useEffect,
+  useId,
+  useState,
+  useTransition
+} from "react";
 
-import { Delete, ReplyComments, Vote } from "./commentActions";
-import PostComments from "./writeComments";
+import { stateToHTML } from "draft-js-export-html";
+import { convertFromRaw } from "draft-js";
 
 import { ChevronsUpDown } from "lucide-react";
+import { Delete, ReplyComments, Vote } from "./commentActions";
+import PostComments from "./writeComments";
 
 export type Comments = NonNullable<Awaited<ReturnType<typeof getAllComments>>>;
 
@@ -128,7 +146,9 @@ function Replies({
   commentId: number;
   totalReplies: number;
 }) {
-  type TReplies = NonNullable<Awaited<ReturnType<typeof getReplies>>>["replies"];
+  type TReplies = NonNullable<
+    Awaited<ReturnType<typeof getReplies>>
+  >["replies"];
 
   console.log(totalReplies);
 
@@ -140,7 +160,9 @@ function Replies({
     if (!showReplies) return;
     (() =>
       getReplies(asset_id, commentId).then((comment) =>
-        startTransition(() => setReplies((prv) => comment?.replies ?? prv))
+        startTransition(() =>
+          setReplies((prv: TReplies) => comment?.replies ?? prv)
+        )
       ))();
   }, [showReplies, totalReplies]);
 
@@ -190,8 +212,13 @@ export function CollapsibleComments({
 
   const { User: user, content, date, id, replies, votes } = data;
 
-  console.log(content, replies.length);
-  console.log(data.content, data.replies.length);
+  let commentString;
+  try {
+    commentString = stateToHTML(convertFromRaw(JSON.parse(content)));
+  } catch (err) {
+    console.log(err);
+    commentString = content;
+  }
 
   const timeDifference = formatDistanceToNow(new Date(date), {
     addSuffix: false
@@ -233,7 +260,10 @@ export function CollapsibleComments({
 
       <CollapsibleContent className="space-y-2">
         <div className="rounded-md px-4 py-3 font-mono text-sm">
-          <div className=" p-3">{content}</div>
+          <div
+            className=" p-3"
+            dangerouslySetInnerHTML={{ __html: commentString }}
+          />
           <div className="flex items-center">
             <Vote votes={votes} asset_id={asset_id} id={id} />
 

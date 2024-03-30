@@ -1,10 +1,10 @@
 import { getAllComments } from "@/app/actions/action";
 import { CommentsWrapper } from "@/components/comments";
-import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 async function Page({ params }: { params: { slug: string } }) {
   const comments = await getAllComments(params.slug);
+
   return (
     <div className="max-w-4xl mt-12  w-full mx-auto">
       <pre className="font-bold text-2xl mt-3">{comments.total} Comments</pre>
