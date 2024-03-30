@@ -1,15 +1,17 @@
 import { ArrowRight } from "lucide-react";
+import Avatar from "../../../public/1711802150838.png";
+import Image from "next/image";
 
 function AboutMe() {
   return (
     <section className="py-5">
       <div className="grid gap-8 md:grid-cols-2 max-w-7xl mx-auto">
         <div className="flex items-center justify-center">
-          <img
-            alt="Your Name"
+          <Image
+            alt="Kumneger"
             className="aspect-square rounded-full object-cover"
             height="200"
-            src="https://pics.craiyon.com/2023-10-03/c64134a721434b048ae228cc6a16643e.webp"
+            src={Avatar}
             width="200"
           />
         </div>

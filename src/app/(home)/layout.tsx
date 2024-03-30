@@ -23,6 +23,9 @@ export const metadata: Metadata = {
 async function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className={openSans.className}>
+      <head>
+        <link rel="icon" type="image/ico" href="/1711802150838.ico" />
+      </head>
       <body className="overflow-x-hidden  mx-auto dark min-h-screen bg-gray-800 text-white">
         <Providers>
           <Navbar1 />

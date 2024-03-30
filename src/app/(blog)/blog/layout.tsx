@@ -15,6 +15,7 @@ function Bloglayout({ children }: { children: React.ReactNode }) {
     <html className={openSans.className}>
       <head>
         <meta charSet="utf-8" />
+        <link rel="icon" type="image/ico" href="/1711802150838.ico" />
       </head>
       <body>
         <NextAuthWrapper>

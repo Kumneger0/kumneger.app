@@ -5,6 +5,7 @@ import { Open_Sans } from "next/font/google";
 import Link from "next/link";
 import Blog from "./wrapper";
 import { unstable_cache } from "next/cache";
+import ShareButtons from "@/components/socialShare/share";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -86,6 +87,11 @@ export default async function BlogSlug({ params }: TPrams) {
           </div>
 
           {!!serialized && <Blog>{serialized}</Blog>}
+        </section>
+        <section className="my-5">
+          <div>
+            <ShareButtons />
+          </div>
         </section>
       </main>
     </div>
