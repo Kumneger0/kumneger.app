@@ -141,7 +141,6 @@ const getSampleRelatedArticles = async (
     };
   }> = [];
   const allBlogs = await getAllBlogs();
-  // biome-ignore lint/complexity/noForEach:
   allBlogs.forEach((blog) => {
     if (
       (limit && articles.length >= limit) ||
