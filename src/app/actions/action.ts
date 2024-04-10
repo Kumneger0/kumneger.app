@@ -3,6 +3,9 @@
 import { Details } from "@/components/commentActions";
 import { db } from "@/utils/db";
 import { revalidatePath } from "next/cache";
+import Filter from "bad-words";
+
+const filter = new Filter();
 
 export async function getAllComments(asset_id: string, skip = 0) {
   try {
@@ -132,6 +135,9 @@ export async function createComment(
   formData: FormData
 ) {
   const { userEmail, asset_id } = details;
+
+  console.log(filter.clean("you did shit blog"));
+
   if (!userEmail || !asset_id) throw new Error("there was an error occured");
 
   const content = formData.get("content") as string;
@@ -144,7 +150,11 @@ export async function createComment(
     const user = await getUser(userEmail);
     if (post && user) {
       const comment = await db.comment.create({
-        data: { postId: post.id, content, userId: user?.id },
+        data: {
+          postId: post.id,
+          content: filter.clean(content),
+          userId: user?.id
+        },
         include: {
           User: true,
           parentComment: true,
@@ -248,7 +258,7 @@ export async function writeReply(details: Details, formData: FormData) {
         data: {
           replies: {
             create: {
-              content,
+              content: filter.clean(content),
               userId: user?.id,
               postId: post.id
             }
