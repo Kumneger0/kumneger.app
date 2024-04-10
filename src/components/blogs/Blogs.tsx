@@ -21,7 +21,7 @@ function Blogs({ blogs, className }: { blogs?: AllBlogs; className: string }) {
               <CardHeader>
                 <CardTitle className="w-full">{data?.title}</CardTitle>
                 <CardDescription className="w-full line-clamp-2 min-h-[10px]">
-                  {data.seoDescription}
+                  {data?.seoDescription}
                 </CardDescription>
               </CardHeader>
               <CardContent className="">

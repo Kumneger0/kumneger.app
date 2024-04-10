@@ -15,6 +15,29 @@ const openSans = Open_Sans({
 export const metadata: Metadata = {
   title: "Kumneger Wondimu",
   description: "a passionate full stack developer based in ethiopia",
+  openGraph: {
+    title: "Kumneger Wondimu",
+    description: "Full Stack Developer",
+    url: "https://kumneger.vercel.app",
+    siteName: "Kumneger wondimu",
+    locale: "en_US",
+    type: "website"
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1
+    }
+  },
+  twitter: {
+    title: "Kumneger wondimu",
+    card: "summary_large_image"
+  },
   other: {
     "google-site-verification": "oDVfNqx1QrRnGvkWz-i646WtX-rsZn1h2J7jdBwyHvU"
   }
@@ -23,6 +46,16 @@ export const metadata: Metadata = {
 async function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className={openSans.className}>
+      <head>
+        <link rel="icon" type="image/ico" href="/1711802150838.ico" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8674305198183882"
+          // @ts-ignore
+
+          crossorigin="anonymous"
+        ></script>
+      </head>
       <body className="overflow-x-hidden  mx-auto dark min-h-screen bg-gray-800 text-white">
         <Providers>
           <Navbar1 />
@@ -36,5 +69,5 @@ async function PortfolioLayout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-
+console.log("layout page");
 export default PortfolioLayout;
