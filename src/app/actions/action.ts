@@ -51,7 +51,6 @@ export async function getAllComments(asset_id: string, skip = 0) {
 
     return { comments, total };
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       throw new Error(err.message);
     }
@@ -136,8 +135,6 @@ export async function createComment(
 ) {
   const { userEmail, asset_id } = details;
 
-  console.log(filter.clean("you did shit blog"));
-
   if (!userEmail || !asset_id) throw new Error("there was an error occured");
 
   const content = formData.get("content") as string;
@@ -165,11 +162,9 @@ export async function createComment(
       });
 
       revalidatePath(`/blog/${asset_id}`);
-      console.log("commnet created", comment);
       return comment;
     }
   } catch (err) {
-    console.log(err);
     return null;
   }
 }
@@ -214,7 +209,6 @@ export async function changeVote(
     revalidatePath(`/blog/${asset_id}`);
     return vote;
   } catch (err) {
-    console.log(err);
     return null;
   }
 }
@@ -274,11 +268,9 @@ export async function writeReply(details: Details, formData: FormData) {
       });
 
       revalidatePath(`/blog/${asset_id}`);
-      console.log("path revalidaed");
       return comment;
     }
   } catch (err) {
-    console.log(err);
     return null;
   }
 }
@@ -374,7 +366,6 @@ export async function getMoreCommentsFromDB(
         date: "desc"
       }
     });
-    console.log(comments);
     return comments;
   } catch (err) {
     return;

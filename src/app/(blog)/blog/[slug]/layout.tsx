@@ -10,7 +10,6 @@ function Layout({
   comments: React.ReactNode;
   others: React.ReactNode;
 }) {
-  console.log();
   return (
     <div>
       {children}

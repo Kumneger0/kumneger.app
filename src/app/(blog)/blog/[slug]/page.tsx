@@ -21,7 +21,8 @@ const getBlog = unstable_cache(
 type TPrams = { params: { slug: string } };
 
 export async function generateStaticParams() {
-  return (await getAllBlogsFromCloundnary()).map(({ asset_id }) => ({
+  const blogs = await getAllBlogsFromCloundnary();
+  return blogs.map(({ asset_id }) => ({
     slug: asset_id
   }));
 }

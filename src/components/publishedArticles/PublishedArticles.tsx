@@ -9,13 +9,13 @@ async function PublishedArticles() {
   // const articles = [];
 
   return (
-    <section className="mt-12">
+    <section className="mt-12 max-w-5xl mx-auto">
       <h2 className="text-2xl font-bold capitalize">
         Some of My Recent Articles
       </h2>
       <ul className="list-inside list-none  my-4 text-lg text-gray-300 space-y-4">
         <Blogs
-          className="bg-gray-700 rounded-xl md:w-[47%] w-full min-w-[300px]"
+          className="bg-gray-700 rounded-xl  w-full min-w-[300px]"
           blogs={articles as unknown as AllBlogs}
         />
       </ul>

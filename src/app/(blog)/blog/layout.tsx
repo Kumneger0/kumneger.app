@@ -4,11 +4,36 @@ import NextAuthWrapper from "@/components/nextAuthWrapper";
 import BlogHeader from "@/components/blogHeader/blogHeader";
 import { Open_Sans } from "next/font/google";
 import Providers from "@/components/progressBarContext";
+import { Metadata } from "next";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
   display: "swap"
 });
+
+export const metadata: Metadata = {
+  title: "Kumneger Wondimu | blog",
+  description:
+    "Empower your web development journey with our expertly curated blog. Discover insider tips, cutting-edge techniques, and practical insights to craft stunning websites with confidence.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1
+    }
+  },
+  twitter: {
+    title: "Kumneger wondimu",
+    card: "summary_large_image"
+  },
+  other: {
+    "google-site-verification": "oDVfNqx1QrRnGvkWz-i646WtX-rsZn1h2J7jdBwyHvU"
+  }
+};
 
 function Bloglayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,8 +44,7 @@ function Bloglayout({ children }: { children: React.ReactNode }) {
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8674305198183882"
-          // @ts-ignore
-          crossorigin={"anonymous"}
+          crossOrigin={"anonymous"}
         ></script>
       </head>
       <body>

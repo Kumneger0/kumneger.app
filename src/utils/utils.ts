@@ -59,20 +59,15 @@ const getAllBlogsFromCloundnary = async () => {
     }));
     return blogSecureUrl;
   } catch (err) {
-    console.log(err);
-    console.log(err);
     throw new Error("there was an error occured");
   }
 };
 
 const getBlogFromCloundnary = async (asset_id: string) => {
   let rawMdx: string | null = null;
-  console.log(asset_id);
   try {
     const blog = await cloudinary.v2.api.resources_by_asset_ids(asset_id);
-    console.log(blog);
     rawMdx = await fetch(blog.resources[0].secure_url).then((res) => {
-      console.log(res);
       if (!res.ok) {
         return null;
       }
@@ -80,7 +75,6 @@ const getBlogFromCloundnary = async (asset_id: string) => {
     });
     return rawMdx;
   } catch (err) {
-    console.log("not found");
     notFound();
   }
 };

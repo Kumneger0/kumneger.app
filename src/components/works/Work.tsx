@@ -1,7 +1,7 @@
 import React from "react";
 const Work = () => {
   return (
-    <section className="mt-12">
+    <section className="mt-12 max-w-5xl mx-auto">
       <h2 className="text-2xl font-bold">Employment History</h2>
       <ul className="list-inside list-none mt-4 text-lg text-gray-300 space-y-4">
         <li>

@@ -38,8 +38,6 @@ const Vote = memo(
     asset_id: string;
     votes: TVotes;
   }) => {
-    console.log({ votes, id });
-
     const { data, status } = useSession();
     const router = useRouter();
 
@@ -62,8 +60,6 @@ const Vote = memo(
         modalBtn.current?.openModal();
         return;
       }
-
-      console.log(data.user.email);
 
       const newVote = optimisticVotes.findIndex(
         (vote) => vote.userEmail === data.user?.email
@@ -217,7 +213,6 @@ const Delete = memo(({ userEmail, asset_id, commentId }: Details) => {
       userEmail
     });
     router.refresh();
-    console.log("refreshed delete");
   }
 
   return (

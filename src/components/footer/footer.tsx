@@ -8,9 +8,6 @@ import "./footer.css";
 function Footer() {
   return (
     <div className="max-w-[1300px] w-11/12 py-5 mx-auto">
-      <section className="mt-12">
-        <Component />
-      </section>
       <section className="mt-12 w-full p-3 flex justify-center items-center flex-col">
         <h2 className="text-xl font-bold">Social Media</h2>
         <div className="flex space-x-4 mt-4">

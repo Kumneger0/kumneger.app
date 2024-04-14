@@ -47,7 +47,7 @@ export interface Project {
   description: string;
   projectLiveUrl: string;
   projectGithubRepo: string;
-  usedTechStackInProject: Array<{ name: string; url: string }>;
+  usedTechStackInProject: Array<{ name: string; url: string; icon?: string }>;
 }
 
 export default function ProjectDialog({

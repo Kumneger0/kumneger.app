@@ -51,9 +51,7 @@ async function PortfolioLayout({ children }: { children: React.ReactNode }) {
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8674305198183882"
-          // @ts-ignore
-
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         ></script>
       </head>
       <body className="overflow-x-hidden  mx-auto dark min-h-screen bg-gray-800 text-white">
@@ -69,5 +67,4 @@ async function PortfolioLayout({ children }: { children: React.ReactNode }) {
     </html>
   );
 }
-console.log("layout page");
 export default PortfolioLayout;

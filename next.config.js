@@ -1,12 +1,9 @@
-// const million = require("million/compiler");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  compiler: {
-    removeConsole: {
-      exclude: ["error"]
-    }
-  },
-  reactStrictMode: false
+  reactStrictMode: false,
+  experimental: {
+    optimizePackageImports: ["lucide-react"]
+  }
 };
 
 const withMDX = require("@next/mdx")({
