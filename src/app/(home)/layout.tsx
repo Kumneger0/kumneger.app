@@ -45,7 +45,14 @@ export const metadata: Metadata = {
 
 async function PortfolioLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className={openSans.className}>
+    <html
+      style={{
+        fontFamily: '"Open Sans", sans-serif',
+        fontWeight: "400",
+        fontStyle: "normal",
+        fontVariationSettings: '"wdth" 100'
+      }}
+    >
       <head>
         <link rel="icon" type="image/ico" href="/1711802150838.ico" />
         <script

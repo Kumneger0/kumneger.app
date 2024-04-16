@@ -6,11 +6,6 @@ import { Open_Sans } from "next/font/google";
 import Providers from "@/components/progressBarContext";
 import { Metadata } from "next";
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  display: "swap"
-});
-
 export const metadata: Metadata = {
   title: "Kumneger Wondimu | blog",
   description:
@@ -37,7 +32,14 @@ export const metadata: Metadata = {
 
 function Bloglayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className={openSans.className}>
+    <html
+      style={{
+        fontFamily: '"Open Sans", sans-serif',
+        fontWeight: "400",
+        fontStyle: "normal",
+        fontVariationSettings: '"wdth" 100'
+      }}
+    >
       <head>
         <meta charSet="utf-8" />
         <link rel="icon" type="image/ico" href="/1711802150838.ico" />

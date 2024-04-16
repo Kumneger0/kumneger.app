@@ -6,11 +6,11 @@ function AboutMe() {
   return (
     <section className="py-5">
       <div className="max-w-5xl -mt-10 mx-auto">
-        <h1 className="md:text-3xl  -ml-3 my-4 text-2xl font-bold">
+        <h1 className="md:text-3xl -ml-1  sm:-ml-3 my-4 text-2xl font-bold">
           Kumneger Wondimu (a.k.a Kune)
         </h1>
         <div className="space-y-2">
-          <h1 className="md:text-2xl my-2 text-2xl font-bold">
+          <h1 className="md:text-2xl my-2 text-xl font-bold">
             So you're looking for a developer, huh? Buckle up!
           </h1>
 
@@ -26,7 +26,7 @@ function AboutMe() {
           </p>
         </div>
         <div className="my-2 p-2">
-          <h2 className="font-bold text-2xl py-1">Why hire me?</h2>
+          <h2 className="font-bold md:text-2xl text-xl py-1">Why hire me?</h2>
           <ul className="list-disc">
             <li className="py-1">
               I can code like nobody's business (except maybe ninjas, but
@@ -43,7 +43,7 @@ function AboutMe() {
           </ul>
         </div>
         <div>
-          <p className="font-bold text-2xl py-2">
+          <p className="font-bold md:text-2xl text-xl py-2">
             So, what are you waiting for? Let's build something awesome
             together!
           </p>

@@ -7,11 +7,6 @@ import Blog from "./wrapper";
 import { unstable_cache } from "next/cache";
 import ShareButtons from "@/components/socialShare/share";
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  display: "swap"
-});
-
 const getBlog = unstable_cache(
   (asset_id: string) => getBlogBySlug(asset_id),
   [],
@@ -53,7 +48,7 @@ export default async function BlogSlug({ params }: TPrams) {
 
   return (
     <div
-      className={`dark min-h-screen bg-gray-800 text-white flex items-center justify-center ${openSans.className}`}
+      className={`dark min-h-screen bg-gray-800 text-white flex items-center justify-center `}
     >
       <main className="container max-w-5xl mx-auto px-2 sm:px-4  md:px-6 lg:px-8">
         <section className="mt-12">

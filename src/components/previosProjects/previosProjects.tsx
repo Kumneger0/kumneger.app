@@ -117,22 +117,27 @@ function Projects() {
               <CardTitle className="text-xl">{projectTitle}</CardTitle>
               <CardDescription className="text-base mt-4">
                 {description}
-                <div className="my-3 w-full flex justify-around gap-1">
-                  {project.usedTechStackInProject?.map(
-                    ({ name, url, icon }) => (
-                      <div>
-                        <TooltipWrapper tooltipContent={name}>
-                          <Link target="_blank" href={url}>
-                            <Image
-                              className="w-14 h-14"
-                              src={icon as string}
-                              alt={name}
-                            />
-                          </Link>
-                        </TooltipWrapper>
-                      </div>
-                    )
-                  )}
+                <div>
+                  <div className="w-full text-center py-2 font-bold text-2xl">
+                    Made With
+                  </div>
+                  <div className="my-3 w-full flex justify-around gap-1">
+                    {project.usedTechStackInProject?.map(
+                      ({ name, url, icon }) => (
+                        <div>
+                          <TooltipWrapper tooltipContent={name}>
+                            <Link target="_blank" href={url}>
+                              <Image
+                                className="w-12 h-12"
+                                src={icon as string}
+                                alt={name}
+                              />
+                            </Link>
+                          </TooltipWrapper>
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               </CardDescription>
             </CardHeader>
