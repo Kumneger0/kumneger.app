@@ -1,8 +1,5 @@
 import Blogs from "@/components/blogs/Blogs";
-import {
-  getAllBlogsFromCloundnary,
-  getSampleRelatedArticles
-} from "@/utils/utils";
+import { getBlogURLS, getSampleRelatedArticles } from "@/utils/utils";
 import { GithubIcon, Linkedin } from "lucide-react";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
@@ -11,7 +8,7 @@ import React from "react";
 export const dynamic = "force-static";
 
 export async function generateStaticParams() {
-  return (await getAllBlogsFromCloundnary()).map(({ asset_id }) => ({
+  return (await getBlogURLS()).map(({ asset_id }) => ({
     slug: asset_id
   }));
 }

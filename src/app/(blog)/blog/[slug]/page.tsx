@@ -1,4 +1,4 @@
-import { getAllBlogsFromCloundnary, getBlogBySlug } from "@/utils/utils";
+import { getBlogURLS, getBlogBySlug } from "@/utils/utils";
 import { Metadata } from "next";
 import { serialize } from "next-mdx-remote/serialize";
 import { Open_Sans } from "next/font/google";
@@ -7,16 +7,17 @@ import Blog from "./wrapper";
 import { unstable_cache } from "next/cache";
 import ShareButtons from "@/components/socialShare/share";
 
-const getBlog = unstable_cache(
-  (asset_id: string) => getBlogBySlug(asset_id),
-  [],
-  { revalidate: false }
-);
+const getBlog =
+  process.env.NODE_ENV == "production"
+    ? unstable_cache((asset_id: string) => getBlogBySlug(asset_id), [], {
+        revalidate: false
+      })
+    : async (asset_id: string) => await getBlogBySlug(asset_id);
 
 type TPrams = { params: { slug: string } };
 
 export async function generateStaticParams() {
-  const blogs = await getAllBlogsFromCloundnary();
+  const blogs = await getBlogURLS();
   return blogs.map(({ asset_id }) => ({
     slug: asset_id
   }));

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { MDXComponents } from "mdx/types";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { paraisoDark as theme } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -18,7 +19,7 @@ export const Paragraph = ({ children }: { children: React.ReactNode }) => {
 
 export const Code = ({ children }: { children: React.ReactNode }) => {
   const [isCopied, setIsCopied] = useState(false);
-  function copyCodeToClipboard(text: React.ReactNode) {
+  function copyCodeToClipboard(text: React.ReactNode) {text
     navigator.clipboard
       .writeText(text as string)
       .then(() => {
@@ -56,8 +57,16 @@ export function LinkComponent<
 
 export const Strong = ({ children }: { children: React.ReactNode }) => {
   return (
-    <strong className="bg-slate-400 text-black px-1 rounded-md">
+    <strong className="bg-white text-black px-1 py-0.5 mx-2 my-3 rounded-xl">
       {children}
     </strong>
   );
+};
+
+export const UL: MDXComponents["ul"] = ({ children }) => {
+  return <ul className="md:ml-2 my-2 list-square">{children}</ul>;
+};
+
+export const Li: MDXComponents["li"] = ({ children }) => {
+  return <li className="my-3">{children}</li>;
 };

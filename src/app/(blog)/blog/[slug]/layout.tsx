@@ -1,4 +1,3 @@
-import { getAllBlogsFromCloundnary } from "@/utils/utils";
 import React from "react";
 
 function Layout({
