@@ -6,7 +6,15 @@ async function Page({ params }: { params: { slug: string } }) {
   const comments = await getAllComments(params.slug);
 
   return (
-    <div className="max-w-4xl mt-12  w-full mx-auto">
+    <div
+      style={{
+        fontFamily: '"Open Sans", sans-serif',
+        fontWeight: "400",
+        fontStyle: "normal",
+        fontVariationSettings: '"wdth" 100'
+      }}
+      className="max-w-4xl mt-12  w-full mx-auto"
+    >
       <pre className="font-bold text-2xl mt-3">{comments.total} Comments</pre>
       <CommentsWrapper asset_id={params.slug} comments={comments} />
     </div>

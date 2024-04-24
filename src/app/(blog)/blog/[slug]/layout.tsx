@@ -1,4 +1,3 @@
-import { getAllBlogsFromCloundnary } from "@/utils/utils";
 import React from "react";
 
 function Layout({
@@ -10,7 +9,6 @@ function Layout({
   comments: React.ReactNode;
   others: React.ReactNode;
 }) {
-  console.log();
   return (
     <div>
       {children}

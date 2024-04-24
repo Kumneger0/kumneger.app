@@ -1,8 +1,5 @@
 import Blogs from "@/components/blogs/Blogs";
-import {
-  getAllBlogsFromCloundnary,
-  getSampleRelatedArticles
-} from "@/utils/utils";
+import { getBlogURLS, getSampleRelatedArticles } from "@/utils/utils";
 import { GithubIcon, Linkedin } from "lucide-react";
 import { serialize } from "next-mdx-remote/serialize";
 import Link from "next/link";
@@ -11,7 +8,7 @@ import React from "react";
 export const dynamic = "force-static";
 
 export async function generateStaticParams() {
-  return (await getAllBlogsFromCloundnary()).map(({ asset_id }) => ({
+  return (await getBlogURLS()).map(({ asset_id }) => ({
     slug: asset_id
   }));
 }
@@ -20,7 +17,15 @@ async function Page({ params }: { params: { slug: string } }) {
   const blogs = await getSampleRelatedArticles(params.slug, 3);
 
   return (
-    <div className="space-y-4  sm:ml-auto  mt-12 max-w-6xl w-full  mx-auto">
+    <div
+      style={{
+        fontFamily: '"Open Sans", sans-serif',
+        fontWeight: "400",
+        fontStyle: "normal",
+        fontVariationSettings: '"wdth" 100'
+      }}
+      className="space-y-4  sm:ml-auto  mt-12 max-w-6xl w-full  mx-auto"
+    >
       <h2 className="text-2xl font-bold w-full text-center">
         Related Articles
       </h2>

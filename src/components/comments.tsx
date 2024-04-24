@@ -150,8 +150,6 @@ function Replies({
     Awaited<ReturnType<typeof getReplies>>
   >["replies"];
 
-  console.log(totalReplies);
-
   const [replies, setReplies] = useState<TReplies>([]);
   const [showReplies, setShowReplies] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -216,7 +214,6 @@ export function CollapsibleComments({
   try {
     commentString = stateToHTML(convertFromRaw(JSON.parse(content)));
   } catch (err) {
-    console.log(err);
     commentString = content;
   }
 

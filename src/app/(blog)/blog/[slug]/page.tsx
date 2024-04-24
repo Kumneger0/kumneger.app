@@ -1,4 +1,4 @@
-import { getAllBlogsFromCloundnary, getBlogBySlug } from "@/utils/utils";
+import { getBlogURLS, getBlogBySlug } from "@/utils/utils";
 import { Metadata } from "next";
 import { serialize } from "next-mdx-remote/serialize";
 import { Open_Sans } from "next/font/google";
@@ -7,21 +7,18 @@ import Blog from "./wrapper";
 import { unstable_cache } from "next/cache";
 import ShareButtons from "@/components/socialShare/share";
 
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  display: "swap"
-});
-
-const getBlog = unstable_cache(
-  (asset_id: string) => getBlogBySlug(asset_id),
-  [],
-  { revalidate: false }
-);
+const getBlog =
+  process.env.NODE_ENV == "production"
+    ? unstable_cache((asset_id: string) => getBlogBySlug(asset_id), [], {
+        revalidate: false
+      })
+    : async (asset_id: string) => await getBlogBySlug(asset_id);
 
 type TPrams = { params: { slug: string } };
 
 export async function generateStaticParams() {
-  return (await getAllBlogsFromCloundnary()).map(({ asset_id }) => ({
+  const blogs = await getBlogURLS();
+  return blogs.map(({ asset_id }) => ({
     slug: asset_id
   }));
 }
@@ -52,7 +49,7 @@ export default async function BlogSlug({ params }: TPrams) {
 
   return (
     <div
-      className={`dark min-h-screen bg-gray-800 text-white flex items-center justify-center ${openSans.className}`}
+      className={`dark min-h-screen bg-gray-800 text-white flex items-center justify-center `}
     >
       <main className="container max-w-5xl mx-auto px-2 sm:px-4  md:px-6 lg:px-8">
         <section className="mt-12">

@@ -6,6 +6,23 @@ import Kdrive from "../../../public/Kdrive.png";
 import NextRecipe from "../../../public/recipe.png";
 import NextRecipe2 from "../../../public/Screenshot from 2024-02-11 17-20-45.png";
 import NextRecipe3 from "../../../public/Screenshot from 2024-02-11 17-22-19.png";
+import nextjsIcon from "../../../public/nextjs-icon-svgrepo-com.svg";
+import postgres from "../../../public/postgresql-svgrepo-com.svg";
+import mdx from "../../../public/mdx-svgrepo-com.svg";
+import prisma from "../../../public/prisma-svgrepo-com.svg";
+import reactIcon from "../../../public/react-svgrepo-com.svg";
+import firebase from "../../../public/firebase-svgrepo-com.svg";
+import bunIcon from "../../../public/bun.webp";
+import pocketBaseIcon from "../../../public/pocketbase_logo_icon_248816.png";
+import esbuild from "../../../public/esbuild-svgrepo-com.svg";
+import Image from "next/image";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from "@/components/ui/tooltip";
 
 import {
   Card,
@@ -24,14 +41,25 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     description:
       "Highly Experimental React Library. Converts React components to static HTML for enhanced performance and SEO, with support for React Server Components. Optimizes for speed, SEO, and scalability.",
     projectGithubRepo: "https://github.com/Kumneger0/reactBunode",
-    projectLiveUrl: "https://reactbunode.pages.dev/"
+    projectLiveUrl: "https://reactbunode.pages.dev/",
+    usedTechStackInProject: [
+      { name: "Bun", url: "https://bun.sh", icon: bunIcon },
+      { name: "React", url: "https://react.dev", icon: reactIcon },
+      { name: "Esbuild", url: "https://esbuild.github.io", icon: esbuild }
+    ]
   },
   {
     projectTitle: "My Blog",
     description:
       "This blog app, crafted with Next.js, serves as a platform for sharing insights and articles on web development. Occasionally, I pen my thoughts and tutorials, making it a space where I explore and document my journey in the dynamic world of web development.",
     projectGithubRepo: "https://github.com/Kumneger0/portifolio-website",
-    projectLiveUrl: "/blog"
+    projectLiveUrl: "/blog",
+    usedTechStackInProject: [
+      { name: "NextJS", url: "https://nextjs.org", icon: nextjsIcon },
+      { name: "Postgresql", url: "https://Postgresql.org", icon: postgres },
+      { name: "Prisma", url: "https://prisma.io", icon: prisma },
+      { name: "mdx", url: "https://mdxjs.com/", icon: mdx }
+    ]
   },
   {
     projectTitle: `React-PocketChat`,
@@ -42,8 +70,12 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
       "https://github.com/Kumneger0/chat-app-with-react-and-pocketbase",
     projectLiveUrl: "https://react-pocketchat.web.app/ ",
     usedTechStackInProject: [
-      { name: "pocketbase", url: "https://pocketbase.io" },
-      { name: "React", url: "https://react.dev" }
+      {
+        name: "pocketbase",
+        url: "https://pocketbase.io",
+        icon: pocketBaseIcon
+      },
+      { name: "React", url: "https://react.dev", icon: reactIcon }
     ]
   },
   {
@@ -51,8 +83,8 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     projectGithubRepo: "https://github.com/Kumneger0/KDrive",
     projectLiveUrl: "https://kunedrive.web.app/",
     usedTechStackInProject: [
-      { name: "firebase", url: "https://firebase.google.com" },
-      { name: "React", url: "https://react.dev" }
+      { name: "firebase", url: "https://firebase.google.com", icon: firebase },
+      { name: "React", url: "https://react.dev", icon: reactIcon }
     ],
     projectTitle: `KDrive - Your Personal Cloud`,
     description:
@@ -62,7 +94,9 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     projectGithubRepo: "https://github.com/Kumneger0/recipe-app-nextjs",
     images: [NextRecipe, NextRecipe2, NextRecipe3],
     projectLiveUrl: "https://food-app-lac.vercel.app/",
-    usedTechStackInProject: [{ name: "nextJS", url: "https://nextjs.org" }],
+    usedTechStackInProject: [
+      { name: "nextJS", url: "https://nextjs.org", icon: nextjsIcon }
+    ],
     projectTitle: "Tasty - Your Culinary Adventure Starts Here",
     description:
       "Experience Tasty, a recipe app powered by Next.js and TypeScript, featuring a wide range of meals with videos and step-by-step instructions. Start cooking with Tasty today!"
@@ -71,9 +105,9 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
 
 function Projects() {
   return (
-    <section className="mt-12">
+    <section className="mt-12 max-w-5xl mx-auto">
       <h2 className="text-2xl font-bold">Sample Projects</h2>
-      <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 mt-4 md:grid-cols-1 lg:grid-cols-2">
         {sampleProjects.map(({ description, projectTitle, ...project }) => (
           <Card
             className="border-none bg-gray-700 relative rounded-xl"
@@ -83,38 +117,61 @@ function Projects() {
               <CardTitle className="text-xl">{projectTitle}</CardTitle>
               <CardDescription className="text-base mt-4">
                 {description}
+                <div>
+                  <div className="w-full text-center py-2 font-bold text-2xl">
+                    Made With
+                  </div>
+                  <div className="my-3 w-full flex justify-around gap-1">
+                    {project.usedTechStackInProject?.map(
+                      ({ name, url, icon }) => (
+                        <div>
+                          <TooltipWrapper tooltipContent={name}>
+                            <Link target="_blank" href={url}>
+                              <Image
+                                className="w-12 h-12"
+                                src={icon as string}
+                                alt={name}
+                              />
+                            </Link>
+                          </TooltipWrapper>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
               </CardDescription>
             </CardHeader>
             <CardContent className="relative flex gap-5 justify-start items-center bottom-0 right-0">
-              {project.images?.length ? (
-                <>
-                  <DrawerComponent
-                    project={{ description, projectTitle, ...project }}
-                  >
-                    <Eye />
-                  </DrawerComponent>
-                  <div>
-                    <Link
-                      href={project.projectGithubRepo as string}
-                      target="_blank"
+              <>
+                {project.images?.length && (
+                  <>
+                    <DrawerComponent
+                      project={{ description, projectTitle, ...project }}
                     >
+                      <TooltipWrapper tooltipContent="project images">
+                        <Eye />
+                      </TooltipWrapper>
+                    </DrawerComponent>
+                  </>
+                )}
+                <div>
+                  <Link
+                    href={project.projectGithubRepo as string}
+                    target="_blank"
+                  >
+                    <TooltipWrapper tooltipContent="github repo">
                       <Github />
-                    </Link>
-                  </div>
-                </>
-              ) : (
-                <Link
-                  href={project.projectGithubRepo as string}
-                  target="_blank"
-                >
-                  <Github />
-                </Link>
-              )}
-              <div>
-                <Link target="_blank" href={project.projectLiveUrl as string}>
-                  <LinkIcon />
-                </Link>
-              </div>
+                    </TooltipWrapper>
+                  </Link>
+                </div>
+                <div>
+                  <Link target="_blank" href={project.projectLiveUrl as string}>
+                    <TooltipWrapper tooltipContent="live url">
+                      <LinkIcon />
+                    </TooltipWrapper>
+                  </Link>
+                </div>
+              </>
             </CardContent>
           </Card>
         ))}
@@ -124,3 +181,22 @@ function Projects() {
 }
 
 export default Projects;
+
+function TooltipWrapper({
+  children,
+  tooltipContent
+}: {
+  children: React.ReactNode;
+  tooltipContent: string;
+}) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>{children}</TooltipTrigger>
+        <TooltipContent className="bg-white text-black">
+          <p>{tooltipContent.toLowerCase()}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}

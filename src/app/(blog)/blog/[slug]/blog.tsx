@@ -6,7 +6,9 @@ import {
   Heading2,
   LinkComponent,
   Paragraph,
-  Strong
+  Strong,
+  UL,
+  Li
 } from "@/mdxComponents/components";
 
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
@@ -17,7 +19,9 @@ export const components = {
   code: Code,
   a: LinkComponent,
   h2: Heading2,
-  strong: Strong
+  strong: Strong,
+  ul: UL,
+  li: Li
 } as MDXComponents;
 
 function Blog({ blogContent }: { blogContent: MDXRemoteSerializeResult }) {

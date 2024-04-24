@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { MDXComponents } from "mdx/types";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { paraisoDark as theme } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -18,7 +19,7 @@ export const Paragraph = ({ children }: { children: React.ReactNode }) => {
 
 export const Code = ({ children }: { children: React.ReactNode }) => {
   const [isCopied, setIsCopied] = useState(false);
-  function copyCodeToClipboard(text: React.ReactNode) {
+  function copyCodeToClipboard(text: React.ReactNode) {text
     navigator.clipboard
       .writeText(text as string)
       .then(() => {
@@ -31,15 +32,15 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="w-auto min-w-full relative text-white max-w-fit  overflow-auto md:p-3 my-3">
+    <div className="w-auto min-w-full relative text-white max-w-fit  overflow-auto px-3 py-5 my-3">
       <SyntaxHighlighter language="javascript" style={theme}>
         {children as string}
       </SyntaxHighlighter>
       <button
         onClick={() => copyCodeToClipboard(children)}
-        className="absolute right-5 top-5"
+        className="absolute right-5 top-7"
       >
-        {!isCopied ? <Copy /> : <Check />}
+        {!isCopied ? <Copy className = "w-5 h-5"/> : <Check className = "w-7 h-7"/>}
       </button>
     </div>
   );
@@ -56,8 +57,16 @@ export function LinkComponent<
 
 export const Strong = ({ children }: { children: React.ReactNode }) => {
   return (
-    <strong className="bg-slate-400 text-black px-1 rounded-md">
+    <strong className="bg-white text-black px-1 py-0.5 mx-2 my-3 rounded-xl">
       {children}
     </strong>
   );
+};
+
+export const UL: MDXComponents["ul"] = ({ children }) => {
+  return <ul className="md:ml-2 my-2 list-square">{children}</ul>;
+};
+
+export const Li: MDXComponents["li"] = ({ children }) => {
+  return <li className="my-3">{children}</li>;
 };

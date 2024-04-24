@@ -22,7 +22,7 @@ export function GET(
           fontFamily: 'sans-serif',
           background: "lavender",
         }}>
-        {params.slug.split(".")[0]}
+        {params.slug}
       </div>
     )
   );

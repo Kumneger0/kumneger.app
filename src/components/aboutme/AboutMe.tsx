@@ -1,83 +1,23 @@
 import { ArrowRight } from "lucide-react";
 import Avatar from "../../../public/1711802150838.png";
 import Image from "next/image";
+import Link from 'next/link'
 
 function AboutMe() {
   return (
     <section className="py-5">
-      <div className="grid gap-8 md:grid-cols-2 max-w-7xl mx-auto">
-        <div className="flex items-center justify-center">
-          <Image
-            alt="Kumneger"
-            className="aspect-square rounded-full object-cover"
-            height="200"
-            src={Avatar}
-            width="200"
-          />
-        </div>
-        <div className="space-y-2">
-          <h1 className="md:text-3xl my-2 text-2xl font-bold">
-            Kumneger Wondimu (a.k.a Kune)
-          </h1>
-
+      <div className="max-w-5xl -mt-10 mx-auto">
+        <h1 className="md:text-3xl -ml-1  sm:-ml-3 my-4 text-2xl font-bold">
+          Kumneger Wondimu (a.k.a Kune)
+        </h1>
+        <div className="space-y-2 text-lg w-11/12">
           <p className="text-gray-300">
-            👨‍💻 A passionate Full Stack Developer based in Ethiopia 🇪🇹 with
-            experience in building applications with JavaScript / React /
-            Node.js and some other cool libraries and frameworks. I write about
-            web development on my blog
+          Hello! I'm a developer from Ethiopia, skilled in TypeScript, React, and Node.js, among other tools. I'm great at building everything from simple apps to complex web applications. I'm not just about coding; I also bring a positive attitude and a knack for making things work smoothly <br /> 
+          Currently, I'm a Computer Science student at Jimma University, preparing to graduate this year
           </p>
-          <h2 className="text-2xl font-semibold">Tools I use the most</h2>
-          <ul className="list-inside flex justify-between items-center gap-3 text-gray-300">
-            <div>
-              <li className="flex gap-2 items-center ">
-                <ArrowRight className="text-white" /> JavaScript{" "}
-              </li>
-              <li className="flex gap-2 items-center ">
-                <ArrowRight className="text-white" /> TypeScript
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Next.js
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Tailwind CSS
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> React
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Node.js
-              </li>
-            </div>
-            <div>
-              <li className="flex gap-2 items-center ">
-                <ArrowRight className="text-white" />
-                MongoDB{" "}
-              </li>
-              <li className="flex gap-2 items-center capitalize">
-                <ArrowRight className="text-white " /> postgresql
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Svelte
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Golang
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Git
-              </li>
-              <li className="flex gap-2 items-center">
-                {" "}
-                <ArrowRight className="text-white" /> Bun
-              </li>
-            </div>
-          </ul>
+          <p className = 'text-gray-300'>
+           Occasionally, I share my insights and knowledge through a blog post, which you can <Link href = '/blog'>here</Link>. In these posts, I aim to share what I've learned and the knowledge I've gained
+         </p>
         </div>
       </div>
     </section>

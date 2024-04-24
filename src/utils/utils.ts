@@ -3,6 +3,7 @@ import cloudinary, { ResourceApiResponse, v2 } from "cloudinary";
 import matter from "gray-matter";
 import { notFound } from "next/navigation";
 import { db } from "./db";
+import { url } from "inspector";
 
 v2.config({
   cloud_name: env.cloud_name,
@@ -22,6 +23,10 @@ const seoDesctiptionsForAtriclesThatHaveNoSeoDescription = {
     "Boost user experience with our guide on clipboard access in JavaScript. Discover how to create intuitive 'Copy to Clipboard' features, making it easier for users to interact with your web content"
 };
 
+const isPrd = () => {
+  return process.env.NODE_ENV == "production";
+};
+
 interface resources extends ResourceApiResponse {
   public_id: string;
   secure_url: string;
@@ -35,7 +40,9 @@ type TGetBlogParam = {
 
 const getBlogContent = async (urls: TGetBlogParam[]) => {
   const fetchContent = async ({ url, asset_id }: TGetBlogParam) => {
-    const rawMdx = await fetch(url).then((res) => res.text());
+    const rawMdx = await fetch(url, { cache: "force-cache" }).then((res) =>
+      res.text()
+    );
     return { rawMdx, asset_id };
   };
   const allText = await Promise.allSettled(urls.map(fetchContent));
@@ -59,20 +66,17 @@ const getAllBlogsFromCloundnary = async () => {
     }));
     return blogSecureUrl;
   } catch (err) {
-    console.log(err);
-    console.log(err);
     throw new Error("there was an error occured");
   }
 };
 
 const getBlogFromCloundnary = async (asset_id: string) => {
   let rawMdx: string | null = null;
-  console.log(asset_id);
   try {
     const blog = await cloudinary.v2.api.resources_by_asset_ids(asset_id);
-    console.log(blog);
-    rawMdx = await fetch(blog.resources[0].secure_url).then((res) => {
-      console.log(res);
+    rawMdx = await fetch(blog.resources[0].secure_url, {
+      cache: "force-cache"
+    }).then((res) => {
       if (!res.ok) {
         return null;
       }
@@ -80,13 +84,26 @@ const getBlogFromCloundnary = async (asset_id: string) => {
     });
     return rawMdx;
   } catch (err) {
-    console.log("not found");
     notFound();
   }
 };
 
+const getAllBlogs_DEV = async () => {
+  const localURL = `http://localhost:3001/`;
+  const urls = (
+    (await (await fetch(localURL)).json()) as unknown as {
+      id: string;
+      url: string;
+    }[]
+  ).map(({ id, url }) => ({ asset_id: id, url }));
+  return urls;
+};
+
+const getBlogURLS = async () =>
+  await (isPrd() ? getAllBlogsFromCloundnary() : getAllBlogs_DEV());
+
 const getAllBlogs = async () => {
-  const urls = await getAllBlogsFromCloundnary();
+  const urls = await (isPrd() ? getBlogURLS() : getAllBlogs_DEV());
   const blogs = await getBlogContent(urls);
   return blogs as {
     rawMdx: string;
@@ -99,7 +116,16 @@ const getBlogBySlug = async (slug: string) => {
   if (!blogFromDB) {
     notFound();
   }
-  const blog = await getBlogFromCloundnary(slug);
+  const blog = await (isPrd()
+    ? getBlogFromCloundnary(slug)
+    : (async () => {
+        return await (
+          await fetch(`http://localhost:3001/${slug}`, {
+            cache: "no-cache",
+            next: { revalidate: 0 }
+          })
+        ).text();
+      })());
   if (!blog) return { data: null, content: null };
   const { data, content } = matter(blog);
   const [year, month, day] = data?.date?.split("/").map(Number);
@@ -209,9 +235,4 @@ async function addBlogsTodb(blogs: { title: string; asset_id: string }[]) {
   }
 }
 
-export {
-  getAllBlogs,
-  getAllBlogsFromCloundnary,
-  getBlogBySlug,
-  getSampleRelatedArticles
-};
+export { getAllBlogs, getBlogURLS, getBlogBySlug, getSampleRelatedArticles };
