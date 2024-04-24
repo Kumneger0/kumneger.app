@@ -32,15 +32,15 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="w-auto min-w-full relative text-white max-w-fit  overflow-auto md:p-3 my-3">
+    <div className="w-auto min-w-full relative text-white max-w-fit  overflow-auto px-3 py-5 my-3">
       <SyntaxHighlighter language="javascript" style={theme}>
         {children as string}
       </SyntaxHighlighter>
       <button
         onClick={() => copyCodeToClipboard(children)}
-        className="absolute right-5 top-5"
+        className="absolute right-5 top-7"
       >
-        {!isCopied ? <Copy /> : <Check />}
+        {!isCopied ? <Copy className = "w-5 h-5"/> : <Check className = "w-7 h-7"/>}
       </button>
     </div>
   );

@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Avatar from "../../../public/1711802150838.png";
 import Image from "next/image";
+import Link from 'next/link'
 
 function AboutMe() {
   return (
@@ -9,44 +10,14 @@ function AboutMe() {
         <h1 className="md:text-3xl -ml-1  sm:-ml-3 my-4 text-2xl font-bold">
           Kumneger Wondimu (a.k.a Kune)
         </h1>
-        <div className="space-y-2">
-          <h1 className="md:text-2xl my-2 text-xl font-bold">
-            So you're looking for a developer, huh? Buckle up!
-          </h1>
-
+        <div className="space-y-2 text-lg w-11/12">
           <p className="text-gray-300">
-            I'm your friendly neighborhood full-stack dev, straight outta
-            Ethiopia 🇪🇹 . I wield the mighty powers of JavaScript, React,
-            Node.js, and a secret arsenal of other cool libraries and frameworks
-            (think of them as my programmer's spices). Basically, I'm the
-            caffeine to your website's tired code, the superhero to your app's
-            buggy blues. I can build anything from basic apps to full-blown web
-            applications (and maybe even a mind-controlling ray gun, if you're
-            feeling frisky).
+          Hello! I'm a developer from Ethiopia, skilled in TypeScript, React, and Node.js, among other tools. I'm great at building everything from simple apps to complex web applications. I'm not just about coding; I also bring a positive attitude and a knack for making things work smoothly <br /> 
+          Currently, I'm a Computer Science student at Jimma University, preparing to graduate this year
           </p>
-        </div>
-        <div className="my-2 p-2">
-          <h2 className="font-bold md:text-2xl text-xl py-1">Why hire me?</h2>
-          <ul className="list-disc">
-            <li className="py-1">
-              I can code like nobody's business (except maybe ninjas, but
-              they're probably busy infiltrating secret lairs)
-            </li>
-            <li className="py-1">
-              I'm fluent in both programmer talk and human, so you won't need a
-              decoder ring to understand me.
-            </li>
-            <li className="py-1">
-              My sense of humor is top-notch (just ask my therapist...wait,
-              don't ask my therapist)
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p className="font-bold md:text-2xl text-xl py-2">
-            So, what are you waiting for? Let's build something awesome
-            together!
-          </p>
+          <p className = 'text-gray-300'>
+           Occasionally, I share my insights and knowledge through a blog post, which you can <Link href = '/blog'>here</Link>. In these posts, I aim to share what I've learned and the knowledge I've gained
+         </p>
         </div>
       </div>
     </section>

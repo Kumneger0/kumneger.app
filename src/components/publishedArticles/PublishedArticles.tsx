@@ -27,7 +27,7 @@ async function PublishedArticles() {
       <ul className="list-inside list-none  my-4 text-lg text-gray-300 space-y-4">
         <Blogs
           className="bg-gray-700 rounded-xl  w-full min-w-[300px]"
-          blogs={[...pinnedArticles, ...articles]}
+          blogs={[...pinnedArticles, ...articles].slice(0, 3)}
         />
       </ul>
       <Link

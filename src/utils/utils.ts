@@ -23,6 +23,10 @@ const seoDesctiptionsForAtriclesThatHaveNoSeoDescription = {
     "Boost user experience with our guide on clipboard access in JavaScript. Discover how to create intuitive 'Copy to Clipboard' features, making it easier for users to interact with your web content"
 };
 
+const isPrd = () => {
+  return process.env.NODE_ENV == "production";
+};
+
 interface resources extends ResourceApiResponse {
   public_id: string;
   secure_url: string;
@@ -96,14 +100,10 @@ const getAllBlogs_DEV = async () => {
 };
 
 const getBlogURLS = async () =>
-  await (process.env.NODE_ENV == "production"
-    ? getAllBlogsFromCloundnary()
-    : getAllBlogs_DEV());
+  await (isPrd() ? getAllBlogsFromCloundnary() : getAllBlogs_DEV());
 
 const getAllBlogs = async () => {
-  const urls = await (process.env.NODE_ENV == "production"
-    ? getBlogURLS()
-    : getAllBlogs_DEV());
+  const urls = await (isPrd() ? getBlogURLS() : getAllBlogs_DEV());
   const blogs = await getBlogContent(urls);
   return blogs as {
     rawMdx: string;
@@ -116,7 +116,7 @@ const getBlogBySlug = async (slug: string) => {
   if (!blogFromDB) {
     notFound();
   }
-  const blog = await (process.env.NODE_ENV == "production"
+  const blog = await (isPrd()
     ? getBlogFromCloundnary(slug)
     : (async () => {
         return await (
