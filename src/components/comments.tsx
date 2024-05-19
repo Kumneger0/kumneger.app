@@ -43,6 +43,10 @@ export function CommentsWrapper({
   asset_id: string;
 }) {
   const [moreComments, setMoreComments] = useState<Comments["comments"]>([]);
+  const [couter, setCouter] = useState(0)
+
+
+ 
 
   return (
     <>
@@ -87,6 +91,9 @@ export function CommentsWrapper({
     </>
   );
 }
+
+
+
 
 function MoreComments({
   asset_id,

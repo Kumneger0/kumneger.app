@@ -1,20 +1,44 @@
 "use client";
 
+
+
+
+
+
 import DrawerComponent, { Project } from "../drawer";
+
 import reactPocketChatApp from "../../../public/chatapp.png";
-import Kdrive from "../../../public/Kdrive.png";
+
+import Kdrive from "../../../public/krive.png";
+
 import NextRecipe from "../../../public/recipe.png";
+
 import NextRecipe2 from "../../../public/Screenshot from 2024-02-11 17-20-45.png";
+
 import NextRecipe3 from "../../../public/Screenshot from 2024-02-11 17-22-19.png";
+
 import nextjsIcon from "../../../public/nextjs-icon-svgrepo-com.svg";
+
 import postgres from "../../../public/postgresql-svgrepo-com.svg";
+
 import mdx from "../../../public/mdx-svgrepo-com.svg";
+
 import prisma from "../../../public/prisma-svgrepo-com.svg";
+
 import reactIcon from "../../../public/react-svgrepo-com.svg";
+
 import firebase from "../../../public/firebase-svgrepo-com.svg";
+
 import bunIcon from "../../../public/bun.webp";
+
 import pocketBaseIcon from "../../../public/pocketbase_logo_icon_248816.png";
+
 import esbuild from "../../../public/esbuild-svgrepo-com.svg";
+
+import plasmoSVG from "../../../public/seo-1200x700.png";
+
+import goIcon from "../../../public/1200px-Go_Logo_Blue.svg.png";
+
 import Image from "next/image";
 
 import {
@@ -60,6 +84,29 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
       { name: "Prisma", url: "https://prisma.io", icon: prisma },
       { name: "mdx", url: "https://mdxjs.com/", icon: mdx }
     ]
+  },
+  {
+
+    projectTitle: "Kpass",
+
+    description:
+
+      "KPass is an experimental, self-hosted password manager developed with Go and TypeScript",
+
+    projectGithubRepo: "https://github.com/Kumneger0/kpass",
+
+    projectLiveUrl: "#",
+
+    usedTechStackInProject: [
+
+      { name: "Plasmo", url: "https://www.plasmo.com/", icon: plasmoSVG },
+
+      { name: "Postgresql", url: "https://Postgresql.org", icon: postgres },
+
+      { name: "go", url: "https://go.dev", icon: goIcon }
+
+    ]
+
   },
   {
     projectTitle: `React-PocketChat`,
@@ -128,7 +175,7 @@ function Projects() {
                           <TooltipWrapper tooltipContent={name}>
                             <Link target="_blank" href={url}>
                               <Image
-                                className="w-12 h-12"
+                                className="w-12 h-12 object-contain object-center"
                                 src={icon as string}
                                 alt={name}
                               />
