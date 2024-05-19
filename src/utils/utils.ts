@@ -24,6 +24,7 @@ const seoDesctiptionsForAtriclesThatHaveNoSeoDescription = {
 };
 
 const isPrd = () => {
+  return true
   return process.env.NODE_ENV == "production";
 };
 
