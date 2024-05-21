@@ -21,6 +21,7 @@ import { LoginModal } from "../blogHeader/blogHeader";
 import EmojiInput from "../emojiInput";
 import { Button } from "../ui/button";
 import { SubmitForm } from "../writeComments";
+import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 
 export const commentIdAtom = atom<number | null>(null);
 
@@ -41,7 +42,7 @@ const Vote = memo(
     const { data, status } = useSession();
     const router = useRouter();
 
-    const modalBtn = useRef<ElementRef<typeof LoginModal>>(null);
+    const modalBtn = useRef<ElementRef<typeof DialogTrigger>>(null);
 
     const [optimisticVotes, setOptimisticVotes] = useOptimistic(
       votes,
@@ -57,7 +58,7 @@ const Vote = memo(
 
     async function createVote(isUpvote: boolean) {
       if (status === "unauthenticated" || !data?.user?.email) {
-        modalBtn.current?.openModal();
+        modalBtn.current?.click();
         return;
       }
 
@@ -139,6 +140,8 @@ const ReplyComments = memo(
     replayFormPrentId: string;
   }) => {
     const { data, status } = useSession();
+    const modalBtn = useRef<ElementRef<typeof DialogTrigger>>(null);
+
 
     const router = useRouter();
 
@@ -162,7 +165,7 @@ const ReplyComments = memo(
 
     if (status === "unauthenticated")
       return (
-        <LoginModal>
+        <LoginModal ref = {modalBtn}>
           {" "}
           <Reply className="w-7 h-7 text-white" />
         </LoginModal>

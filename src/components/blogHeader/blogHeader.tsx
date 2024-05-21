@@ -11,31 +11,18 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog";
 import {
-  ElementRef,
-  forwardRef,
   useEffect,
-  useImperativeHandle,
   useRef,
-  useState
+  useState, 
+  type ElementRef
 } from "react";
 import { Button } from "../ui/button";
 import { Github } from "lucide-react";
 import Link from "next/link";
 
-export const LoginModal = forwardRef<
-  { openModal: () => void },
-  { children: React.ReactNode }
->(({ children }, ref) => {
+export const LoginModal = ({ children, ref } : {children : React.ReactNode, ref:React.RefObject<ElementRef<typeof DialogTrigger>>}) => {
   const [providers, setProvires] =
     useState<Awaited<ReturnType<typeof getProviders>>>();
-
-  const dialogTriggerRef = useRef<ElementRef<typeof DialogTrigger>>(null);
-
-  useImperativeHandle(ref, () => ({
-    openModal: () => {
-      dialogTriggerRef.current?.click();
-    }
-  }));
 
   useEffect(() => {
     (async () => {
@@ -46,7 +33,7 @@ export const LoginModal = forwardRef<
 
   return (
     <Dialog>
-      <DialogTrigger id="modal" ref={dialogTriggerRef} className="text-white">
+      <DialogTrigger id="modal" ref={ref} className="text-white">
         {children}
       </DialogTrigger>
       <DialogContent className="bg-white">
@@ -69,10 +56,11 @@ export const LoginModal = forwardRef<
       </DialogContent>
     </Dialog>
   );
-});
+}
 
 function blogHeader() {
   const { data, status } = useSession();
+  const openModalRef = useRef<ElementRef<typeof DialogTrigger> | null>(null)
 
   return (
     <div className="min-w-screen bg-gray-800">
@@ -91,7 +79,7 @@ function blogHeader() {
               sign out
             </Button>
           ) : (
-            <LoginModal>Sign in</LoginModal>
+            <LoginModal ref={openModalRef}>Sign in</LoginModal>
           )}
         </div>
       </header>
