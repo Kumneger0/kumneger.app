@@ -7,17 +7,18 @@ import { LoginModal } from "../blogHeader/blogHeader";
 import EmojiInput from "../emojiInput";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 function PostComments({ asset_id }: { asset_id: string }) {
   const { data, status } = useSession();
-  const modalRef = useRef<ElementRef<typeof LoginModal>>(null);
+  const modalRef = useRef<ElementRef<typeof DialogTrigger>>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const router = useRouter();
 
   const handleUserLoginStatus = () => {
     if (status === "unauthenticated") {
-      modalRef.current?.openModal();
+      modalRef.current?.click();
     }
   };
 
@@ -30,7 +31,7 @@ function PostComments({ asset_id }: { asset_id: string }) {
 
   const postComment = async (formData: FormData) => {
     if (status === "unauthenticated") {
-      modalRef.current?.openModal();
+      modalRef.current?.click();
       return;
     }
     const data = await createCommentsWithDetails(formData);
