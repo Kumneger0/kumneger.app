@@ -6,7 +6,7 @@ prisma/dev.db
 .pnp.js
 # testing
 /coverage
-
+/.idx/
 # next.js
 /.next/
 /out/
