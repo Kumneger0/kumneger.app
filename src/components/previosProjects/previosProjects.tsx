@@ -1,10 +1,5 @@
 "use client";
 
-
-
-
-
-
 import DrawerComponent, { Project } from "../drawer";
 
 import reactPocketChatApp from "../../../public/chatapp.png";
@@ -86,11 +81,9 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     ]
   },
   {
-
     projectTitle: "Kpass",
 
     description:
-
       "KPass is an experimental, self-hosted password manager developed with Go and TypeScript",
 
     projectGithubRepo: "https://github.com/Kumneger0/kpass",
@@ -98,15 +91,12 @@ const sampleProjects: Partial<Project & Record<string, any>>[] = [
     projectLiveUrl: "#",
 
     usedTechStackInProject: [
-
       { name: "Plasmo", url: "https://www.plasmo.com/", icon: plasmoSVG },
 
       { name: "Postgresql", url: "https://Postgresql.org", icon: postgres },
 
       { name: "go", url: "https://go.dev", icon: goIcon }
-
     ]
-
   },
   {
     projectTitle: `React-PocketChat`,
