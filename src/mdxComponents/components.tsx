@@ -19,7 +19,8 @@ export const Paragraph = ({ children }: { children: React.ReactNode }) => {
 
 export const Code = ({ children }: { children: React.ReactNode }) => {
   const [isCopied, setIsCopied] = useState(false);
-  function copyCodeToClipboard(text: React.ReactNode) {text
+  function copyCodeToClipboard(text: React.ReactNode) {
+    text;
     navigator.clipboard
       .writeText(text as string)
       .then(() => {
@@ -40,7 +41,11 @@ export const Code = ({ children }: { children: React.ReactNode }) => {
         onClick={() => copyCodeToClipboard(children)}
         className="absolute right-5 top-7"
       >
-        {!isCopied ? <Copy className = "w-5 h-5"/> : <Check className = "w-7 h-7"/>}
+        {!isCopied ? (
+          <Copy className="w-5 h-5" />
+        ) : (
+          <Check className="w-7 h-7" />
+        )}
       </button>
     </div>
   );

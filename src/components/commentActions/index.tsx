@@ -142,7 +142,6 @@ const ReplyComments = memo(
     const { data, status } = useSession();
     const modalBtn = useRef<ElementRef<typeof DialogTrigger>>(null);
 
-
     const router = useRouter();
 
     const [id, setId] = useAtom(commentIdAtom);
@@ -165,7 +164,7 @@ const ReplyComments = memo(
 
     if (status === "unauthenticated")
       return (
-        <LoginModal ref = {modalBtn}>
+        <LoginModal ref={modalBtn}>
           {" "}
           <Reply className="w-7 h-7 text-white" />
         </LoginModal>

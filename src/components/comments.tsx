@@ -44,10 +44,6 @@ export function CommentsWrapper({
 }) {
   const [moreComments, setMoreComments] = useState<Comments["comments"]>([]);
 
-
-
- 
-
   return (
     <>
       <div className="my-5">
@@ -91,9 +87,6 @@ export function CommentsWrapper({
     </>
   );
 }
-
-
-
 
 function MoreComments({
   asset_id,
