@@ -7,12 +7,12 @@ import Blog from "./wrapper";
 import { unstable_cache } from "next/cache";
 import ShareButtons from "@/components/socialShare/share";
 
-const getBlog =
-  process.env.NODE_ENV == "production"
-    ? unstable_cache((asset_id: string) => getBlogBySlug(asset_id), [], {
+export const experimental_ppr = true
+
+const getBlog = unstable_cache((asset_id: string) => getBlogBySlug(asset_id), [], {
         revalidate: false
       })
-    : async (asset_id: string) => await getBlogBySlug(asset_id);
+ 
 
 type TPrams = { params: { slug: string } };
 
@@ -23,8 +23,6 @@ export async function generateStaticParams() {
   }));
 }
 
-export const dynamic = "force-static";
-export const revalidate = false;
 
 export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
   const asset_id = params.slug;
