@@ -5,6 +5,7 @@ import BlogHeader from "@/components/blogHeader/blogHeader";
 import { Open_Sans } from "next/font/google";
 import Providers from "@/components/progressBarContext";
 import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "Kumneger Wondimu | blog",

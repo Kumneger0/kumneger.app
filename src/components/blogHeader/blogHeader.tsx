@@ -64,9 +64,8 @@ export const LoginModal = ({
   );
 };
 
-async function blogHeader() {
+function blogHeader() {
   const { data, status } = useSession();
-  // const session = await getServerSession()
 
   const openModalRef = useRef<ElementRef<typeof DialogTrigger> | null>(null);
 
