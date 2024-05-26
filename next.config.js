@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: false,
   experimental: {
-    optimizePackageImports: ["lucide-react"],
     reactCompiler: true
   }
 };

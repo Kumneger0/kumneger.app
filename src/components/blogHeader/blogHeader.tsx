@@ -1,80 +1,74 @@
-
-import { getProviders, signIn, signOut, useSession,   } from "next-auth/react";
-import { getServerSession } from "next-auth/next"
-
+"use client";
+import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
-  DialogTrigger,
-  DialogTitle,
+  Dialog,
+  DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogContent,
-  Dialog
+  DialogTitle,
+  DialogTrigger
 } from "@/components/ui/dialog";
 
-import { useEffect, useRef, useState, type ElementRef } from "react";
-import { Github } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef, useState, type ElementRef } from "react";
 
-// export const LoginModal = ({
-//   children,
-//   ref
-// }: {
-//   children: React.ReactNode;
-//   ref: React.RefObject<ElementRef<typeof DialogTrigger>>;
-// }) => {
-//   const [providers, setProvires] =
-//     useState<Awaited<ReturnType<typeof getProviders>>>();
+export const LoginModal = ({
+  children,
+  ref
+}: {
+  children: React.ReactNode;
+  ref: React.RefObject<ElementRef<typeof DialogTrigger>>;
+}) => {
+  const [providers, setProvires] =
+    useState<Awaited<ReturnType<typeof getProviders>>>();
 
-//   useEffect(() => {
-//     (async () => {
-//       const providers = await getProviders();
-//       setProvires(providers);
-//     })();
-//   }, []);
+  useEffect(() => {
+    (async () => {
+      const providers = await getProviders();
+      setProvires(providers);
+    })();
+  }, []);
 
-//   return (
-//     <Dialog>
-//       <DialogTrigger id="modal" ref={ref} className="text-white">
-//         {children}
-//       </DialogTrigger>
-//       <DialogContent className="sm:max-w-[425px] bg-white">
-//         <DialogHeader className="flex flex-col items-center text-center">
-//           <DialogTitle className="text-2xl font-bold">
-//             Welcome back!
-//           </DialogTitle>
-//           <DialogDescription className="text-gray-500 dark:text-gray-400">
-//             Sign in to your account to continue.
-//           </DialogDescription>
-//         </DialogHeader>
-//         <div className="grid gap-4 py-6">
-//           {providers?.github ? (
-//             <Button
-//               onClick={() => {
-//                 signIn("github", { callbackUrl: location.href });
-//               }}
-//               className="w-full"
-//               variant="outline"
-//             >
-//               <GithubIcon className="mr-2 h-5 w-5" />
-//               Sign in with GitHub
-//             </Button>
-//           ) : null}
-//         </div>
-//       </DialogContent>
-//     </Dialog>
-//   );
-// };
+  return (
+    <Dialog>
+      <DialogTrigger id="modal" ref={ref} className="text-white">
+        {children}
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] bg-white">
+        <DialogHeader className="flex flex-col items-center text-center">
+          <DialogTitle className="text-2xl font-bold">
+            Welcome back!
+          </DialogTitle>
+          <DialogDescription className="text-gray-500 dark:text-gray-400">
+            Sign in to your account to continue.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-6">
+          {providers?.github ? (
+            <Button
+              onClick={() => {
+                signIn("github", { callbackUrl: location.href });
+              }}
+              className="w-full"
+              variant="outline"
+            >
+              <GithubIcon className="mr-2 h-5 w-5" />
+              Sign in with GitHub
+            </Button>
+          ) : null}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 async function blogHeader() {
-  // const { data, status } = useSession();
-  const session = await getServerSession()
+  const { data, status } = useSession();
+  // const session = await getServerSession()
 
-
-
-
-  // const openModalRef = useRef<ElementRef<typeof DialogTrigger> | null>(null);
+  const openModalRef = useRef<ElementRef<typeof DialogTrigger> | null>(null);
 
   return (
     <div className="min-w-screen bg-gray-800">
@@ -85,7 +79,7 @@ async function blogHeader() {
           </Link>
         </div>
         <div className="">
-          {session ? (
+          {status === "authenticated" ? (
             <Button
               className="bg-blue-700 hover:bg-blue-600 rounded-[8px] text-white"
               onClick={() => signOut()}
@@ -93,9 +87,9 @@ async function blogHeader() {
               sign out
             </Button>
           ) : (
-             <>
-             { /* <LoginModal ref={openModalRef}>Sign in</LoginModal> */}
-             </>
+            <>
+              <LoginModal ref={openModalRef}>Sign in</LoginModal>
+            </>
           )}
         </div>
       </header>

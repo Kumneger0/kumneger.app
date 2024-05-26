@@ -20,7 +20,7 @@ function AboutMe() {
           </p>
           <p className="text-gray-300">
             Occasionally, I share my insights and knowledge through a blog post,
-            which you can find<Link href="/blog" className=" text-blue-400">here</Link>. In these posts, I aim
+            which you can find <Link href="/blog" className="text-blue-400">here</Link>. In these posts, I aim
             to share what I've learned and the knowledge I've gained
           </p>
         </div>
