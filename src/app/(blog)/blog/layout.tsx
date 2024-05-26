@@ -43,11 +43,6 @@ function Bloglayout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <link rel="icon" type="image/ico" href="/1711802150838.ico" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8674305198183882"
-          crossOrigin={"anonymous"}
-        ></script>
       </head>
       <body>
         <NextAuthWrapper>

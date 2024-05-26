@@ -12,17 +12,15 @@ function AboutMe() {
         </h1>
         <div className="space-y-2 text-lg w-11/12">
           <p className="text-gray-300">
-            Hello! I'm a developer from Ethiopia, skilled in TypeScript, React,
-            and Node.js, among other tools. I'm great at building everything
-            from simple apps to complex web applications. I'm not just about
-            coding; I also bring a positive attitude and a knack for making
-            things work smoothly <br />
+    
+            Hey there 👋 I'm an Ethiopian developer, well-versed in TypeScript, React, and Node.js, and equipped with a wide array of other technical skills
+            <br />
             Currently, I'm a Computer Science student at Jimma University,
             preparing to graduate this year
           </p>
           <p className="text-gray-300">
             Occasionally, I share my insights and knowledge through a blog post,
-            which you can <Link href="/blog">here</Link>. In these posts, I aim
+            which you can find<Link href="/blog" className=" text-blue-400">here</Link>. In these posts, I aim
             to share what I've learned and the knowledge I've gained
           </p>
         </div>
