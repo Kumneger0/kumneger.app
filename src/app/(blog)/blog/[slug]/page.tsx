@@ -1,18 +1,9 @@
-import { getBlogURLS, getBlogBySlug } from "@/utils/utils";
-import { Metadata } from "next";
-import { serialize } from "next-mdx-remote/serialize";
-import { Open_Sans } from "next/font/google";
-import Link from "next/link";
-import Blog from "./wrapper";
-import { unstable_cache } from "next/cache";
 import ShareButtons from "@/components/socialShare/share";
+import { getBlogPosts } from "@/contents/utils";
+import { getBlogURLS } from "@/utils/utils";
+import Link from "next/link";
 
 export const experimental_ppr = true
-
-const getBlog = unstable_cache((asset_id: string) => getBlogBySlug(asset_id), [], {
-        revalidate: false
-      })
- 
 
 type TPrams = { params: { slug: string } };
 
@@ -24,26 +15,21 @@ export async function generateStaticParams() {
 }
 
 
-export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
-  const asset_id = params.slug;
-  const { data } = await getBlog(asset_id);
-  return {
-    title: data?.title,
-    description: data?.seoDescription,
-    openGraph: {
-      images: [{ url: `/api/gen-og-images/${data?.title}` }]
-    }
-  };
-}
+// export async function generateMetadata({ params }: TPrams): Promise<Metadata> {
+//   const asset_id = params.slug;
+//   const { data } = await getBlog(asset_id);
+//   return {
+//     title: data?.title,
+//     description: data?.seoDescription,
+//     openGraph: {
+//       images: [{ url: `/api/gen-og-images/${data?.title}` }]
+//     }
+//   };
+// }
 
 export default async function BlogSlug({ params }: TPrams) {
-  const asset_id = params.slug;
-  const { data, content } = await getBlog(asset_id);
-
-  const serialized = content ? await serialize(content) : null;
-
-  const blogTitle =
-    data && "title" in data && typeof data.title === "string" ? data.title : "";
+  const slug = params.slug;
+  const blog = getBlogPosts().find(({ slug: slg }) => slg == slug)
 
   return (
     <div
@@ -55,14 +41,14 @@ export default async function BlogSlug({ params }: TPrams) {
             Back to Blog
           </Link>
           <h1 className="text-2xl py-3 md:text-3xl font-bold text-center mt-6">
-            {blogTitle}
+            {blog?.metadata.title}
           </h1>
 
           <div>
             <img
               width={1000}
               height={6000}
-              src={`/api/gen-og-images/${blogTitle}`}
+              src={`/api/gen-og-images/${encodeURIComponent(blog?.metadata.title as string)}`}
               alt="header"
             />
           </div>
@@ -72,16 +58,16 @@ export default async function BlogSlug({ params }: TPrams) {
               <p>
                 Published on:{" "}
                 <span className="font-bold" suppressHydrationWarning>
-                  {data?.date}
+                  {blog?.metadata.publishedAt}
                 </span>
               </p>
               <p>
-                Author: <span className="font-bold">{data?.author}</span>
+                Author: <span className="font-bold">{''}</span>
               </p>
             </div>
           </div>
 
-          {!!serialized && <Blog>{serialized}</Blog>}
+          <div>{blog?.content}</div>
         </section>
         <section className="my-5">
           <div>

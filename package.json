@@ -59,6 +59,7 @@
     "next-nprogress-bar": "^2.3.12",
     "next-progress": "^2.3.1",
     "postcss": "8.4.26",
+    "query-string": "^9.0.0",
     "react": "19.0.0-rc-935180c7e0-20240524",
     "react-dom": "19.0.0-rc-935180c7e0-20240524",
     "react-input-emoji": "^5.9.0",

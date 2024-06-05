@@ -2,10 +2,8 @@ import React from "react";
 import "./../../globals.css";
 import NextAuthWrapper from "@/components/nextAuthWrapper";
 import BlogHeader from "@/components/blogHeader/blogHeader";
-import { Open_Sans } from "next/font/google";
 import Providers from "@/components/progressBarContext";
 import { Metadata } from "next";
-import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "Kumneger Wondimu | blog",
@@ -26,9 +24,6 @@ export const metadata: Metadata = {
     title: "Kumneger wondimu",
     card: "summary_large_image"
   },
-  other: {
-    "google-site-verification": "oDVfNqx1QrRnGvkWz-i646WtX-rsZn1h2J7jdBwyHvU"
-  }
 };
 
 function Bloglayout({ children }: { children: React.ReactNode }) {
