@@ -77,20 +77,7 @@ function blogHeader() {
             <h1 className="text-2xl font-bold text-white">Kumneger</h1>
           </Link>
         </div>
-        <div className="">
-          {status === "authenticated" ? (
-            <Button
-              className="bg-blue-700 hover:bg-blue-600 rounded-[8px] text-white"
-              onClick={() => signOut()}
-            >
-              sign out
-            </Button>
-          ) : (
-            <>
-              <LoginModal ref={openModalRef}>Sign in</LoginModal>
-            </>
-          )}
-        </div>
+        
       </header>
     </div>
   );

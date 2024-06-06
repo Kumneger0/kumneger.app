@@ -2,10 +2,10 @@
 
 import React from "react";
 
-function ErrorComponent() {
+function ErrorComponent(props : any) {
   return (
     <div className="min-h-[80svh] w-full flex justify-center items-center">
-      <div>oops there was an error</div>
+      <div>{JSON.stringify(props)}</div>
     </div>
   );
 }

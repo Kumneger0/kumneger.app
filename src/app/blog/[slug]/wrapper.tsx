@@ -1,7 +1,7 @@
 "use client";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
-import Blog from "./blog";
+import Blog from "../../../components/blog";
 
 import { SessionProvider } from "next-auth/react";
 

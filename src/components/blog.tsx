@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import type { MDXComponents } from "mdx/types.js";
 import {

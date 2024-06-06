@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
+import { Home } from '@/routes'
 
 function NotFound() {
   return (
@@ -26,11 +27,11 @@ function NotFound() {
         </div>
         <p className="mt-4 ">
           Let's get you back{" "}
-          <Link href="/" className="text-blue-500">
+          <Home.Link>
             <Button className="p-0" variant={"link"}>
               home
             </Button>
-          </Link>
+          </Home.Link>
         </p>
       </div>
     </div>

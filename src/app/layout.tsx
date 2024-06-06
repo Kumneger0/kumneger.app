@@ -1,7 +1,7 @@
 import React from "react";
-import "./../../globals.css";
+import "./globals.css";
 import NextAuthWrapper from "@/components/nextAuthWrapper";
-import BlogHeader from "@/components/blogHeader/blogHeader";
+import Header from "@/components/header/Header";
 import Providers from "@/components/progressBarContext";
 import { Metadata } from "next";
 
@@ -40,11 +40,11 @@ function Bloglayout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <link rel="icon" type="image/ico" href="/1711802150838.ico" />
       </head>
-      <body>
+      <body  className="dark min-h-screen  bg-gray-800 text-white">
         <NextAuthWrapper>
           <Providers>
-            <BlogHeader />
-            <div className="dark min-h-screen  bg-gray-800 text-white">
+            <Header />
+            <div >
               <main className=" mx-auto pb-5 px-4 max-w-5xl md:px-6 lg:px-8">
                 {children}
               </main>

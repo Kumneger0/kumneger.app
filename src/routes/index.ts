@@ -6,44 +6,16 @@ const defaultInfo = {
   search: z.object({})
 };
 
-import * as BlogBlogRoute from "@/app/(blog)/blog/page.info";
-import * as BlogBlogSlugRoute from "@/app/(blog)/blog/[slug]/page.info";
-import * as BlogBlogSlugCommentsRoute from "@/app/(blog)/blog/[slug]/@comments/page.info";
-import * as BlogBlogSlugOthersRoute from "@/app/(blog)/blog/[slug]/@others/page.info";
-import * as HomeRoute from "@/app/(home)/page.info";
+import * as HomeRoute from "@/app/page.info";
 import * as ApiAuthNextauthRoute from "@/app/api/auth/[...nextauth]/route.info";
 import * as ApiGenOgImagesSlugRoute from "@/app/api/gen-og-images/[slug]/route.info";
+import * as BlogBlogRoute from "@/app/blog/page.info";
+import * as BlogBlogSlugRoute from "@/app/blog/[slug]/page.info";
+import * as BlogBlogSlugCommentsRoute from "@/app/blog/[slug]/@comments/page.info";
+import * as BlogBlogSlugOthersRoute from "@/app/blog/[slug]/@others/page.info";
 
-export const BlogBlog = makeRoute(
-  "/(blog)/blog",
-  {
-    ...defaultInfo,
-    ...BlogBlogRoute.Route
-  }
-);
-export const BlogBlogSlug = makeRoute(
-  "/(blog)/blog/[slug]",
-  {
-    ...defaultInfo,
-    ...BlogBlogSlugRoute.Route
-  }
-);
-export const BlogBlogSlugComments = makeRoute(
-  "/(blog)/blog/[slug]/@comments",
-  {
-    ...defaultInfo,
-    ...BlogBlogSlugCommentsRoute.Route
-  }
-);
-export const BlogBlogSlugOthers = makeRoute(
-  "/(blog)/blog/[slug]/@others",
-  {
-    ...defaultInfo,
-    ...BlogBlogSlugOthersRoute.Route
-  }
-);
 export const Home = makeRoute(
-  "/(home)",
+  "/",
   {
     ...defaultInfo,
     ...HomeRoute.Route
@@ -54,6 +26,34 @@ export const ApiAuthNextauth = makeRoute(
   {
     ...defaultInfo,
     ...ApiAuthNextauthRoute.Route
+  }
+);
+export const BlogBlog = makeRoute(
+  "/blog",
+  {
+    ...defaultInfo,
+    ...BlogBlogRoute.Route
+  }
+);
+export const BlogBlogSlug = makeRoute(
+  "/blog/[slug]",
+  {
+    ...defaultInfo,
+    ...BlogBlogSlugRoute.Route
+  }
+);
+export const BlogBlogSlugComments = makeRoute(
+  "/blog/[slug]/@comments",
+  {
+    ...defaultInfo,
+    ...BlogBlogSlugCommentsRoute.Route
+  }
+);
+export const BlogBlogSlugOthers = makeRoute(
+  "/blog/[slug]/@others",
+  {
+    ...defaultInfo,
+    ...BlogBlogSlugOthersRoute.Route
   }
 );
 
